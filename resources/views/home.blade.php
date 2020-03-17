@@ -21,7 +21,7 @@
                 <div class="card-header">Cake</div>
                 <div class="card-body">
                     @foreach($cakes as $cake)
-                        <p>{{$cake->name}}</p>
+                        <p>{{$cake->required_ingredients}}</p>
                     @endforeach
                 </div>
             </div>
