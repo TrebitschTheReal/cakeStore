@@ -17,6 +17,14 @@
                     You are logged in!
                 </div>
             </div>
+            <div class="card mt-3">
+                <div class="card-header">Cake</div>
+                <div class="card-body">
+                    @foreach($cakes as $cake)
+                        <p>{{$cake->name}}</p>
+                    @endforeach
+                </div>
+            </div>
         </div>
     </div>
 </div>
