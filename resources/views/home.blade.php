@@ -25,8 +25,8 @@
 
                         @foreach($cake->required_ingredients as $ingredient)
                             <p>Alapanyag: {{$ingredient->name}}</p>
-                            <p>Mennyi kell:{{$ingredient->pivot->ingredient_quantity}}</p>
-                            <p>Mennyibe kerül ez az alapanyag: {{$ingredient->pivot->ingredient_price}}</p>
+                            <p>Mennyi kell: {{$ingredient->pivot->ingredient_quantity}} egység</p>
+                            <p>Mennyibe kerül ennyi egység alapanyag: {{$ingredient->pivot->ingredient_price}} Ft</p>
                         @endforeach
                         <hr>
                     @endforeach

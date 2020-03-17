@@ -21,7 +21,7 @@ class RequiredIngredientsSeeder extends Seeder
 
         DB::table('required_ingredients')->insert([
             'ingredient_id' => 2,
-            'ingredient_quantity' => 1,
+            'ingredient_quantity' => 3,
             'cake_id' => 1,
             'ingredient_price' => 63,
         ]);
