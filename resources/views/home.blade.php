@@ -21,10 +21,13 @@
                 <div class="card-header">Cake</div>
                 <div class="card-body">
                     @foreach($cakes as $cake)
-                        {{$cake->name}}
+                        Torta neve: <h3>{{ $cake->name }}</h3>
+
                         @foreach($cake->required_ingredients as $ingredient)
-                            <p>{{$ingredient->name}} - egys: {{$ingredient->unit_price}} Ft</p>
-                            @endforeach
+                            <p>Alapanyag: {{$ingredient->name}}</p>
+                            <p>Mennyi kell:{{$ingredient->pivot->ingredient_quantity}}</p>
+                            <p>Mennyibe kerül ez az alapanyag: {{$ingredient->pivot->ingredient_price}}</p>
+                        @endforeach
                         <hr>
                     @endforeach
                 </div>
