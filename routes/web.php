@@ -18,8 +18,13 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+
+//Views
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
-Route::get('/cakelist', 'CakeController@index')->name('cakelist')->middleware('auth');
+Route::get('/cakes', 'CakeController@index')->name('cakes')->middleware('auth');
+
+//API for Cakes
+Route::get('/cakelist', 'CakeController@getAllCakesData')->name('cakelist')->middleware('auth');
 
 Auth::routes();
 

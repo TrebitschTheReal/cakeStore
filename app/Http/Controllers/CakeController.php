@@ -12,4 +12,11 @@ class CakeController extends Controller
 
         return view('cakes/cakeList', compact('cakes'));
     }
+
+    public function getAllCakesData() {
+        $cakes = App\Cake::all();
+
+        return $cakes;
+        //return response()->json(App\Cake::all()->toArray());
+    }
 }

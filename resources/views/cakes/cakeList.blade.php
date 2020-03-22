@@ -21,4 +21,5 @@
             </div>
         </div>
     </div>
+    <cake-list></cake-list>
 @endsection
