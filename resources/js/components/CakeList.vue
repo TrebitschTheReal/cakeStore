@@ -1,21 +1,26 @@
 <template>
     <div class="container">
         <div class="row justify-content-center">
-            <div class="col-md-8">
-                <div class="card">
-                    <div class="card-header">Cakes</div>
 
-                    <div v-if="showList" class="card-body" v-model="cakes">{{ cakes }}</div>
-
-                    <div v-else class="my-3 d-flex justify-content-center">
-                        <div class="spinner-border" role="status">
-                            <span class="sr-only">Loading...</span>
+            <template v-if="showList">
+                <div class="m-2 card" v-for="cake in cakes" :key="cake.id">
+                    <div class="card-header"><span>{{cake.name}}</span></div>
+                    <div class="card-body">
+                        <div v-for="ingredient in cake.required_ingredients">
+                            Hozzávalók:
+                            <p>{{ingredient}}</p>
                         </div>
                     </div>
+                </div>
+            </template>
 
+            <div v-else class="my-3 d-flex justify-content-center">
+                <div class="spinner-border" role="status">
+                    <span class="sr-only">Loading...</span>
                 </div>
             </div>
         </div>
+
     </div>
 </template>
 
@@ -26,7 +31,7 @@
         },
 
         mounted() {
-            this.getAllCakes();
+            this.fetchCakes();
         },
 
         data() {
@@ -37,13 +42,14 @@
         },
 
         methods: {
-            getAllCakes() {
+            fetchCakes() {
                 this.showList = false;
                 console.log(this.cakesTest);
                 axios.get('/cakelist')
                     .then((response) => {
                         this.cakes = response.data;
                         this.showList = true;
+                        console.log(this.cakes);
                     })
                     .catch((error) => {
                         console.log(error);

@@ -1929,10 +1929,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {},
   mounted: function mounted() {
-    this.getAllCakes();
+    this.fetchCakes();
   },
   data: function data() {
     return {
@@ -1941,7 +1946,7 @@ __webpack_require__.r(__webpack_exports__);
     };
   },
   methods: {
-    getAllCakes: function getAllCakes() {
+    fetchCakes: function fetchCakes() {
       var _this = this;
 
       this.showList = false;
@@ -1949,6 +1954,7 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/cakelist').then(function (response) {
         _this.cakes = response.data;
         _this.showList = true;
+        console.log(_this.cakes);
       })["catch"](function (error) {
         console.log(error);
       });
@@ -37362,32 +37368,38 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
-    _c("div", { staticClass: "row justify-content-center" }, [
-      _c("div", { staticClass: "col-md-8" }, [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [_vm._v("Cakes")]),
-          _vm._v(" "),
-          _vm.showList
-            ? _c(
-                "div",
-                {
-                  staticClass: "card-body",
-                  model: {
-                    value: _vm.cakes,
-                    callback: function($$v) {
-                      _vm.cakes = $$v
-                    },
-                    expression: "cakes"
-                  }
-                },
-                [_vm._v(_vm._s(_vm.cakes))]
-              )
-            : _c("div", { staticClass: "my-3 d-flex justify-content-center" }, [
-                _vm._m(0)
+    _c(
+      "div",
+      { staticClass: "row justify-content-center" },
+      [
+        _vm.showList
+          ? _vm._l(_vm.cakes, function(cake) {
+              return _c("div", { key: cake.id, staticClass: "m-2 card" }, [
+                _c("div", { staticClass: "card-header" }, [
+                  _c("span", [_vm._v(_vm._s(cake.name))])
+                ]),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "card-body" },
+                  _vm._l(cake.required_ingredients, function(ingredient) {
+                    return _c("div", [
+                      _vm._v(
+                        "\n                        Hozzávalók:\n                        "
+                      ),
+                      _c("p", [_vm._v(_vm._s(ingredient))])
+                    ])
+                  }),
+                  0
+                )
               ])
-        ])
-      ])
-    ])
+            })
+          : _c("div", { staticClass: "my-3 d-flex justify-content-center" }, [
+              _vm._m(0)
+            ])
+      ],
+      2
+    )
   ])
 }
 var staticRenderFns = [

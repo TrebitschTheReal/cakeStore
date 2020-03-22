@@ -10,7 +10,7 @@ class CakeController extends Controller
     public function index() {
         $cakes = App\Cake::all();
 
-        return view('cakes/cakeList', compact('cakes'));
+        return view('cakes/cakeList');
     }
 
     public function getAllCakesData() {
