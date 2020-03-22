@@ -7,9 +7,9 @@ use App;
 
 class CakeController extends Controller
 {
-    public function getAllCakes() {
+    public function index() {
         $cakes = App\Cake::all();
 
-        return view('home', compact('cakes'));
+        return view('cakes/cakeList', compact('cakes'));
     }
 }
