@@ -4,10 +4,7 @@
             <div class="col-md-8">
                 <div class="card">
                     <div class="card-header">Example Component</div>
-
-                    <div class="card-body">
-                        {{cakes}}
-                    </div>
+                    <div class="card-body" v-model="cakes">{{ cakes }}</div>
                 </div>
             </div>
         </div>
@@ -17,7 +14,7 @@
 <script>
     export default {
         created() {
-            
+
         },
 
         mounted() {
@@ -32,10 +29,10 @@
 
         methods: {
             getAllCakes() {
+                console.log(this.cakesTest);
                 axios.get('/cakelist')
                     .then((response) => {
-                        self.cakes = response.data;
-                        console.log(response.data);
+                        this.cakes = response.data;
                     })
                     .catch((error) => {
                         console.log(error);

@@ -1921,9 +1921,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {},
   mounted: function mounted() {
@@ -1936,9 +1933,11 @@ __webpack_require__.r(__webpack_exports__);
   },
   methods: {
     getAllCakes: function getAllCakes() {
+      var _this = this;
+
+      console.log(this.cakesTest);
       axios.get('/cakelist').then(function (response) {
-        self.cakes = response.data;
-        console.log(response.data);
+        _this.cakes = response.data;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -37359,13 +37358,20 @@ var render = function() {
             _vm._v("Example Component")
           ]),
           _vm._v(" "),
-          _c("div", { staticClass: "card-body" }, [
-            _vm._v(
-              "\n                    " +
-                _vm._s(_vm.cakes) +
-                "\n                "
-            )
-          ])
+          _c(
+            "div",
+            {
+              staticClass: "card-body",
+              model: {
+                value: _vm.cakes,
+                callback: function($$v) {
+                  _vm.cakes = $$v
+                },
+                expression: "cakes"
+              }
+            },
+            [_vm._v(_vm._s(_vm.cakes))]
+          )
         ])
       ])
     ])
