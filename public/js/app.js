@@ -1921,6 +1921,14 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {},
   mounted: function mounted() {
@@ -1928,16 +1936,19 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      cakes: null
+      cakes: null,
+      showList: false
     };
   },
   methods: {
     getAllCakes: function getAllCakes() {
       var _this = this;
 
+      this.showList = false;
       console.log(this.cakesTest);
       axios.get('/cakelist').then(function (response) {
         _this.cakes = response.data;
+        _this.showList = true;
       })["catch"](function (error) {
         console.log(error);
       });
@@ -37354,30 +37365,43 @@ var render = function() {
     _c("div", { staticClass: "row justify-content-center" }, [
       _c("div", { staticClass: "col-md-8" }, [
         _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _vm._v("Example Component")
-          ]),
+          _c("div", { staticClass: "card-header" }, [_vm._v("Cakes")]),
           _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "card-body",
-              model: {
-                value: _vm.cakes,
-                callback: function($$v) {
-                  _vm.cakes = $$v
+          _vm.showList
+            ? _c(
+                "div",
+                {
+                  staticClass: "card-body",
+                  model: {
+                    value: _vm.cakes,
+                    callback: function($$v) {
+                      _vm.cakes = $$v
+                    },
+                    expression: "cakes"
+                  }
                 },
-                expression: "cakes"
-              }
-            },
-            [_vm._v(_vm._s(_vm.cakes))]
-          )
+                [_vm._v(_vm._s(_vm.cakes))]
+              )
+            : _c("div", { staticClass: "my-3 d-flex justify-content-center" }, [
+                _vm._m(0)
+              ])
         ])
       ])
     ])
   ])
 }
-var staticRenderFns = []
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c(
+      "div",
+      { staticClass: "spinner-border", attrs: { role: "status" } },
+      [_c("span", { staticClass: "sr-only" }, [_vm._v("Loading...")])]
+    )
+  }
+]
 render._withStripped = true
 
 
