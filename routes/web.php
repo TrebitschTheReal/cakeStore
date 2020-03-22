@@ -19,4 +19,8 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
-Route::get('/home', 'CakeController@getAllCakes')->name('home');
+//Route::get('/home', 'CakeController@getAllCakes')->name('home')->middleware('auth');
+
+Auth::routes();
+
+Route::get('/home', 'HomeController@index')->name('home');
