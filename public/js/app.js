@@ -1954,7 +1954,6 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/cakelist').then(function (response) {
         _this.cakes = response.data;
         _this.showList = true;
-        console.log(_this.cakes);
       })["catch"](function (error) {
         console.log(error);
       });
@@ -37382,15 +37381,22 @@ var render = function() {
                 _c(
                   "div",
                   { staticClass: "card-body" },
-                  _vm._l(cake.required_ingredients, function(ingredient) {
-                    return _c("div", [
-                      _vm._v(
-                        "\n                        Hozzávalók:\n                        "
-                      ),
-                      _c("p", [_vm._v(_vm._s(ingredient))])
-                    ])
-                  }),
-                  0
+                  [
+                    _c("p", [_vm._v("Hozzávalók:")]),
+                    _vm._v(" "),
+                    _vm._l(cake.required_ingredients, function(ingredient) {
+                      return _c("div", [
+                        _c("p", [
+                          _vm._v(
+                            _vm._s(ingredient.pivot.ingredient_quantity) +
+                              " egység " +
+                              _vm._s(ingredient.name)
+                          )
+                        ])
+                      ])
+                    })
+                  ],
+                  2
                 )
               ])
             })

@@ -15,8 +15,11 @@ class CakeController extends Controller
 
     public function getAllCakesData() {
         $cakes = App\Cake::all();
+        $cakes = App\Cake::with('required_ingredients')->get();
 
-        return $cakes;
+        //return $cakes;
         //return response()->json(App\Cake::all()->toArray());
+
+        return response()->json($cakes);
     }
 }

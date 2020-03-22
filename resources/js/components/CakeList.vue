@@ -6,9 +6,9 @@
                 <div class="m-2 card" v-for="cake in cakes" :key="cake.id">
                     <div class="card-header"><span>{{cake.name}}</span></div>
                     <div class="card-body">
+                        <p>Hozzávalók:</p>
                         <div v-for="ingredient in cake.required_ingredients">
-                            Hozzávalók:
-                            <p>{{ingredient}}</p>
+                            <p>{{ingredient.pivot.ingredient_quantity}} egység {{ingredient.name}}</p>
                         </div>
                     </div>
                 </div>
@@ -49,7 +49,6 @@
                     .then((response) => {
                         this.cakes = response.data;
                         this.showList = true;
-                        console.log(this.cakes);
                     })
                     .catch((error) => {
                         console.log(error);
