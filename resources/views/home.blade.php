@@ -29,7 +29,6 @@
         @endforeach
     @endforeach--}}
 
-    {{$cake->required_ingredients[0]->pivot}}
 
 </div>
 @endsection

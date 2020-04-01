@@ -1942,7 +1942,6 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
-      recipes: {},
       cakes: null,
       showList: false,
       actualCakeIngredientsSumPrice: null
@@ -1955,18 +1954,11 @@ __webpack_require__.r(__webpack_exports__);
       this.showList = false;
       console.log(this.cakesTest);
       axios.get('/cakelist').then(function (response) {
+        console.log(response.data);
         _this.cakes = response.data;
         _this.showList = true;
-
-        _this.generateRecipesFromResponseData(response.data);
       })["catch"](function (error) {
         console.log(error);
-      });
-    },
-    generateRecipesFromResponseData: function generateRecipesFromResponseData(responseData) {
-      $.each(responseData, function (key, cake) {
-        this.recipes.cakeName = cake.name;
-        console.log(this.recipes.cakeName);
       });
     }
   }
@@ -37413,7 +37405,11 @@ var render = function() {
                     }),
                     _vm._v(" "),
                     _c("p", { staticClass: "font-weight-bold" }, [
-                      _vm._v("Alapanyagok ára összesen: " + _vm._s())
+                      _vm._v(
+                        "Alapanyagok ára összesen: " +
+                          _vm._s(cake.ingredients_price_sum) +
+                          " Ft"
+                      )
                     ])
                   ],
                   2
