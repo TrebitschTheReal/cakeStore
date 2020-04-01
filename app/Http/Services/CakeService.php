@@ -15,9 +15,10 @@ class CakeService
     public function generateSumIngredientsPriceForAllCakes($cakes) {
 
         foreach ($cakes as $cake) {
-/*            $cake->setingredients_price_sum(DB::table('required_ingredients')->where('cake_id', $cake->id)->sum('ingredient_price'));*/
 
-            $cake->ingredients_price_sum = DB::table('required_ingredients')->where('cake_id', $cake->id)->sum('ingredient_price');
+//          $cake->ingredients_price_sum = DB::table('required_ingredients')->where('cake_id', $cake->id)->sum('ingredient_price');
+
+            $cake->ingredients_price_sum = $cake->required_ingredients()->where('cake_id', $cake->id)->sum('ingredient_price');
 
             $cake->save();
         }

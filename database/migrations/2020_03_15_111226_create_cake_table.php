@@ -16,13 +16,13 @@ class CreateCakeTable extends Migration
         Schema::create('cakes', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 60);
-            $table->mediumText('desc');
-            $table->mediumInteger('ingredients_price_sum');
-            $table->mediumInteger('work_hours');
-            $table->mediumInteger('work_price');
-            $table->tinyInteger('tax');
-            $table->mediumInteger('selling_price');
-            $table->mediumInteger('profit');
+            $table->mediumText('desc')->nullable();
+            $table->mediumInteger('ingredients_price_sum')->nullable();
+            $table->mediumInteger('work_hours')->nullable();
+            $table->mediumInteger('work_price')->nullable();
+            $table->tinyInteger('tax')->nullable();
+            $table->mediumInteger('selling_price')->nullable();
+            $table->mediumInteger('profit')->nullable();
             $table->timestamps();
         });
     }

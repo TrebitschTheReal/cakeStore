@@ -18,9 +18,4 @@ class Cake extends Model
             ->withPivot(['ingredient_quantity', 'ingredient_price']);
     }
 
-
-
-
-
-
 }
