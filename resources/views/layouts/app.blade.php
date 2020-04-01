@@ -56,7 +56,7 @@
                             @endif
                         @else
                             <li class="nav-item">
-                                <a href="{{route('cakes')}}" class="nav-link">Torta lista</a>
+                                <a href="{{route('cakerecipes')}}" class="nav-link">Torta receptek</a>
                             </li>
                             <li class="nav-item">
                                 <a href="#" class="nav-link">Torta hozzáadása</a>

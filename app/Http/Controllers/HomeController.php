@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App;
+use App\Cake;
 
 class HomeController extends Controller
 {
@@ -15,8 +15,8 @@ class HomeController extends Controller
 
     public function index()
     {
-        $cakes = App\Cake::all();
+        $cake = Cake::where('id', 2)->first();
 
-        return view('home', compact('cakes'));
+        return view('home', compact('cake'));
     }
 }

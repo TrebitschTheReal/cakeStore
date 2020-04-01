@@ -1934,6 +1934,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {},
   mounted: function mounted() {
@@ -1941,8 +1942,10 @@ __webpack_require__.r(__webpack_exports__);
   },
   data: function data() {
     return {
+      recipes: {},
       cakes: null,
-      showList: false
+      showList: false,
+      actualCakeIngredientsSumPrice: null
     };
   },
   methods: {
@@ -1954,8 +1957,16 @@ __webpack_require__.r(__webpack_exports__);
       axios.get('/cakelist').then(function (response) {
         _this.cakes = response.data;
         _this.showList = true;
+
+        _this.generateRecipesFromResponseData(response.data);
       })["catch"](function (error) {
         console.log(error);
+      });
+    },
+    generateRecipesFromResponseData: function generateRecipesFromResponseData(responseData) {
+      $.each(responseData, function (key, cake) {
+        this.recipes.cakeName = cake.name;
+        console.log(this.recipes.cakeName);
       });
     }
   }
@@ -37375,14 +37386,16 @@ var render = function() {
           ? _vm._l(_vm.cakes, function(cake) {
               return _c("div", { key: cake.id, staticClass: "m-2 card" }, [
                 _c("div", { staticClass: "card-header" }, [
-                  _c("span", [_vm._v(_vm._s(cake.name))])
+                  _c("span", { staticClass: "h5" }, [_vm._v(_vm._s(cake.name))])
                 ]),
                 _vm._v(" "),
                 _c(
                   "div",
                   { staticClass: "card-body" },
                   [
-                    _c("p", [_vm._v("Hozzávalók:")]),
+                    _c("p", { staticClass: "font-weight-bold" }, [
+                      _vm._v("Hozzávalók:")
+                    ]),
                     _vm._v(" "),
                     _vm._l(cake.required_ingredients, function(ingredient) {
                       return _c("div", [
@@ -37390,11 +37403,18 @@ var render = function() {
                           _vm._v(
                             _vm._s(ingredient.pivot.ingredient_quantity) +
                               " egység " +
-                              _vm._s(ingredient.name)
+                              _vm._s(ingredient.name) +
+                              " - " +
+                              _vm._s(ingredient.pivot.ingredient_price) +
+                              " Ft"
                           )
                         ])
                       ])
-                    })
+                    }),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "font-weight-bold" }, [
+                      _vm._v("Alapanyagok ára összesen: " + _vm._s())
+                    ])
                   ],
                   2
                 )

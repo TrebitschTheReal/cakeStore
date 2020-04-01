@@ -3,19 +3,19 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App;
+use App\Cake;
 
 class CakeController extends Controller
 {
     public function index() {
-        $cakes = App\Cake::all();
+        $cakes = Cake::all();
 
-        return view('cakes/cakeList');
+        return view('cakes/cakeRecipeList');
     }
 
-    public function getAllCakesData() {
-        $cakes = App\Cake::all();
-        $cakes = App\Cake::with('required_ingredients')->get();
+    public function getAllCakeRecipes() {
+        $cakes = Cake::all();
+        $cakes = Cake::with('required_ingredients')->get();
 
         //return $cakes;
         //return response()->json(App\Cake::all()->toArray());

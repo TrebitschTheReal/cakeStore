@@ -16,9 +16,9 @@ class CreateRequiredIngredientsTable extends Migration
         Schema::create('required_ingredients', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->bigInteger('ingredient_id');
-            $table->mediumInteger('ingredient_quantity');
+            $table->mediumInteger('ingredient_quantity')->nullable();
             $table->bigInteger('cake_id');
-            $table->mediumInteger('ingredient_price');
+            $table->mediumInteger('ingredient_price')->nullable();
 
             $table->foreign('ingredient_id')
                 ->references('id')

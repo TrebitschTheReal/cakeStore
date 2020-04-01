@@ -21,10 +21,10 @@ Auth::routes();
 
 //Views
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
-Route::get('/cakes', 'CakeController@index')->name('cakes')->middleware('auth');
+Route::get('/cakerecipes', 'CakeController@index')->name('cakerecipes')->middleware('auth');
 
-//API for Cakes
-Route::get('/cakelist', 'CakeController@getAllCakesData')->name('cakelist')->middleware('auth');
+//API for cake recipes
+Route::get('/cakelist', 'CakeController@getAllCakeRecipes')->name('cakelist')->middleware('auth');
 
 Auth::routes();
 
