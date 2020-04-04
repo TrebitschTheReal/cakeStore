@@ -2064,6 +2064,7 @@ __webpack_require__.r(__webpack_exports__);
       //stepOne = új recept regisztrálása
       //stepTwo = alapanyag hozzárendelés
       recipeSteps: {
+        //TODO: in production ezeket beállítani normálisan
         stepOne: false,
         stepTwo: true
       },
