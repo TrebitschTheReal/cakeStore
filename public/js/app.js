@@ -2012,6 +2012,38 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {},
   name: "CreateCakeRecipe",
@@ -2022,7 +2054,8 @@ __webpack_require__.r(__webpack_exports__);
         stepTwo: false
       },
       recipeName: '',
-      serverResponseData: null
+      serverResponseData: null,
+      errors: []
     };
   },
   methods: {
@@ -2034,11 +2067,16 @@ __webpack_require__.r(__webpack_exports__);
         axios.post('/registernewrecipe', {
           recipeName: this.recipeName
         }).then(function (response) {
-          _this.validateServerResponse(response.data);
+          _this.validateServerResponseOnSuccess();
 
           console.log(response);
         })["catch"](function (error) {
+          _this.validateServerResponseOnFail(error.response.status);
+
           console.log(error);
+          console.log('Backend error: ', error.response.data);
+          console.log('Statuscode: ', error.response.status);
+          console.log('Response headers: ', error.response.headers);
         });
       } else {
         alert('Legalább 3 karakter!');
@@ -2047,27 +2085,34 @@ __webpack_require__.r(__webpack_exports__);
     validateNewRecipeName: function validateNewRecipeName() {
       var validationState = false;
 
-      if (this.recipeName.length < 3) {
+      if (this.recipeName.length < 1) {
         return validationState;
       }
 
       validationState = true;
       return validationState;
     },
-    validateServerResponse: function validateServerResponse(responseData) {
+    validateNewRecipeContent: function validateNewRecipeContent() {},
+    validateServerResponseOnSuccess: function validateServerResponseOnSuccess() {
       this.handleSteps('fill');
     },
-    validateNewRecipeContent: function validateNewRecipeContent() {},
+    validateServerResponseOnFail: function validateServerResponseOnFail(statuscode) {
+      if (statuscode === 409) {
+        console.log('Error: Már létezik!');
+      } else if (statuscode === 406) {
+        console.log('Error: Nem megfelelő név!');
+      }
+
+      this.handleSteps('register');
+    },
     handleSteps: function handleSteps(step) {
       if (step === 'register') {
         this.recipeSteps.stepOne = true;
-        this.recipeSteps.stepOne = false;
       } else if (step === 'pending') {
         this.recipeSteps.stepOne = false;
         this.recipeSteps.stepOne = false;
       } else if (step === 'fill') {
-        this.recipeSteps.stepOne = false;
-        this.recipeSteps.stepOne = true;
+        this.recipeSteps.stepTwo = true;
       }
     }
   }
@@ -37551,10 +37596,10 @@ render._withStripped = true
 
 /***/ }),
 
-/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CreateCakeRecipe.vue?vue&type=template&id=0629656d&":
-/*!*******************************************************************************************************************************************************************************************************************!*\
-  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CreateCakeRecipe.vue?vue&type=template&id=0629656d& ***!
-  \*******************************************************************************************************************************************************************************************************************/
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CreateCakeRecipe.vue?vue&type=template&id=0629656d&scoped=true&":
+/*!*******************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/js/components/CreateCakeRecipe.vue?vue&type=template&id=0629656d&scoped=true& ***!
+  \*******************************************************************************************************************************************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
@@ -37612,7 +37657,7 @@ var render = function() {
                   _c(
                     "button",
                     {
-                      staticClass: "col btn btn-success",
+                      staticClass: "col btn btn-primary",
                       on: { click: _vm.createNewRecipe }
                     },
                     [_vm._v("Recept létrehozása")]
@@ -37620,7 +37665,9 @@ var render = function() {
                 ])
               : _vm.recipeSteps.stepTwo
               ? _c("div", { staticClass: "col col-6-lg col-2-xs" }, [
-                  _c("div", { staticClass: "form-group" }),
+                  _vm._m(1),
+                  _vm._v(" "),
+                  _vm._m(2),
                   _vm._v(" "),
                   _c(
                     "button",
@@ -37631,7 +37678,7 @@ var render = function() {
                     [_vm._v("Recept feltöltése")]
                   )
                 ])
-              : _c("div", { staticClass: "col col-6-lg col-2-xs" }, [_vm._m(1)])
+              : _c("div", { staticClass: "col col-6-lg col-2-xs" }, [_vm._m(3)])
           ])
         ])
       ])
@@ -37645,6 +37692,114 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "card-header" }, [
       _c("h2", [_vm._v("Recept Feltöltése")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col col-6-lg col-2-xs" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "actualElState" } }, [
+          _vm._v("Aktuális ELMŰ állás")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control",
+          attrs: {
+            type: "number",
+            id: "actualElState",
+            "aria-describedby": "emailHelp",
+            placeholder: ""
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "actualGasState" } }, [
+          _vm._v("Aktuális Gáz állás")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control",
+          attrs: {
+            type: "number",
+            id: "actualGasState",
+            "aria-describedby": "emmarchElStateailHelp",
+            placeholder: ""
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "actualWaterCanState" } }, [
+          _vm._v("Aktuális Víz állás")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control",
+          attrs: {
+            type: "number",
+            id: "actualWaterCanState",
+            "aria-describedby": "emailHelp",
+            placeholder: ""
+          }
+        })
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col col-6-lg col-2-xs" }, [
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "actualElState" } }, [
+          _vm._v("Márciusi ELMŰ állás")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control",
+          attrs: {
+            type: "number",
+            id: "marchElState",
+            "aria-describedby": "emailHelp",
+            placeholder: ""
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "actualGasState" } }, [
+          _vm._v("Márciusi Gáz állás")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control",
+          attrs: {
+            type: "number",
+            id: "marchGasState",
+            "aria-describedby": "emailHelp",
+            placeholder: ""
+          }
+        })
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "form-group" }, [
+        _c("label", { attrs: { for: "actualWaterCanState" } }, [
+          _vm._v("Márciusi Víz állás")
+        ]),
+        _vm._v(" "),
+        _c("input", {
+          staticClass: "form-control",
+          attrs: {
+            type: "number",
+            id: "marchWaterCanState",
+            "aria-describedby": "emailHelp",
+            placeholder: ""
+          }
+        })
+      ])
     ])
   },
   function() {
@@ -50031,7 +50186,7 @@ __webpack_require__.r(__webpack_exports__);
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _CreateCakeRecipe_vue_vue_type_template_id_0629656d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateCakeRecipe.vue?vue&type=template&id=0629656d& */ "./resources/js/components/CreateCakeRecipe.vue?vue&type=template&id=0629656d&");
+/* harmony import */ var _CreateCakeRecipe_vue_vue_type_template_id_0629656d_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateCakeRecipe.vue?vue&type=template&id=0629656d&scoped=true& */ "./resources/js/components/CreateCakeRecipe.vue?vue&type=template&id=0629656d&scoped=true&");
 /* harmony import */ var _CreateCakeRecipe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateCakeRecipe.vue?vue&type=script&lang=js& */ "./resources/js/components/CreateCakeRecipe.vue?vue&type=script&lang=js&");
 /* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
@@ -50043,11 +50198,11 @@ __webpack_require__.r(__webpack_exports__);
 
 var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
   _CreateCakeRecipe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
-  _CreateCakeRecipe_vue_vue_type_template_id_0629656d___WEBPACK_IMPORTED_MODULE_0__["render"],
-  _CreateCakeRecipe_vue_vue_type_template_id_0629656d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  _CreateCakeRecipe_vue_vue_type_template_id_0629656d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _CreateCakeRecipe_vue_vue_type_template_id_0629656d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
   false,
   null,
-  null,
+  "0629656d",
   null
   
 )
@@ -50073,19 +50228,19 @@ __webpack_require__.r(__webpack_exports__);
 
 /***/ }),
 
-/***/ "./resources/js/components/CreateCakeRecipe.vue?vue&type=template&id=0629656d&":
-/*!*************************************************************************************!*\
-  !*** ./resources/js/components/CreateCakeRecipe.vue?vue&type=template&id=0629656d& ***!
-  \*************************************************************************************/
+/***/ "./resources/js/components/CreateCakeRecipe.vue?vue&type=template&id=0629656d&scoped=true&":
+/*!*************************************************************************************************!*\
+  !*** ./resources/js/components/CreateCakeRecipe.vue?vue&type=template&id=0629656d&scoped=true& ***!
+  \*************************************************************************************************/
 /*! exports provided: render, staticRenderFns */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
-/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateCakeRecipe_vue_vue_type_template_id_0629656d___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./CreateCakeRecipe.vue?vue&type=template&id=0629656d& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CreateCakeRecipe.vue?vue&type=template&id=0629656d&");
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateCakeRecipe_vue_vue_type_template_id_0629656d___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateCakeRecipe_vue_vue_type_template_id_0629656d_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./CreateCakeRecipe.vue?vue&type=template&id=0629656d&scoped=true& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/js/components/CreateCakeRecipe.vue?vue&type=template&id=0629656d&scoped=true&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateCakeRecipe_vue_vue_type_template_id_0629656d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
-/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateCakeRecipe_vue_vue_type_template_id_0629656d___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_CreateCakeRecipe_vue_vue_type_template_id_0629656d_scoped_true___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 

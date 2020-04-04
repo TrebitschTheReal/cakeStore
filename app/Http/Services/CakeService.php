@@ -25,7 +25,25 @@ class CakeService
     }
 
     public function validateNewCakeNameForRegister($recipeName) {
-       if(strlen($recipeName) > 2) {
+       if(!$this->checkInputLength($recipeName)) {
+          return 406;
+       }
+       else if(!$this->checkIfRecipeNameAlreadyExists($recipeName)) {
+          return 409;
+       }
+
+       return 202;
+    }
+
+    private function checkInputLength($recipeName) {
+       if(strlen($recipeName) > 3) {
+          return true;
+       }
+       return false;
+    }
+
+    private function checkIfRecipeNameAlreadyExists($recipeName) {
+       if(Cake::where('name', '=', $recipeName)->first() === null) {
           return true;
        }
        return false;
