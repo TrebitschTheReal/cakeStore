@@ -2039,14 +2039,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {},
   name: "CreateCakeRecipe",
@@ -37631,17 +37623,17 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row" }, [
-      _c("div", { staticClass: "mx-auto card" }, [
-        _c("div", { staticClass: "card-header" }, [
-          _c("h2", { staticClass: "text-center" }, [
-            _vm._v(_vm._s(_vm.newRecipe.name))
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "card-body" }, [
-          _c("div", { staticClass: "row" }, [
-            _vm.recipeSteps.stepOne
-              ? _c("div", { staticClass: "col col-6-lg col-2-xs" }, [
+      _vm.recipeSteps.stepOne
+        ? _c("div", { staticClass: "mx-auto card" }, [
+            _c("div", { staticClass: "card-header" }, [
+              _c("h2", { staticClass: "text-center" }, [
+                _vm._v(_vm._s(_vm.newRecipe.name))
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col col-6-lg col-2-xs" }, [
                   _c("div", { staticClass: "form-group" }, [
                     _c("label", { attrs: { for: "recipe-name" } }, [
                       _vm._v("Recept neve:")
@@ -37685,22 +37677,23 @@ var render = function() {
                     [_vm._v("Recept létrehozása")]
                   )
                 ])
-              : _vm.recipeSteps.stepTwo
-              ? _c("div", { staticClass: "col col-6-lg col-2-xs" }, [
+              ])
+            ])
+          ])
+        : _vm.recipeSteps.stepTwo
+        ? _c("div", { staticClass: "mx-auto card" }, [
+            _c("div", { staticClass: "card-header" }, [
+              _c("h2", { staticClass: "text-center" }, [
+                _vm._v(_vm._s(_vm.newRecipe.name))
+              ])
+            ]),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-body" }, [
+              _c("div", { staticClass: "row" }, [
+                _c("div", { staticClass: "col col-6-lg col-2-xs" }, [
                   _vm._m(0),
                   _vm._v(" "),
-                  _vm._m(1),
-                  _vm._v(" "),
                   _c("div", { staticClass: "row" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "col btn btn-info text-light m-2",
-                        on: { click: _vm.createNewRecipe }
-                      },
-                      [_vm._v("Alapanyagok frissítése")]
-                    ),
-                    _vm._v(" "),
                     _c(
                       "button",
                       {
@@ -37711,10 +37704,10 @@ var render = function() {
                     )
                   ])
                 ])
-              : _c("div", { staticClass: "col col-6-lg col-2-xs" }, [_vm._m(2)])
+              ])
+            ])
           ])
-        ])
-      ])
+        : _c("div", { staticClass: "col col-6-lg col-2-xs" }, [_vm._m(1)])
     ])
   ])
 }
@@ -37725,105 +37718,28 @@ var staticRenderFns = [
     var _c = _vm._self._c || _h
     return _c("div", { staticClass: "col col-6-lg col-2-xs" }, [
       _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "actualElState" } }, [
-          _vm._v("Aktuális ELMŰ állás")
+        _c("label", { attrs: { for: "actualIngredient" } }, [
+          _vm._v("Új alapanyag hozzáadása")
         ]),
         _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: {
-            type: "number",
-            id: "actualElState",
-            "aria-describedby": "emailHelp",
-            placeholder: ""
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "actualGasState" } }, [
-          _vm._v("Aktuális Gáz állás")
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: {
-            type: "number",
-            id: "actualGasState",
-            "aria-describedby": "emmarchElStateailHelp",
-            placeholder: ""
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "actualWaterCanState" } }, [
-          _vm._v("Aktuális Víz állás")
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: {
-            type: "number",
-            id: "actualWaterCanState",
-            "aria-describedby": "emailHelp",
-            placeholder: ""
-          }
-        })
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col col-6-lg col-2-xs" }, [
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "actualElState" } }, [
-          _vm._v("Márciusi ELMŰ állás")
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: {
-            type: "number",
-            id: "marchElState",
-            "aria-describedby": "emailHelp",
-            placeholder: ""
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "actualGasState" } }, [
-          _vm._v("Márciusi Gáz állás")
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: {
-            type: "number",
-            id: "marchGasState",
-            "aria-describedby": "emailHelp",
-            placeholder: ""
-          }
-        })
-      ]),
-      _vm._v(" "),
-      _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "actualWaterCanState" } }, [
-          _vm._v("Márciusi Víz állás")
-        ]),
-        _vm._v(" "),
-        _c("input", {
-          staticClass: "form-control",
-          attrs: {
-            type: "number",
-            id: "marchWaterCanState",
-            "aria-describedby": "emailHelp",
-            placeholder: ""
-          }
-        })
+        _c(
+          "select",
+          {
+            staticClass: "form-control",
+            attrs: { id: "exampleFormControlSelect1" }
+          },
+          [
+            _c("option", [_vm._v("1")]),
+            _vm._v(" "),
+            _c("option", [_vm._v("2")]),
+            _vm._v(" "),
+            _c("option", [_vm._v("3")]),
+            _vm._v(" "),
+            _c("option", [_vm._v("4")]),
+            _vm._v(" "),
+            _c("option", [_vm._v("5")])
+          ]
+        )
       ])
     ])
   },

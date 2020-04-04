@@ -1,13 +1,15 @@
 <template>
    <div class="container">
       <div class="row">
-         <div class="mx-auto card">
+
+         <div v-if="recipeSteps.stepOne"
+              class="mx-auto card">
             <div class="card-header">
                <h2 class="text-center">{{newRecipe.name}}</h2>
             </div>
             <div class="card-body">
                <div class="row">
-                  <div v-if="recipeSteps.stepOne" class="col col-6-lg col-2-xs">
+                  <div class="col col-6-lg col-2-xs">
                      <div class="form-group">
                         <label for="recipe-name">Recept neve:</label>
                         <input required type="text" v-model="recipeName" class="form-control" id="recipe-name"
@@ -16,56 +18,46 @@
                      </div>
                      <button @click="createNewRecipe" class="col btn btn-primary">Recept létrehozása</button>
                   </div>
-                  <div v-else-if="recipeSteps.stepTwo" class="col col-6-lg col-2-xs">
+               </div>
+            </div>
+         </div>
+
+         <div v-else-if="recipeSteps.stepTwo"
+              class="mx-auto card">
+            <div class="card-header">
+               <h2 class="text-center">{{newRecipe.name}}</h2>
+            </div>
+            <div class="card-body">
+               <div class="row">
+                  <div class="col col-6-lg col-2-xs">
                      <div class="col col-6-lg col-2-xs">
                         <div class="form-group">
-                           <label for="actualElState">Aktuális ELMŰ állás</label>
-                           <input type="number" class="form-control" id="actualElState" aria-describedby="emailHelp"
-                                  placeholder="">
-                        </div>
-                        <div class="form-group">
-                           <label for="actualGasState">Aktuális Gáz állás</label>
-                           <input type="number" class="form-control" id="actualGasState" aria-describedby="emmarchElStateailHelp"
-                                  placeholder="">
-                        </div>
-                        <div class="form-group">
-                           <label for="actualWaterCanState">Aktuális Víz állás</label>
-                           <input type="number" class="form-control" id="actualWaterCanState" aria-describedby="emailHelp"
-                                  placeholder="">
-                        </div>
-                     </div>
-                     <div class="col col-6-lg col-2-xs">
-                        <div class="form-group">
-                           <label for="actualElState">Márciusi ELMŰ állás</label>
-                           <input type="number" class="form-control" id="marchElState" aria-describedby="emailHelp"
-                                  placeholder="">
-                        </div>
-                        <div class="form-group">
-                           <label for="actualGasState">Márciusi Gáz állás</label>
-                           <input type="number" class="form-control" id="marchGasState" aria-describedby="emailHelp"
-                                  placeholder="">
-                        </div>
-                        <div class="form-group">
-                           <label for="actualWaterCanState">Márciusi Víz állás</label>
-                           <input type="number" class="form-control" id="marchWaterCanState" aria-describedby="emailHelp"
-                                  placeholder="">
+                           <label for="actualIngredient">Új alapanyag hozzáadása</label>
+                           <select class="form-control" id="exampleFormControlSelect1">
+                              <option>1</option>
+                              <option>2</option>
+                              <option>3</option>
+                              <option>4</option>
+                              <option>5</option>
+                           </select>
                         </div>
                      </div>
                      <div class="row">
-                        <button @click="createNewRecipe" class="col btn btn-info text-light m-2">Alapanyagok frissítése</button>
                         <button @click="createNewRecipe" class="col btn btn-success m-2">Recept feltöltése</button>
-                     </div>
-                  </div>
-                  <div v-else class="col col-6-lg col-2-xs">
-                     <div class="my-3 d-flex justify-content-center">
-                        <div class="spinner-border" role="status">
-                           <span class="sr-only">Loading...</span>
-                        </div>
                      </div>
                   </div>
                </div>
             </div>
          </div>
+
+         <div v-else class="col col-6-lg col-2-xs">
+            <div class="my-3 d-flex justify-content-center">
+               <div class="spinner-border" role="status">
+                  <span class="sr-only">Loading...</span>
+               </div>
+            </div>
+         </div>
+
       </div>
    </div>
 </template>
