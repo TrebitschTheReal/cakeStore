@@ -13,25 +13,14 @@ class CakeController extends Controller
         return view('cakes/cakeRecipeList');
     }
 
+    public function createRecipeView() {
+       return view('cakes/createNewRecipe');
+    }
+
     public function getAllCakeRecipes() {
 
         //TODO ################ RECEPT FELTÖLTÉS -> létrehozni a feltöltés funkciót  #############################
 
-        $newCake = new Cake;
-        $newCake->name = 'Tordasi Kencefice';
-        $newCake->desc = 'Tordas sava borsa';
-
-        //először el kell menteni, hogy generálódjon neki egy ID
-        $newCake->save();
-
-        //Jöhet az alapanyagok hozzárendelése
-        $newCake->required_ingredients()->attach(4, array('ingredient_quantity' => 7, 'ingredient_price' => 87));
-        $newCake->required_ingredients()->attach(2, array('ingredient_quantity' => 5, 'ingredient_price' => 34));
-        $newCake->required_ingredients()->attach(1, array('ingredient_quantity' => 23, 'ingredient_price' => 843));
-        $newCake->required_ingredients()->attach(3, array('ingredient_quantity' => 2, 'ingredient_price' => 435));
-
-        //Az alapanyagok hozzárendelését követően kiszámoljuk, hogy mennyi az anyagköltség a tortához rendelt alapanyagok részenként sumjaiból
-        $newCake->ingredients_price_sum = $newCake->required_ingredients()->where('cake_id', $newCake->id)->sum('ingredient_price');
 
         //TODO ################ RECEPT FELTÖLTÉS -> létrehozni a feltöltés funkciót  #############################
 
@@ -45,5 +34,39 @@ class CakeController extends Controller
 
         //Elvileg ez ugyan ezt csinálja, csak a Laravel stringifyolja már az elején.
         //return response()->json($cakes);
+    }
+
+    public function registerNewRecipe(Request $request) {
+       $validationResult = 'fail';
+       $cakeService = new CakeService();
+       if($cakeService->validateNewCakeNameForRegister($request->recipeName)) {
+          $validationResult = 'success';
+          return response($validationResult);
+       } else {
+          return response($validationResult);
+       }
+
+
+
+
+/*       $newCake = new Cake;
+       $newCake->name = 'Tordasi Kencefice';
+       $newCake->desc = 'Tordas sava borsa';
+
+       //először el kell menteni, hogy generálódjon neki egy ID
+       $newCake->save();
+
+       //Jöhet az alapanyagok hozzárendelése
+       $newCake->required_ingredients()->attach(4, array('ingredient_quantity' => 7, 'ingredient_price' => 87));
+       $newCake->required_ingredients()->attach(2, array('ingredient_quantity' => 5, 'ingredient_price' => 34));
+       $newCake->required_ingredients()->attach(1, array('ingredient_quantity' => 23, 'ingredient_price' => 843));
+       $newCake->required_ingredients()->attach(3, array('ingredient_quantity' => 2, 'ingredient_price' => 435));
+
+       //Az alapanyagok hozzárendelését követően kiszámoljuk, hogy mennyi az anyagköltség a tortához rendelt alapanyagok részenként sumjaiból
+       $newCake->ingredients_price_sum = $newCake->required_ingredients()->where('cake_id', $newCake->id)->sum('ingredient_price');*/
+    }
+
+    public function fillNewlyCreatedRecipe() {
+
     }
 }

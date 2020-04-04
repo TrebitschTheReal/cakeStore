@@ -23,4 +23,11 @@ class CakeService
             $cake->save();
         }
     }
+
+    public function validateNewCakeNameForRegister($recipeName) {
+       if(strlen($recipeName) > 2) {
+          return true;
+       }
+       return false;
+    }
 }

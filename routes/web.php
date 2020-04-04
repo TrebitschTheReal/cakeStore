@@ -22,9 +22,12 @@ Auth::routes();
 //Views
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Route::get('/cakerecipes', 'CakeController@index')->name('cakerecipes')->middleware('auth');
+Route::get('/createrecipe', 'CakeController@createRecipeView')->name('createrecipe')->middleware('auth');
 
 //API for cake recipes
 Route::get('/cakelist', 'CakeController@getAllCakeRecipes')->name('cakelist')->middleware('auth');
+Route::post('/registernewrecipe', 'CakeController@registerNewRecipe')->name('registernewrecipe')->middleware('auth');
+Route::get('/fillnewlycreatedrecipe', 'CakeController@fillNewlyCreatedRecipe')->name('fillnewlycreatedrecipe')->middleware('auth');
 
 Auth::routes();
 
