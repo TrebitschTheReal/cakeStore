@@ -99,9 +99,8 @@
                   name: 'Recept Feltöltése',
                   desc: null,
                   ingredients: [
-                     {name: 'cukor', quantity: 2},
-                     {name: 'cukor', quantity: 2},
-                     {name: 'cukor', quantity: 2},
+                     {name: 'default', quantity: 0},
+                     {name: 'default', quantity: 0},
                   ]
                }
             ]
@@ -189,8 +188,8 @@
 
          addNewIngredientRow() {
             this.newRecipe[0].ingredients.push({
-               name: 'asd',
-               quantity: 32
+               name: 'default',
+               quantity: 0
             });
          },
 

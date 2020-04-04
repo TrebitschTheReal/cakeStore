@@ -2071,14 +2071,11 @@ __webpack_require__.r(__webpack_exports__);
         name: 'Recept Feltöltése',
         desc: null,
         ingredients: [{
-          name: 'cukor',
-          quantity: 2
+          name: 'default',
+          quantity: 0
         }, {
-          name: 'cukor',
-          quantity: 2
-        }, {
-          name: 'cukor',
-          quantity: 2
+          name: 'default',
+          quantity: 0
         }]
       }]
     };
@@ -2152,8 +2149,8 @@ __webpack_require__.r(__webpack_exports__);
     },
     addNewIngredientRow: function addNewIngredientRow() {
       this.newRecipe[0].ingredients.push({
-        name: 'asd',
-        quantity: 32
+        name: 'default',
+        quantity: 0
       });
     },
     removeIngredientRow: function removeIngredientRow(key) {
