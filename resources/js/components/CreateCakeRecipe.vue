@@ -5,7 +5,7 @@
          <div v-if="recipeSteps.stepOne"
               class="mx-auto card">
             <div class="card-header">
-               <h2 class="text-center">{{newRecipe.name}}</h2>
+               <h2 class="text-center">{{newRecipe}}</h2>
             </div>
             <div class="card-body">
                <div class="row">
@@ -25,35 +25,36 @@
          <div v-else-if="recipeSteps.stepTwo"
               class="mx-auto card">
             <div class="card-header">
-               <h2 class="text-center">{{newRecipe.name}}</h2>
+               <h2 class="text-center">{{newRecipe[0].name}}</h2>
             </div>
             <div class="card-body">
-               <div class="form-group">
+               <div v-for="(newIngredient, index) in newRecipe[0].ingredients" class="form-group">
                   <div class="row">
                      <div class="col col-lg-3 col-xs-12 text-center">
                         <p>Mennyiség</p>
                         <input class="form-control" type="number">
                      </div>
+                     <div class="col col-lg-2 col-xs-12 text-center">
+                        <p>Egység</p>
+                        <input disabled class="form-control" type="text" value="g">
+                     </div>
                      <div class="col col-lg-6 col-xs-12 text-center">
                         <p>Alapanyag</p>
                         <select class="form-control" id="exampleFormControlSelect1">
-                           <option>1</option>
+                           <option>Cukor</option>
                            <option>2</option>
                         </select>
                      </div>
-                     <div class="col col-lg-3 col-xs-12 text-center">
-                        <p>Egység típus</p>
-                        <input disabled class="form-control" type="text" value="dkg">
-                     </div>
-                     <div class="col col-lg-3 col-xs-12 text-center">
-                        <button class="btn btn-danger">-</button>
+                     <div class="col col-lg-1 col-xs-12 text-center">
+                        <p class="text-white">-</p>
+                        <p @click="removeIngredientRow(index)" class="btn btn-danger">-</p>
                      </div>
                   </div>
-                  <div class="col col-lg-12 col-xs-12">
-                     <div class="mt-4 mb-2 alert alert-success">
-                        <h4 class="text-left">Új alapanyag hozzáadása<span class="float-right btn btn-success">+</span>
-                        </h4>
-                     </div>
+               </div>
+               <div class="col col-lg-12 col-xs-12">
+                  <div class="mt-4 mb-2 alert alert-success">
+                     <h4 class="">Új alapanyag hozzáadása<span @click="addNewIngredientRow" class="float-right btn btn-success">+</span>
+                     </h4>
                   </div>
                </div>
             </div>
@@ -92,11 +93,18 @@
             recipeName: '',
             serverResponseData: null,
             errors: [],
-            newRecipe: {
-               id: null,
-               name: 'Recept Feltöltése',
-               desc: null,
-            }
+            newRecipe: [
+               {
+                  id: null,
+                  name: 'Recept Feltöltése',
+                  desc: null,
+                  ingredients: [
+                     {name: 'cukor', quantity: 2},
+                     {name: 'cukor', quantity: 2},
+                     {name: 'cukor', quantity: 2},
+                  ]
+               }
+            ]
          }
       },
 
@@ -177,6 +185,17 @@
 
          newRecipeNameFirstLetterToUpperCase(newRecipeName) {
             return newRecipeName.charAt(0).toUpperCase() + newRecipeName.slice(1);
+         },
+
+         addNewIngredientRow() {
+            this.newRecipe[0].ingredients.push({
+               name: 'asd',
+               quantity: 32
+            });
+         },
+
+         removeIngredientRow(key) {
+            this.newRecipe[0].ingredients.splice(key, 1);
          }
       },
    }

@@ -2053,6 +2053,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {},
   name: "CreateCakeRecipe",
@@ -2065,11 +2066,21 @@ __webpack_require__.r(__webpack_exports__);
       recipeName: '',
       serverResponseData: null,
       errors: [],
-      newRecipe: {
+      newRecipe: [{
         id: null,
         name: 'Recept Feltöltése',
-        desc: null
-      }
+        desc: null,
+        ingredients: [{
+          name: 'cukor',
+          quantity: 2
+        }, {
+          name: 'cukor',
+          quantity: 2
+        }, {
+          name: 'cukor',
+          quantity: 2
+        }]
+      }]
     };
   },
   methods: {
@@ -2138,6 +2149,15 @@ __webpack_require__.r(__webpack_exports__);
     },
     newRecipeNameFirstLetterToUpperCase: function newRecipeNameFirstLetterToUpperCase(newRecipeName) {
       return newRecipeName.charAt(0).toUpperCase() + newRecipeName.slice(1);
+    },
+    addNewIngredientRow: function addNewIngredientRow() {
+      this.newRecipe[0].ingredients.push({
+        name: 'asd',
+        quantity: 32
+      });
+    },
+    removeIngredientRow: function removeIngredientRow(key) {
+      this.newRecipe[0].ingredients.splice(key, 1);
     }
   }
 });
@@ -37641,7 +37661,7 @@ var render = function() {
         ? _c("div", { staticClass: "mx-auto card" }, [
             _c("div", { staticClass: "card-header" }, [
               _c("h2", { staticClass: "text-center" }, [
-                _vm._v(_vm._s(_vm.newRecipe.name))
+                _vm._v(_vm._s(_vm.newRecipe))
               ])
             ]),
             _vm._v(" "),
@@ -37698,11 +37718,68 @@ var render = function() {
         ? _c("div", { staticClass: "mx-auto card" }, [
             _c("div", { staticClass: "card-header" }, [
               _c("h2", { staticClass: "text-center" }, [
-                _vm._v(_vm._s(_vm.newRecipe.name))
+                _vm._v(_vm._s(_vm.newRecipe[0].name))
               ])
             ]),
             _vm._v(" "),
-            _vm._m(0),
+            _c(
+              "div",
+              { staticClass: "card-body" },
+              [
+                _vm._l(_vm.newRecipe[0].ingredients, function(
+                  newIngredient,
+                  index
+                ) {
+                  return _c("div", { staticClass: "form-group" }, [
+                    _c("div", { staticClass: "row" }, [
+                      _vm._m(0, true),
+                      _vm._v(" "),
+                      _vm._m(1, true),
+                      _vm._v(" "),
+                      _vm._m(2, true),
+                      _vm._v(" "),
+                      _c(
+                        "div",
+                        { staticClass: "col col-lg-1 col-xs-12 text-center" },
+                        [
+                          _c("p", { staticClass: "text-white" }, [_vm._v("-")]),
+                          _vm._v(" "),
+                          _c(
+                            "p",
+                            {
+                              staticClass: "btn btn-danger",
+                              on: {
+                                click: function($event) {
+                                  return _vm.removeIngredientRow(index)
+                                }
+                              }
+                            },
+                            [_vm._v("-")]
+                          )
+                        ]
+                      )
+                    ])
+                  ])
+                }),
+                _vm._v(" "),
+                _c("div", { staticClass: "col col-lg-12 col-xs-12" }, [
+                  _c("div", { staticClass: "mt-4 mb-2 alert alert-success" }, [
+                    _c("h4", {}, [
+                      _vm._v("Új alapanyag hozzáadása"),
+                      _c(
+                        "span",
+                        {
+                          staticClass: "float-right btn btn-success",
+                          on: { click: _vm.addNewIngredientRow }
+                        },
+                        [_vm._v("+")]
+                      )
+                    ])
+                  ])
+                ])
+              ],
+              2
+            ),
             _vm._v(" "),
             _c("div", { staticClass: "card-footer" }, [
               _c("div", { staticClass: "row" }, [
@@ -37717,7 +37794,7 @@ var render = function() {
               ])
             ])
           ])
-        : _c("div", { staticClass: "col col-6-lg col-2-xs" }, [_vm._m(1)])
+        : _c("div", { staticClass: "col col-6-lg col-2-xs" }, [_vm._m(3)])
     ])
   ])
 }
@@ -37726,60 +37803,44 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-body" }, [
-      _c("div", { staticClass: "form-group" }, [
-        _c("div", { staticClass: "row" }, [
-          _c("div", { staticClass: "col col-lg-3 col-xs-12 text-center" }, [
-            _c("p", [_vm._v("Mennyiség")]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { type: "number" }
-            })
-          ]),
+    return _c("div", { staticClass: "col col-lg-3 col-xs-12 text-center" }, [
+      _c("p", [_vm._v("Mennyiség")]),
+      _vm._v(" "),
+      _c("input", { staticClass: "form-control", attrs: { type: "number" } })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col col-lg-2 col-xs-12 text-center" }, [
+      _c("p", [_vm._v("Egység")]),
+      _vm._v(" "),
+      _c("input", {
+        staticClass: "form-control",
+        attrs: { disabled: "", type: "text", value: "g" }
+      })
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "col col-lg-6 col-xs-12 text-center" }, [
+      _c("p", [_vm._v("Alapanyag")]),
+      _vm._v(" "),
+      _c(
+        "select",
+        {
+          staticClass: "form-control",
+          attrs: { id: "exampleFormControlSelect1" }
+        },
+        [
+          _c("option", [_vm._v("Cukor")]),
           _vm._v(" "),
-          _c("div", { staticClass: "col col-lg-6 col-xs-12 text-center" }, [
-            _c("p", [_vm._v("Alapanyag")]),
-            _vm._v(" "),
-            _c(
-              "select",
-              {
-                staticClass: "form-control",
-                attrs: { id: "exampleFormControlSelect1" }
-              },
-              [
-                _c("option", [_vm._v("1")]),
-                _vm._v(" "),
-                _c("option", [_vm._v("2")])
-              ]
-            )
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col col-lg-3 col-xs-12 text-center" }, [
-            _c("p", [_vm._v("Egység típus")]),
-            _vm._v(" "),
-            _c("input", {
-              staticClass: "form-control",
-              attrs: { disabled: "", type: "text", value: "dkg" }
-            })
-          ]),
-          _vm._v(" "),
-          _c("div", { staticClass: "col col-lg-3 col-xs-12 text-center" }, [
-            _c("button", { staticClass: "btn btn-danger" }, [_vm._v("-")])
-          ])
-        ]),
-        _vm._v(" "),
-        _c("div", { staticClass: "col col-lg-12 col-xs-12" }, [
-          _c("div", { staticClass: "mt-4 mb-2 alert alert-success" }, [
-            _c("h4", { staticClass: "text-left" }, [
-              _vm._v("Új alapanyag hozzáadása"),
-              _c("span", { staticClass: "float-right btn btn-success" }, [
-                _vm._v("+")
-              ])
-            ])
-          ])
-        ])
-      ])
+          _c("option", [_vm._v("2")])
+        ]
+      )
     ])
   },
   function() {
