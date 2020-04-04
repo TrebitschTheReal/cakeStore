@@ -2039,14 +2039,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {},
   name: "CreateCakeRecipe",
   data: function data() {
     return {
       recipeSteps: {
-        stepOne: true,
-        stepTwo: false
+        stepOne: false,
+        stepTwo: true
       },
       recipeName: '',
       serverResponseData: null,
@@ -37688,22 +37702,18 @@ var render = function() {
               ])
             ]),
             _vm._v(" "),
-            _c("div", { staticClass: "card-body" }, [
+            _vm._m(0),
+            _vm._v(" "),
+            _c("div", { staticClass: "card-footer" }, [
               _c("div", { staticClass: "row" }, [
-                _c("div", { staticClass: "col col-6-lg col-2-xs" }, [
-                  _vm._m(0),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "row" }, [
-                    _c(
-                      "button",
-                      {
-                        staticClass: "col btn btn-success m-2",
-                        on: { click: _vm.createNewRecipe }
-                      },
-                      [_vm._v("Recept feltöltése")]
-                    )
-                  ])
-                ])
+                _c(
+                  "button",
+                  {
+                    staticClass: "col btn btn-success m-2",
+                    on: { click: _vm.createNewRecipe }
+                  },
+                  [_vm._v("Recept feltöltése")]
+                )
               ])
             ])
           ])
@@ -37716,30 +37726,59 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col col-6-lg col-2-xs" }, [
+    return _c("div", { staticClass: "card-body" }, [
       _c("div", { staticClass: "form-group" }, [
-        _c("label", { attrs: { for: "actualIngredient" } }, [
-          _vm._v("Új alapanyag hozzáadása")
+        _c("div", { staticClass: "row" }, [
+          _c("div", { staticClass: "col col-lg-3 col-xs-12 text-center" }, [
+            _c("p", [_vm._v("Mennyiség")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { type: "number" }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col col-lg-6 col-xs-12 text-center" }, [
+            _c("p", [_vm._v("Alapanyag")]),
+            _vm._v(" "),
+            _c(
+              "select",
+              {
+                staticClass: "form-control",
+                attrs: { id: "exampleFormControlSelect1" }
+              },
+              [
+                _c("option", [_vm._v("1")]),
+                _vm._v(" "),
+                _c("option", [_vm._v("2")])
+              ]
+            )
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col col-lg-3 col-xs-12 text-center" }, [
+            _c("p", [_vm._v("Egység típus")]),
+            _vm._v(" "),
+            _c("input", {
+              staticClass: "form-control",
+              attrs: { disabled: "", type: "text", value: "dkg" }
+            })
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "col col-lg-3 col-xs-12 text-center" }, [
+            _c("button", { staticClass: "btn btn-danger" }, [_vm._v("-")])
+          ])
         ]),
         _vm._v(" "),
-        _c(
-          "select",
-          {
-            staticClass: "form-control",
-            attrs: { id: "exampleFormControlSelect1" }
-          },
-          [
-            _c("option", [_vm._v("1")]),
-            _vm._v(" "),
-            _c("option", [_vm._v("2")]),
-            _vm._v(" "),
-            _c("option", [_vm._v("3")]),
-            _vm._v(" "),
-            _c("option", [_vm._v("4")]),
-            _vm._v(" "),
-            _c("option", [_vm._v("5")])
-          ]
-        )
+        _c("div", { staticClass: "col col-lg-12 col-xs-12" }, [
+          _c("div", { staticClass: "mt-4 mb-2 alert alert-success" }, [
+            _c("h4", { staticClass: "text-left" }, [
+              _vm._v("Új alapanyag hozzáadása"),
+              _c("span", { staticClass: "float-right btn btn-success" }, [
+                _vm._v("+")
+              ])
+            ])
+          ])
+        ])
       ])
     ])
   },

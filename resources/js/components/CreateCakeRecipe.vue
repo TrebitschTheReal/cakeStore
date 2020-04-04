@@ -28,24 +28,38 @@
                <h2 class="text-center">{{newRecipe.name}}</h2>
             </div>
             <div class="card-body">
-               <div class="row">
-                  <div class="col col-6-lg col-2-xs">
-                     <div class="col col-6-lg col-2-xs">
-                        <div class="form-group">
-                           <label for="actualIngredient">Új alapanyag hozzáadása</label>
-                           <select class="form-control" id="exampleFormControlSelect1">
-                              <option>1</option>
-                              <option>2</option>
-                              <option>3</option>
-                              <option>4</option>
-                              <option>5</option>
-                           </select>
-                        </div>
+               <div class="form-group">
+                  <div class="row">
+                     <div class="col col-lg-3 col-xs-12 text-center">
+                        <p>Mennyiség</p>
+                        <input class="form-control" type="number">
                      </div>
-                     <div class="row">
-                        <button @click="createNewRecipe" class="col btn btn-success m-2">Recept feltöltése</button>
+                     <div class="col col-lg-6 col-xs-12 text-center">
+                        <p>Alapanyag</p>
+                        <select class="form-control" id="exampleFormControlSelect1">
+                           <option>1</option>
+                           <option>2</option>
+                        </select>
+                     </div>
+                     <div class="col col-lg-3 col-xs-12 text-center">
+                        <p>Egység típus</p>
+                        <input disabled class="form-control" type="text" value="dkg">
+                     </div>
+                     <div class="col col-lg-3 col-xs-12 text-center">
+                        <button class="btn btn-danger">-</button>
                      </div>
                   </div>
+                  <div class="col col-lg-12 col-xs-12">
+                     <div class="mt-4 mb-2 alert alert-success">
+                        <h4 class="text-left">Új alapanyag hozzáadása<span class="float-right btn btn-success">+</span>
+                        </h4>
+                     </div>
+                  </div>
+               </div>
+            </div>
+            <div class="card-footer">
+               <div class="row">
+                  <button @click="createNewRecipe" class="col btn btn-success m-2">Recept feltöltése</button>
                </div>
             </div>
          </div>
@@ -72,8 +86,8 @@
       data() {
          return {
             recipeSteps: {
-               stepOne: true,
-               stepTwo: false,
+               stepOne: false,
+               stepTwo: true,
             },
             recipeName: '',
             serverResponseData: null,
