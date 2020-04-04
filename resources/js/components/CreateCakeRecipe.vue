@@ -5,7 +5,7 @@
          <div v-if="recipeSteps.stepOne"
               class="mx-auto card">
             <div class="card-header">
-               <h2 class="text-center">{{newRecipe}}</h2>
+               <h2 class="text-center">{{newRecipe[0].name}}</h2>
             </div>
             <div class="card-body">
                <div class="row">
@@ -32,7 +32,7 @@
                   <div class="row">
                      <div class="col col-lg-3 col-xs-12 text-center">
                         <p>Mennyiség</p>
-                        <input class="form-control" type="number">
+                        <input class="form-control" v-model="newIngredient.quantity" type="number">
                      </div>
                      <div class="col col-lg-2 col-xs-12 text-center">
                         <p>Egység</p>
@@ -40,14 +40,13 @@
                      </div>
                      <div class="col col-lg-6 col-xs-12 text-center">
                         <p>Alapanyag</p>
-                        <select class="form-control" id="exampleFormControlSelect1">
-                           <option>Cukor</option>
-                           <option>2</option>
+                        <select class="form-control" v-model="newIngredient.name" id="exampleFormControlSelect1">
+                           <option v-for="(ingredient, index) in availableIngredients">{{ingredient.name}}</option>
                         </select>
                      </div>
                      <div class="col col-lg-1 col-xs-12 text-center">
                         <p class="text-white">-</p>
-                        <p @click="removeIngredientRow(index)" class="btn btn-danger">-</p>
+                        <p @click="removeIngredientRow(newIngredient.id)" class="btn btn-danger">-</p>
                      </div>
                   </div>
                </div>
@@ -80,12 +79,15 @@
 <script>
    export default {
       mounted() {
-
+         this.fetchInredientsList()
       },
+
       name: "CreateCakeRecipe",
 
       data() {
          return {
+            //stepOne = új recept regisztrálása
+            //stepTwo = alapanyag hozzárendelés
             recipeSteps: {
                stepOne: false,
                stepTwo: true,
@@ -99,11 +101,12 @@
                   name: 'Recept Feltöltése',
                   desc: null,
                   ingredients: [
-                     {name: 'default', quantity: 0},
-                     {name: 'default', quantity: 0},
+                     {id: 0, name: 'default', quantity: 0},
+                     {id: 1, name: 'default', quantity: 0},
                   ]
                }
-            ]
+            ],
+            availableIngredients: [],
          }
       },
 
@@ -150,6 +153,7 @@
 
          validateServerResponseOnSuccess(responseData) {
             this.createNewRecipeObject(responseData);
+            this.fetchInredientsList();
             this.handleSteps('fill');
          },
 
@@ -164,6 +168,10 @@
             this.handleSteps('register');
          },
 
+         //A feltöltés lépéseit kezeli.
+         //register  -  első lépés
+         //pending   -  spinner
+         //fill      -  recept hozzárendelés
          handleSteps(step) {
             if (step === 'register') {
                this.recipeSteps.stepOne = true;
@@ -176,10 +184,8 @@
          },
 
          createNewRecipeObject(responseData) {
-            this.newRecipe.id = responseData.new_recipe_id;
-            this.newRecipe.name = this.newRecipeNameFirstLetterToUpperCase(responseData.new_recipe_name);
-            console.log(this.newRecipe.id);
-            console.log(this.newRecipe.name);
+            this.newRecipe[0].id = responseData.new_recipe_id;
+            this.newRecipe[0].name = this.newRecipeNameFirstLetterToUpperCase(responseData.new_recipe_name);
          },
 
          newRecipeNameFirstLetterToUpperCase(newRecipeName) {
@@ -187,14 +193,55 @@
          },
 
          addNewIngredientRow() {
-            this.newRecipe[0].ingredients.push({
-               name: 'default',
-               quantity: 0
-            });
+            console.log(this.newRecipe[0].ingredients);
+            let newId = 0;
+
+            if(this.newRecipe[0].ingredients.length === 0) {
+               this.newRecipe[0].ingredients.push({
+                  id: newId,
+                  name: 'default',
+                  quantity: 0
+               });
+            }
+            else {
+               let lastElement = this.newRecipe[0].ingredients.length-1;
+               newId = (this.newRecipe[0].ingredients[lastElement].id) + 1;
+
+               this.newRecipe[0].ingredients.push({
+                  id: newId,
+                  name: 'default',
+                  quantity: 0
+               });
+            }
          },
 
-         removeIngredientRow(key) {
-            this.newRecipe[0].ingredients.splice(key, 1);
+         removeIngredientRow(itemId) {
+            console.log(itemId);
+            let id = itemId;
+            let targetKey = 0;
+
+            $.each(this.newRecipe[0].ingredients, function (key, ingredient) {
+               if(ingredient.id === id) {
+                  targetKey = key;
+                  return false;
+               }
+            });
+
+            this.newRecipe[0].ingredients.splice(targetKey, 1);
+         },
+
+         fetchInredientsList() {
+            axios.get('/fetchingredients')
+               .then((response) => {
+                  this.availableIngredients = response.data;
+                  console.log(this.availableIngredients);
+               })
+               .catch((error) => {
+                  console.log(error);
+                  console.log('Backend error: ', error.response.data);
+                  console.log('Statuscode: ', error.response.status);
+                  console.log('Response headers: ', error.response.headers);
+               });
          }
       },
    }

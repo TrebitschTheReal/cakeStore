@@ -2053,12 +2053,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
-  mounted: function mounted() {},
+  mounted: function mounted() {
+    this.fetchInredientsList();
+  },
   name: "CreateCakeRecipe",
   data: function data() {
     return {
+      //stepOne = új recept regisztrálása
+      //stepTwo = alapanyag hozzárendelés
       recipeSteps: {
         stepOne: false,
         stepTwo: true
@@ -2071,13 +2074,16 @@ __webpack_require__.r(__webpack_exports__);
         name: 'Recept Feltöltése',
         desc: null,
         ingredients: [{
+          id: 0,
           name: 'default',
           quantity: 0
         }, {
+          id: 1,
           name: 'default',
           quantity: 0
         }]
-      }]
+      }],
+      availableIngredients: []
     };
   },
   methods: {
@@ -2117,6 +2123,7 @@ __webpack_require__.r(__webpack_exports__);
     validateNewRecipeContent: function validateNewRecipeContent() {},
     validateServerResponseOnSuccess: function validateServerResponseOnSuccess(responseData) {
       this.createNewRecipeObject(responseData);
+      this.fetchInredientsList();
       this.handleSteps('fill');
     },
     validateServerResponseOnFail: function validateServerResponseOnFail(statuscode) {
@@ -2128,6 +2135,10 @@ __webpack_require__.r(__webpack_exports__);
 
       this.handleSteps('register');
     },
+    //A feltöltés lépéseit kezeli.
+    //register  -  első lépés
+    //pending   -  spinner
+    //fill      -  recept hozzárendelés
     handleSteps: function handleSteps(step) {
       if (step === 'register') {
         this.recipeSteps.stepOne = true;
@@ -2139,22 +2150,56 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     createNewRecipeObject: function createNewRecipeObject(responseData) {
-      this.newRecipe.id = responseData.new_recipe_id;
-      this.newRecipe.name = this.newRecipeNameFirstLetterToUpperCase(responseData.new_recipe_name);
-      console.log(this.newRecipe.id);
-      console.log(this.newRecipe.name);
+      this.newRecipe[0].id = responseData.new_recipe_id;
+      this.newRecipe[0].name = this.newRecipeNameFirstLetterToUpperCase(responseData.new_recipe_name);
     },
     newRecipeNameFirstLetterToUpperCase: function newRecipeNameFirstLetterToUpperCase(newRecipeName) {
       return newRecipeName.charAt(0).toUpperCase() + newRecipeName.slice(1);
     },
     addNewIngredientRow: function addNewIngredientRow() {
-      this.newRecipe[0].ingredients.push({
-        name: 'default',
-        quantity: 0
-      });
+      console.log(this.newRecipe[0].ingredients);
+      var newId = 0;
+
+      if (this.newRecipe[0].ingredients.length === 0) {
+        this.newRecipe[0].ingredients.push({
+          id: newId,
+          name: 'default',
+          quantity: 0
+        });
+      } else {
+        var lastElement = this.newRecipe[0].ingredients.length - 1;
+        newId = this.newRecipe[0].ingredients[lastElement].id + 1;
+        this.newRecipe[0].ingredients.push({
+          id: newId,
+          name: 'default',
+          quantity: 0
+        });
+      }
     },
-    removeIngredientRow: function removeIngredientRow(key) {
-      this.newRecipe[0].ingredients.splice(key, 1);
+    removeIngredientRow: function removeIngredientRow(itemId) {
+      console.log(itemId);
+      var id = itemId;
+      var targetKey = 0;
+      $.each(this.newRecipe[0].ingredients, function (key, ingredient) {
+        if (ingredient.id === id) {
+          targetKey = key;
+          return false;
+        }
+      });
+      this.newRecipe[0].ingredients.splice(targetKey, 1);
+    },
+    fetchInredientsList: function fetchInredientsList() {
+      var _this2 = this;
+
+      axios.get('/fetchingredients').then(function (response) {
+        _this2.availableIngredients = response.data;
+        console.log(_this2.availableIngredients);
+      })["catch"](function (error) {
+        console.log(error);
+        console.log('Backend error: ', error.response.data);
+        console.log('Statuscode: ', error.response.status);
+        console.log('Response headers: ', error.response.headers);
+      });
     }
   }
 });
@@ -37658,7 +37703,7 @@ var render = function() {
         ? _c("div", { staticClass: "mx-auto card" }, [
             _c("div", { staticClass: "card-header" }, [
               _c("h2", { staticClass: "text-center" }, [
-                _vm._v(_vm._s(_vm.newRecipe))
+                _vm._v(_vm._s(_vm.newRecipe[0].name))
               ])
             ]),
             _vm._v(" "),
@@ -37729,11 +37774,94 @@ var render = function() {
                 ) {
                   return _c("div", { staticClass: "form-group" }, [
                     _c("div", { staticClass: "row" }, [
+                      _c(
+                        "div",
+                        { staticClass: "col col-lg-3 col-xs-12 text-center" },
+                        [
+                          _c("p", [_vm._v("Mennyiség")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: newIngredient.quantity,
+                                expression: "newIngredient.quantity"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { type: "number" },
+                            domProps: { value: newIngredient.quantity },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  newIngredient,
+                                  "quantity",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]
+                      ),
+                      _vm._v(" "),
                       _vm._m(0, true),
                       _vm._v(" "),
-                      _vm._m(1, true),
-                      _vm._v(" "),
-                      _vm._m(2, true),
+                      _c(
+                        "div",
+                        { staticClass: "col col-lg-6 col-xs-12 text-center" },
+                        [
+                          _c("p", [_vm._v("Alapanyag")]),
+                          _vm._v(" "),
+                          _c(
+                            "select",
+                            {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: newIngredient.name,
+                                  expression: "newIngredient.name"
+                                }
+                              ],
+                              staticClass: "form-control",
+                              attrs: { id: "exampleFormControlSelect1" },
+                              on: {
+                                change: function($event) {
+                                  var $$selectedVal = Array.prototype.filter
+                                    .call($event.target.options, function(o) {
+                                      return o.selected
+                                    })
+                                    .map(function(o) {
+                                      var val =
+                                        "_value" in o ? o._value : o.value
+                                      return val
+                                    })
+                                  _vm.$set(
+                                    newIngredient,
+                                    "name",
+                                    $event.target.multiple
+                                      ? $$selectedVal
+                                      : $$selectedVal[0]
+                                  )
+                                }
+                              }
+                            },
+                            _vm._l(_vm.availableIngredients, function(
+                              ingredient,
+                              index
+                            ) {
+                              return _c("option", [
+                                _vm._v(_vm._s(ingredient.name))
+                              ])
+                            }),
+                            0
+                          )
+                        ]
+                      ),
                       _vm._v(" "),
                       _c(
                         "div",
@@ -37747,7 +37875,9 @@ var render = function() {
                               staticClass: "btn btn-danger",
                               on: {
                                 click: function($event) {
-                                  return _vm.removeIngredientRow(index)
+                                  return _vm.removeIngredientRow(
+                                    newIngredient.id
+                                  )
                                 }
                               }
                             },
@@ -37791,21 +37921,11 @@ var render = function() {
               ])
             ])
           ])
-        : _c("div", { staticClass: "col col-6-lg col-2-xs" }, [_vm._m(3)])
+        : _c("div", { staticClass: "col col-6-lg col-2-xs" }, [_vm._m(1)])
     ])
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col col-lg-3 col-xs-12 text-center" }, [
-      _c("p", [_vm._v("Mennyiség")]),
-      _vm._v(" "),
-      _c("input", { staticClass: "form-control", attrs: { type: "number" } })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -37817,27 +37937,6 @@ var staticRenderFns = [
         staticClass: "form-control",
         attrs: { disabled: "", type: "text", value: "g" }
       })
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col col-lg-6 col-xs-12 text-center" }, [
-      _c("p", [_vm._v("Alapanyag")]),
-      _vm._v(" "),
-      _c(
-        "select",
-        {
-          staticClass: "form-control",
-          attrs: { id: "exampleFormControlSelect1" }
-        },
-        [
-          _c("option", [_vm._v("Cukor")]),
-          _vm._v(" "),
-          _c("option", [_vm._v("2")])
-        ]
-      )
     ])
   },
   function() {
