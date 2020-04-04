@@ -36,18 +36,24 @@ class CakeController extends Controller
         //return response()->json($cakes);
     }
 
-    public function registerNewRecipe(Request $request) {
-       $cakeService = new CakeService();
-       $responseStatusCode = $cakeService->validateNewCakeNameForRegister($request->recipeName);
+   public function registerNewRecipe(Request $request)
+   {
+      $cakeService = new CakeService();
+      $responseStatusCode = $cakeService->validateNewCakeNameForRegister($request->recipeName);
 
-       if($responseStatusCode === 202) {
-          $cakeService->registerRecipeToDb($request->recipeName);
+      if ($responseStatusCode === 202) {
+         $newRecipe = $cakeService->registerRecipeToDb($request->recipeName);
 
-          return response('Minden szupi!', $responseStatusCode);
-       }
-       else {
-          return response('Hiba a validálás során', $responseStatusCode);
-       }
+         return response()->json(array(
+            'success' => true,
+            'new_recipe_id' => $newRecipe->id,
+            'new_recipe_name' => $newRecipe->name
+
+         ), 200);
+
+      } else {
+         return response('Hiba a validálás során', $responseStatusCode);
+      }
 
 
 

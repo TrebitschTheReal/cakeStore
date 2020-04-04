@@ -3,7 +3,7 @@
       <div class="row">
          <div class="mx-auto card">
             <div class="card-header">
-               <h2>Recept Feltöltése</h2>
+               <h2 class="text-center">{{newRecipe.name}}</h2>
             </div>
             <div class="card-body">
                <div class="row">
@@ -51,7 +51,10 @@
                                   placeholder="">
                         </div>
                      </div>
-                     <button @click="createNewRecipe" class="col btn btn-success">Recept feltöltése</button>
+                     <div class="row">
+                        <button @click="createNewRecipe" class="col btn btn-info text-light m-2">Alapanyagok frissítése</button>
+                        <button @click="createNewRecipe" class="col btn btn-success m-2">Recept feltöltése</button>
+                     </div>
                   </div>
                   <div v-else class="col col-6-lg col-2-xs">
                      <div class="my-3 d-flex justify-content-center">
@@ -83,6 +86,11 @@
             recipeName: '',
             serverResponseData: null,
             errors: [],
+            newRecipe: {
+               id: null,
+               name: 'Recept Feltöltése',
+               desc: null,
+            }
          }
       },
 
@@ -95,7 +103,7 @@
                   recipeName: this.recipeName,
                })
                   .then((response) => {
-                     this.validateServerResponseOnSuccess();
+                     this.validateServerResponseOnSuccess(response.data);
                      console.log(response);
                   })
                   .catch((error) => {
@@ -127,7 +135,8 @@
 
          },
 
-         validateServerResponseOnSuccess() {
+         validateServerResponseOnSuccess(responseData) {
+            this.createNewRecipeObject(responseData);
             this.handleSteps('fill');
          },
 
@@ -151,6 +160,17 @@
             } else if (step === 'fill') {
                this.recipeSteps.stepTwo = true;
             }
+         },
+
+         createNewRecipeObject(responseData) {
+            this.newRecipe.id = responseData.new_recipe_id;
+            this.newRecipe.name = this.newRecipeNameFirstLetterToUpperCase(responseData.new_recipe_name);
+            console.log(this.newRecipe.id);
+            console.log(this.newRecipe.name);
+         },
+
+         newRecipeNameFirstLetterToUpperCase(newRecipeName) {
+            return newRecipeName.charAt(0).toUpperCase() + newRecipeName.slice(1);
          }
       },
    }

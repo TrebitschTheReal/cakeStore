@@ -2044,6 +2044,9 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {},
   name: "CreateCakeRecipe",
@@ -2055,7 +2058,12 @@ __webpack_require__.r(__webpack_exports__);
       },
       recipeName: '',
       serverResponseData: null,
-      errors: []
+      errors: [],
+      newRecipe: {
+        id: null,
+        name: 'Recept Feltöltése',
+        desc: null
+      }
     };
   },
   methods: {
@@ -2067,7 +2075,7 @@ __webpack_require__.r(__webpack_exports__);
         axios.post('/registernewrecipe', {
           recipeName: this.recipeName
         }).then(function (response) {
-          _this.validateServerResponseOnSuccess();
+          _this.validateServerResponseOnSuccess(response.data);
 
           console.log(response);
         })["catch"](function (error) {
@@ -2093,7 +2101,8 @@ __webpack_require__.r(__webpack_exports__);
       return validationState;
     },
     validateNewRecipeContent: function validateNewRecipeContent() {},
-    validateServerResponseOnSuccess: function validateServerResponseOnSuccess() {
+    validateServerResponseOnSuccess: function validateServerResponseOnSuccess(responseData) {
+      this.createNewRecipeObject(responseData);
       this.handleSteps('fill');
     },
     validateServerResponseOnFail: function validateServerResponseOnFail(statuscode) {
@@ -2114,6 +2123,15 @@ __webpack_require__.r(__webpack_exports__);
       } else if (step === 'fill') {
         this.recipeSteps.stepTwo = true;
       }
+    },
+    createNewRecipeObject: function createNewRecipeObject(responseData) {
+      this.newRecipe.id = responseData.new_recipe_id;
+      this.newRecipe.name = this.newRecipeNameFirstLetterToUpperCase(responseData.new_recipe_name);
+      console.log(this.newRecipe.id);
+      console.log(this.newRecipe.name);
+    },
+    newRecipeNameFirstLetterToUpperCase: function newRecipeNameFirstLetterToUpperCase(newRecipeName) {
+      return newRecipeName.charAt(0).toUpperCase() + newRecipeName.slice(1);
     }
   }
 });
@@ -37614,7 +37632,11 @@ var render = function() {
   return _c("div", { staticClass: "container" }, [
     _c("div", { staticClass: "row" }, [
       _c("div", { staticClass: "mx-auto card" }, [
-        _vm._m(0),
+        _c("div", { staticClass: "card-header" }, [
+          _c("h2", { staticClass: "text-center" }, [
+            _vm._v(_vm._s(_vm.newRecipe.name))
+          ])
+        ]),
         _vm._v(" "),
         _c("div", { staticClass: "card-body" }, [
           _c("div", { staticClass: "row" }, [
@@ -37665,20 +37687,31 @@ var render = function() {
                 ])
               : _vm.recipeSteps.stepTwo
               ? _c("div", { staticClass: "col col-6-lg col-2-xs" }, [
+                  _vm._m(0),
+                  _vm._v(" "),
                   _vm._m(1),
                   _vm._v(" "),
-                  _vm._m(2),
-                  _vm._v(" "),
-                  _c(
-                    "button",
-                    {
-                      staticClass: "col btn btn-success",
-                      on: { click: _vm.createNewRecipe }
-                    },
-                    [_vm._v("Recept feltöltése")]
-                  )
+                  _c("div", { staticClass: "row" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "col btn btn-info text-light m-2",
+                        on: { click: _vm.createNewRecipe }
+                      },
+                      [_vm._v("Alapanyagok frissítése")]
+                    ),
+                    _vm._v(" "),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "col btn btn-success m-2",
+                        on: { click: _vm.createNewRecipe }
+                      },
+                      [_vm._v("Recept feltöltése")]
+                    )
+                  ])
                 ])
-              : _c("div", { staticClass: "col col-6-lg col-2-xs" }, [_vm._m(3)])
+              : _c("div", { staticClass: "col col-6-lg col-2-xs" }, [_vm._m(2)])
           ])
         ])
       ])
@@ -37686,14 +37719,6 @@ var render = function() {
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card-header" }, [
-      _c("h2", [_vm._v("Recept Feltöltése")])
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
