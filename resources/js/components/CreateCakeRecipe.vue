@@ -36,6 +36,7 @@
                      </div>
                      <div class="col col-lg-2 col-xs-12 text-center">
                         <p>Egység</p>
+                        <!-- TODO: valamit ki kell találni arra, hogy a megfelelő egység jelenjen meg -->
                         <input disabled class="form-control" type="text" value="g">
                      </div>
                      <div class="col col-lg-6 col-xs-12 text-center">
