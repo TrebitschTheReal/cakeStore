@@ -41,9 +41,7 @@ class CakeController extends Controller
        $responseStatusCode = $cakeService->validateNewCakeNameForRegister($request->recipeName);
 
        if($responseStatusCode === 202) {
-          $newCake = new Cake;
-          $newCake->name = $request->recipeName;
-          $newCake->save();
+          $cakeService->registerRecipeToDb($request->recipeName);
 
           return response('Minden szupi!', $responseStatusCode);
        }

@@ -35,6 +35,14 @@ class CakeService
        return 202;
     }
 
+    public function registerRecipeToDb($recipeName) {
+       $recipeName = strtolower($recipeName);
+
+       $newCake = new Cake;
+       $newCake->name = $recipeName;
+       $newCake->save();
+    }
+
     private function checkInputLength($recipeName) {
        if(strlen($recipeName) > 3) {
           return true;
@@ -43,6 +51,8 @@ class CakeService
     }
 
     private function checkIfRecipeNameAlreadyExists($recipeName) {
+       $recipeName = strtolower($recipeName);
+
        if(Cake::where('name', '=', $recipeName)->first() === null) {
           return true;
        }
