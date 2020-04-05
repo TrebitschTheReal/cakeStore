@@ -2056,6 +2056,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
+    //Ezt innen ki lehet venni, ha befejeződik az elem fejlesztése.
+    // Ráér akkor fetchelni, amikor stepváltás van
     this.fetchInredientsList();
   },
   name: "CreateCakeRecipe",
@@ -2071,7 +2073,7 @@ __webpack_require__.r(__webpack_exports__);
       recipeName: '',
       serverResponseData: null,
       errors: [],
-      newRecipe: [{
+      newRecipe: {
         id: null,
         name: 'Recept Feltöltése',
         desc: null,
@@ -2084,7 +2086,7 @@ __webpack_require__.r(__webpack_exports__);
           name: 'default',
           quantity: 0
         }]
-      }],
+      },
       availableIngredients: []
     };
   },
@@ -2152,43 +2154,26 @@ __webpack_require__.r(__webpack_exports__);
       }
     },
     createNewRecipeObject: function createNewRecipeObject(responseData) {
-      this.newRecipe[0].id = responseData.new_recipe_id;
-      this.newRecipe[0].name = this.newRecipeNameFirstLetterToUpperCase(responseData.new_recipe_name);
+      this.newRecipe.id = responseData.new_recipe_id;
+      this.newRecipe.name = this.newRecipeNameFirstLetterToUpperCase(responseData.new_recipe_name);
+      console.log(this.newRecipe.id);
+      console.log(this.newRecipe.name);
     },
     newRecipeNameFirstLetterToUpperCase: function newRecipeNameFirstLetterToUpperCase(newRecipeName) {
       return newRecipeName.charAt(0).toUpperCase() + newRecipeName.slice(1);
     },
     addNewIngredientRow: function addNewIngredientRow() {
-      console.log(this.newRecipe[0].ingredients);
-      var newId = 0;
-
-      if (this.newRecipe[0].ingredients.length === 0) {
-        this.newRecipe[0].ingredients.push({
-          id: newId,
-          name: 'default',
-          quantity: 0
-        });
-      } else {
-        var lastElement = this.newRecipe[0].ingredients.length - 1;
-        newId = this.newRecipe[0].ingredients[lastElement].id + 1;
-        this.newRecipe[0].ingredients.push({
-          id: newId,
-          name: 'default',
-          quantity: 0
-        });
-      }
-    },
-    removeIngredientRow: function removeIngredientRow(itemId) {
-      console.log(itemId);
-      var id = itemId;
-      var targetKey = 0;
-      $.each(this.newRecipe[0].ingredients, function (key, ingredient) {
-        if (ingredient.id === id) {
-          targetKey = key;
-          return false;
-        }
+      console.log('-----------------------');
+      console.log(this.newRecipe.ingredients);
+      console.log('-----------------------');
+      this.newRecipe.ingredients.push({
+        id: '0',
+        name: 'default',
+        quantity: 0
       });
-      this.newRecipe[0].ingredients.splice(targetKey, 1);
+    },
+    removeIngredientRow: function removeIngredientRow(index) {
+      this.newRecipe.ingredients.splice(index, 1);
     },
     fetchInredientsList: function fetchInredientsList() {
       var _this2 = this;
@@ -37705,7 +37690,7 @@ var render = function() {
         ? _c("div", { staticClass: "mx-auto card" }, [
             _c("div", { staticClass: "card-header" }, [
               _c("h2", { staticClass: "text-center" }, [
-                _vm._v(_vm._s(_vm.newRecipe[0].name))
+                _vm._v(_vm._s(_vm.newRecipe.name))
               ])
             ]),
             _vm._v(" "),
@@ -37762,7 +37747,7 @@ var render = function() {
         ? _c("div", { staticClass: "mx-auto card" }, [
             _c("div", { staticClass: "card-header" }, [
               _c("h2", { staticClass: "text-center" }, [
-                _vm._v(_vm._s(_vm.newRecipe[0].name))
+                _vm._v(_vm._s(_vm.newRecipe.name))
               ])
             ]),
             _vm._v(" "),
@@ -37770,7 +37755,7 @@ var render = function() {
               "div",
               { staticClass: "card-body" },
               [
-                _vm._l(_vm.newRecipe[0].ingredients, function(
+                _vm._l(_vm.newRecipe.ingredients, function(
                   newIngredient,
                   index
                 ) {
@@ -37877,9 +37862,7 @@ var render = function() {
                               staticClass: "btn btn-danger",
                               on: {
                                 click: function($event) {
-                                  return _vm.removeIngredientRow(
-                                    newIngredient.id
-                                  )
+                                  return _vm.removeIngredientRow(index)
                                 }
                               }
                             },

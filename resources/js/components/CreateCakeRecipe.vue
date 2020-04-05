@@ -5,7 +5,7 @@
          <div v-if="recipeSteps.stepOne"
               class="mx-auto card">
             <div class="card-header">
-               <h2 class="text-center">{{newRecipe[0].name}}</h2>
+               <h2 class="text-center">{{newRecipe.name}}</h2>
             </div>
             <div class="card-body">
                <div class="row">
@@ -25,10 +25,10 @@
          <div v-else-if="recipeSteps.stepTwo"
               class="mx-auto card">
             <div class="card-header">
-               <h2 class="text-center">{{newRecipe[0].name}}</h2>
+               <h2 class="text-center">{{newRecipe.name}}</h2>
             </div>
             <div class="card-body">
-               <div v-for="(newIngredient, index) in newRecipe[0].ingredients" class="form-group">
+               <div v-for="(newIngredient, index) in newRecipe.ingredients" class="form-group">
                   <div class="row">
                      <div class="col col-lg-3 col-xs-12 text-center">
                         <p>Mennyiség</p>
@@ -47,7 +47,7 @@
                      </div>
                      <div class="col col-lg-1 col-xs-12 text-center">
                         <p class="text-white">-</p>
-                        <p @click="removeIngredientRow(newIngredient.id)" class="btn btn-danger">-</p>
+                        <p @click="removeIngredientRow(index)" class="btn btn-danger">-</p>
                      </div>
                   </div>
                </div>
@@ -80,6 +80,8 @@
 <script>
    export default {
       mounted() {
+         //Ezt innen ki lehet venni, ha befejeződik az elem fejlesztése.
+         // Ráér akkor fetchelni, amikor stepváltás van
          this.fetchInredientsList()
       },
 
@@ -97,8 +99,7 @@
             recipeName: '',
             serverResponseData: null,
             errors: [],
-            newRecipe: [
-               {
+            newRecipe: {
                   id: null,
                   name: 'Recept Feltöltése',
                   desc: null,
@@ -106,11 +107,10 @@
                      {id: 0, name: 'default', quantity: 0},
                      {id: 1, name: 'default', quantity: 0},
                   ]
-               }
-            ],
+            },
             availableIngredients: [],
          }
-      },
+         },
 
       methods: {
          createNewRecipe() {
@@ -186,8 +186,10 @@
          },
 
          createNewRecipeObject(responseData) {
-            this.newRecipe[0].id = responseData.new_recipe_id;
-            this.newRecipe[0].name = this.newRecipeNameFirstLetterToUpperCase(responseData.new_recipe_name);
+            this.newRecipe.id = responseData.new_recipe_id;
+            this.newRecipe.name = this.newRecipeNameFirstLetterToUpperCase(responseData.new_recipe_name);
+            console.log(this.newRecipe.id);
+            console.log(this.newRecipe.name)
          },
 
          newRecipeNameFirstLetterToUpperCase(newRecipeName) {
@@ -195,41 +197,19 @@
          },
 
          addNewIngredientRow() {
-            console.log(this.newRecipe[0].ingredients);
-            let newId = 0;
+            console.log('-----------------------');
+            console.log(this.newRecipe.ingredients);
+            console.log('-----------------------');
 
-            if(this.newRecipe[0].ingredients.length === 0) {
-               this.newRecipe[0].ingredients.push({
-                  id: newId,
-                  name: 'default',
-                  quantity: 0
-               });
-            }
-            else {
-               let lastElement = this.newRecipe[0].ingredients.length-1;
-               newId = (this.newRecipe[0].ingredients[lastElement].id) + 1;
-
-               this.newRecipe[0].ingredients.push({
-                  id: newId,
-                  name: 'default',
-                  quantity: 0
-               });
-            }
+            this.newRecipe.ingredients.push({
+               id: '0',
+               name: 'default',
+               quantity: 0
+            });
          },
 
-         removeIngredientRow(itemId) {
-            console.log(itemId);
-            let id = itemId;
-            let targetKey = 0;
-
-            $.each(this.newRecipe[0].ingredients, function (key, ingredient) {
-               if(ingredient.id === id) {
-                  targetKey = key;
-                  return false;
-               }
-            });
-
-            this.newRecipe[0].ingredients.splice(targetKey, 1);
+         removeIngredientRow(index) {
+            this.newRecipe.ingredients.splice(index, 1);
          },
 
          fetchInredientsList() {
