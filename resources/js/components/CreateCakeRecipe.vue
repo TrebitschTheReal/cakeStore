@@ -37,12 +37,12 @@
                      <div class="col col-lg-2 col-xs-12 text-center">
                         <p>Egység</p>
                         <!-- TODO: valamit ki kell találni arra, hogy a megfelelő egység jelenjen meg -->
-                        <input disabled class="form-control" type="text" value="g">
+                        <input disabled class="form-control" type="text" v-model="newIngredient.unitType">
                      </div>
                      <div class="col col-lg-6 col-xs-12 text-center">
                         <p>Alapanyag</p>
                         <select class="form-control" v-model="newIngredient.name" id="exampleFormControlSelect1">
-                           <option v-for="(ingredient, index) in availableIngredients">{{ingredient.name}}</option>
+                           <option v-for="(availableIngredient, key) in availableIngredients">{{availableIngredient.name}}</option>
                         </select>
                      </div>
                      <div class="col col-lg-1 col-xs-12 text-center">
@@ -104,8 +104,21 @@
                   name: 'Recept Feltöltése',
                   desc: null,
                   ingredients: [
-                     {id: 0, name: 'default', quantity: 0},
-                     {id: 1, name: 'default', quantity: 0},
+                     {
+                        id: 0,
+                        name: 'default',
+                        quantity: 0,
+                        unitType: '',
+                        unitPrice: 0,
+                     },
+
+                     {
+                        id: 0,
+                        name: 'default',
+                        quantity: 0,
+                        unitType: '',
+                        unitPrice: 0,
+                     },
                   ]
             },
             availableIngredients: [],
@@ -202,9 +215,11 @@
             console.log('-----------------------');
 
             this.newRecipe.ingredients.push({
-               id: '0',
+               id: 0,
                name: 'default',
-               quantity: 0
+               quantity: 0,
+               unitType: '',
+               unitPrice: 0,
             });
          },
 

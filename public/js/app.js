@@ -2080,11 +2080,15 @@ __webpack_require__.r(__webpack_exports__);
         ingredients: [{
           id: 0,
           name: 'default',
-          quantity: 0
+          quantity: 0,
+          unitType: '',
+          unitPrice: 0
         }, {
-          id: 1,
+          id: 0,
           name: 'default',
-          quantity: 0
+          quantity: 0,
+          unitType: '',
+          unitPrice: 0
         }]
       },
       availableIngredients: []
@@ -2167,9 +2171,11 @@ __webpack_require__.r(__webpack_exports__);
       console.log(this.newRecipe.ingredients);
       console.log('-----------------------');
       this.newRecipe.ingredients.push({
-        id: '0',
+        id: 0,
         name: 'default',
-        quantity: 0
+        quantity: 0,
+        unitType: '',
+        unitPrice: 0
       });
     },
     removeIngredientRow: function removeIngredientRow(index) {
@@ -37795,7 +37801,39 @@ var render = function() {
                         ]
                       ),
                       _vm._v(" "),
-                      _vm._m(0, true),
+                      _c(
+                        "div",
+                        { staticClass: "col col-lg-2 col-xs-12 text-center" },
+                        [
+                          _c("p", [_vm._v("Egység")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model",
+                                value: newIngredient.unitType,
+                                expression: "newIngredient.unitType"
+                              }
+                            ],
+                            staticClass: "form-control",
+                            attrs: { disabled: "", type: "text" },
+                            domProps: { value: newIngredient.unitType },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  newIngredient,
+                                  "unitType",
+                                  $event.target.value
+                                )
+                              }
+                            }
+                          })
+                        ]
+                      ),
                       _vm._v(" "),
                       _c(
                         "div",
@@ -37838,11 +37876,11 @@ var render = function() {
                               }
                             },
                             _vm._l(_vm.availableIngredients, function(
-                              ingredient,
-                              index
+                              availableIngredient,
+                              key
                             ) {
                               return _c("option", [
-                                _vm._v(_vm._s(ingredient.name))
+                                _vm._v(_vm._s(availableIngredient.name))
                               ])
                             }),
                             0
@@ -37906,24 +37944,11 @@ var render = function() {
               ])
             ])
           ])
-        : _c("div", { staticClass: "col col-6-lg col-2-xs" }, [_vm._m(1)])
+        : _c("div", { staticClass: "col col-6-lg col-2-xs" }, [_vm._m(0)])
     ])
   ])
 }
 var staticRenderFns = [
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col col-lg-2 col-xs-12 text-center" }, [
-      _c("p", [_vm._v("Egység")]),
-      _vm._v(" "),
-      _c("input", {
-        staticClass: "form-control",
-        attrs: { disabled: "", type: "text", value: "g" }
-      })
-    ])
-  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
@@ -50303,14 +50328,15 @@ __webpack_require__.r(__webpack_exports__);
 /*!******************************************************!*\
   !*** ./resources/js/components/CreateCakeRecipe.vue ***!
   \******************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _CreateCakeRecipe_vue_vue_type_template_id_0629656d_scoped_true___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./CreateCakeRecipe.vue?vue&type=template&id=0629656d&scoped=true& */ "./resources/js/components/CreateCakeRecipe.vue?vue&type=template&id=0629656d&scoped=true&");
 /* harmony import */ var _CreateCakeRecipe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./CreateCakeRecipe.vue?vue&type=script&lang=js& */ "./resources/js/components/CreateCakeRecipe.vue?vue&type=script&lang=js&");
-/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+/* harmony reexport (unknown) */ for(var __WEBPACK_IMPORT_KEY__ in _CreateCakeRecipe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__) if(__WEBPACK_IMPORT_KEY__ !== 'default') (function(key) { __webpack_require__.d(__webpack_exports__, key, function() { return _CreateCakeRecipe_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__[key]; }) }(__WEBPACK_IMPORT_KEY__));
+/* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
 
 
 
@@ -50340,7 +50366,7 @@ component.options.__file = "resources/js/components/CreateCakeRecipe.vue"
 /*!*******************************************************************************!*\
   !*** ./resources/js/components/CreateCakeRecipe.vue?vue&type=script&lang=js& ***!
   \*******************************************************************************/
-/*! exports provided: default */
+/*! no static exports found */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
