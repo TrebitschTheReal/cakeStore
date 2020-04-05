@@ -213,10 +213,9 @@
             console.log('-----------------------');
             console.log(this.newRecipe.ingredients);
             console.log('-----------------------');
-            let lastIDofNewRecipeIngredientsArray = this.getLastIDofNewRecipeIngredientsArray();
-            console.log('highest id: ', lastIDofNewRecipeIngredientsArray);
+
             this.newRecipe.ingredients.push({
-               id: lastIDofNewRecipeIngredientsArray + 1,
+               id: this.getLastIDofNewRecipeIngredientsArray(),
                name: 'default',
                quantity: 0,
                unitType: '',
@@ -266,9 +265,9 @@
 
          getLastIDofNewRecipeIngredientsArray() {
             if(this.newRecipe.ingredients.length > 0) {
-               return Math.max.apply(Math, this.newRecipe.ingredients.map(function(o) { return o.id; }));
+               return Math.max.apply(Math, this.newRecipe.ingredients.map(function(o) { return o.id; })) + 1;
             }
-            else return -1;
+            else return 0;
          }
       },
    }
