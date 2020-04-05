@@ -27,7 +27,7 @@ Route::get('/createrecipe', 'CakeController@createRecipeView')->name('createreci
 //API for cake recipes
 Route::get('/cakelist', 'CakeController@getAllCakeRecipes')->name('cakelist')->middleware('auth');
 Route::get('/fetchingredients', 'IngredientController@fetchIngredients')->name('fetchingredients')->middleware('auth');
-Route::get('/fillnewlycreatedrecipe', 'CakeController@fillNewlyCreatedRecipe')->name('fillnewlycreatedrecipe')->middleware('auth');
+Route::post('/fillnewlycreatedrecipe', 'CakeController@fillNewlyCreatedRecipe')->name('fillnewlycreatedrecipe')->middleware('auth');
 Route::post('/registernewrecipe', 'CakeController@registerNewRecipe')->name('registernewrecipe')->middleware('auth');
 
 

@@ -16,7 +16,7 @@
                                aria-describedby="recipe-name"
                                placeholder="Írd be az új recept nevét">
                      </div>
-                     <button @click="createNewRecipe" class="col btn btn-primary">Recept létrehozása</button>
+                     <button @click="registerNewRecipe" class="col btn btn-primary">Recept létrehozása</button>
                   </div>
                </div>
             </div>
@@ -28,6 +28,12 @@
                <h2 class="text-center">{{newRecipe.name}}</h2>
             </div>
             <div class="card-body">
+               <div class="row">
+                  <div class="col col-lg-12 col-xs-12 text-center mb-3">
+                     <p class="font-weight-bold">Leírás</p>
+                     <textarea v-model="newRecipe.desc" class="form-control" name="" id="" cols="30" rows="10"/>
+                  </div>
+               </div>
                <div v-for="(newIngredient, index) in newRecipe.ingredients" class="form-group">
                   <div class="row">
                      <div class="col col-lg-3 col-xs-12 text-center">
@@ -60,8 +66,14 @@
             </div>
             <div class="card-footer">
                <div class="row">
-                  <button @click="createNewRecipe" class="col btn btn-success m-2">Recept feltöltése</button>
+                  <button @click="finishNewRecipe()" class="col btn btn-success m-2">Recept feltöltése</button>
                </div>
+            </div>
+         </div>
+
+         <div v-else-if="recipeSteps.stepThree" class="mx-auto text-center">
+            <div class="alert alert-success">
+               <h2>Sikeres recept feltöltés!</h2>
             </div>
          </div>
 
@@ -93,8 +105,9 @@
             //stepTwo = alapanyag hozzárendelés
             recipeSteps: {
                //TODO: in production ezeket beállítani normálisan
-               stepOne: false,
-               stepTwo: true,
+               stepOne: true,
+               stepTwo: false,
+               stepThree: false,
             },
             recipeName: '',
             serverResponseData: null,
@@ -111,6 +124,7 @@
                         quantity: null,
                         unitType: null,
                         unitPrice: null,
+                        sumIngredientPrice: null,
                      },
 
                      {
@@ -120,6 +134,7 @@
                         quantity: null,
                         unitType: null,
                         unitPrice: null,
+                        sumIngredientPrice: null,
                      },
                   ]
             },
@@ -128,10 +143,10 @@
          },
 
       methods: {
-         createNewRecipe() {
-            if (this.validateNewRecipeName()) {
-               this.handleSteps('pending');
+         registerNewRecipe() {
+            this.handleSteps('pending');
 
+            if (this.validateNewRecipeName()) {
                axios.post('/registernewrecipe', {
                   recipeName: this.recipeName,
                })
@@ -149,6 +164,7 @@
 
 
             } else {
+               this.handleSteps('register');
                alert('Legalább 3 karakter!');
             }
          },
@@ -165,11 +181,11 @@
          },
 
          validateNewRecipeContent() {
-
+            return true;
          },
 
          validateServerResponseOnSuccess(responseData) {
-            this.createNewRecipeObject(responseData);
+            this.registerNewRecipeObject(responseData);
             this.fetchInredientsList();
             this.handleSteps('fill');
          },
@@ -194,13 +210,16 @@
                this.recipeSteps.stepOne = true;
             } else if (step === 'pending') {
                this.recipeSteps.stepOne = false;
-               this.recipeSteps.stepOne = false;
+               this.recipeSteps.stepTwo = false;
+               this.recipeSteps.stepThree = false;
             } else if (step === 'fill') {
                this.recipeSteps.stepTwo = true;
+            } else if (step === 'finish') {
+               this.recipeSteps.stepThree = true;
             }
          },
 
-         createNewRecipeObject(responseData) {
+         registerNewRecipeObject(responseData) {
             this.newRecipe.id = responseData.new_recipe_id;
             this.newRecipe.name = this.newRecipeNameFirstLetterToUpperCase(responseData.new_recipe_name);
             console.log(this.newRecipe.id);
@@ -258,6 +277,39 @@
                   this.newRecipe.ingredients[index].unitType = availableIngredient.unit_type;
                   this.newRecipe.ingredients[index].unitPrice = availableIngredient.unit_price;
                }
+            }
+         },
+
+         finishNewRecipe() {
+            this.handleSteps('pending');
+            this.sumNewRecipeIngredientPrices();
+
+            if (this.validateNewRecipeContent()) {
+               axios.post('/fillnewlycreatedrecipe', {
+                  newRecipe: this.newRecipe,
+               })
+                  .then((response) => {
+                     //this.validateServerResponseOnSuccess(response.data);
+                     console.log('Debug válasz: ', response);
+                     this.handleSteps('finish');
+                  })
+                  .catch((error) => {
+                     //this.validateServerResponseOnFail(error.response.status);
+                     console.log(error);
+                     console.log('Backend error: ', error.response.data);
+                     console.log('Statuscode: ', error.response.status);
+                     console.log('Response headers: ', error.response.headers);
+                  });
+            } else {
+               this.handleSteps('fill');
+               alert('Frontend validációs hiba');
+            }
+         },
+
+         // Kiszámolja, hogy egy alapanyag mennyibe fog kerülni az új receptben (mennyiség * ár)
+         sumNewRecipeIngredientPrices() {
+            for (let newIngredient of this.newRecipe.ingredients) {
+               newIngredient.sumIngredientPrice = newIngredient.quantity * newIngredient.unitPrice;
             }
          }
 

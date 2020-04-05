@@ -52,6 +52,10 @@ class CakeService
        return $newRecipe;
     }
 
+    public function fillNewlyRegisteredRecipe($newRecipe) {
+
+    }
+
     private function checkInputLength($recipeName) {
        if(strlen($recipeName) > 3) {
           return true;

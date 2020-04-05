@@ -2054,6 +2054,18 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     //Ezt innen ki lehet venni, ha befejeződik az elem fejlesztése.
@@ -2067,8 +2079,9 @@ __webpack_require__.r(__webpack_exports__);
       //stepTwo = alapanyag hozzárendelés
       recipeSteps: {
         //TODO: in production ezeket beállítani normálisan
-        stepOne: false,
-        stepTwo: true
+        stepOne: true,
+        stepTwo: false,
+        stepThree: false
       },
       recipeName: '',
       serverResponseData: null,
@@ -2083,25 +2096,28 @@ __webpack_require__.r(__webpack_exports__);
           name: null,
           quantity: null,
           unitType: null,
-          unitPrice: null
+          unitPrice: null,
+          sumIngredientPrice: null
         }, {
           listID: 1,
           id: null,
           name: null,
           quantity: null,
           unitType: null,
-          unitPrice: null
+          unitPrice: null,
+          sumIngredientPrice: null
         }]
       },
       availableIngredients: []
     };
   },
   methods: {
-    createNewRecipe: function createNewRecipe() {
+    registerNewRecipe: function registerNewRecipe() {
       var _this = this;
 
+      this.handleSteps('pending');
+
       if (this.validateNewRecipeName()) {
-        this.handleSteps('pending');
         axios.post('/registernewrecipe', {
           recipeName: this.recipeName
         }).then(function (response) {
@@ -2117,6 +2133,7 @@ __webpack_require__.r(__webpack_exports__);
           console.log('Response headers: ', error.response.headers);
         });
       } else {
+        this.handleSteps('register');
         alert('Legalább 3 karakter!');
       }
     },
@@ -2130,9 +2147,11 @@ __webpack_require__.r(__webpack_exports__);
       validationState = true;
       return validationState;
     },
-    validateNewRecipeContent: function validateNewRecipeContent() {},
+    validateNewRecipeContent: function validateNewRecipeContent() {
+      return true;
+    },
     validateServerResponseOnSuccess: function validateServerResponseOnSuccess(responseData) {
-      this.createNewRecipeObject(responseData);
+      this.registerNewRecipeObject(responseData);
       this.fetchInredientsList();
       this.handleSteps('fill');
     },
@@ -2154,12 +2173,15 @@ __webpack_require__.r(__webpack_exports__);
         this.recipeSteps.stepOne = true;
       } else if (step === 'pending') {
         this.recipeSteps.stepOne = false;
-        this.recipeSteps.stepOne = false;
+        this.recipeSteps.stepTwo = false;
+        this.recipeSteps.stepThree = false;
       } else if (step === 'fill') {
         this.recipeSteps.stepTwo = true;
+      } else if (step === 'finish') {
+        this.recipeSteps.stepThree = true;
       }
     },
-    createNewRecipeObject: function createNewRecipeObject(responseData) {
+    registerNewRecipeObject: function registerNewRecipeObject(responseData) {
       this.newRecipe.id = responseData.new_recipe_id;
       this.newRecipe.name = this.newRecipeNameFirstLetterToUpperCase(responseData.new_recipe_name);
       console.log(this.newRecipe.id);
@@ -2230,6 +2252,58 @@ __webpack_require__.r(__webpack_exports__);
         } finally {
           if (_didIteratorError) {
             throw _iteratorError;
+          }
+        }
+      }
+    },
+    finishNewRecipe: function finishNewRecipe() {
+      var _this3 = this;
+
+      this.handleSteps('pending');
+      this.sumNewRecipeIngredientPrices();
+
+      if (this.validateNewRecipeContent()) {
+        axios.post('/fillnewlycreatedrecipe', {
+          newRecipe: this.newRecipe
+        }).then(function (response) {
+          //this.validateServerResponseOnSuccess(response.data);
+          console.log('Debug válasz: ', response);
+
+          _this3.handleSteps('finish');
+        })["catch"](function (error) {
+          //this.validateServerResponseOnFail(error.response.status);
+          console.log(error);
+          console.log('Backend error: ', error.response.data);
+          console.log('Statuscode: ', error.response.status);
+          console.log('Response headers: ', error.response.headers);
+        });
+      } else {
+        this.handleSteps('fill');
+        alert('Frontend validációs hiba');
+      }
+    },
+    // Kiszámolja, hogy egy alapanyag mennyibe fog kerülni az új receptben (mennyiség * ár)
+    sumNewRecipeIngredientPrices: function sumNewRecipeIngredientPrices() {
+      var _iteratorNormalCompletion2 = true;
+      var _didIteratorError2 = false;
+      var _iteratorError2 = undefined;
+
+      try {
+        for (var _iterator2 = this.newRecipe.ingredients[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+          var newIngredient = _step2.value;
+          newIngredient.sumIngredientPrice = newIngredient.quantity * newIngredient.unitPrice;
+        }
+      } catch (err) {
+        _didIteratorError2 = true;
+        _iteratorError2 = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+            _iterator2["return"]();
+          }
+        } finally {
+          if (_didIteratorError2) {
+            throw _iteratorError2;
           }
         }
       }
@@ -37781,7 +37855,7 @@ var render = function() {
                     "button",
                     {
                       staticClass: "col btn btn-primary",
-                      on: { click: _vm.createNewRecipe }
+                      on: { click: _vm.registerNewRecipe }
                     },
                     [_vm._v("Recept létrehozása")]
                   )
@@ -37801,6 +37875,40 @@ var render = function() {
               "div",
               { staticClass: "card-body" },
               [
+                _c("div", { staticClass: "row" }, [
+                  _c(
+                    "div",
+                    { staticClass: "col col-lg-12 col-xs-12 text-center mb-3" },
+                    [
+                      _c("p", { staticClass: "font-weight-bold" }, [
+                        _vm._v("Leírás")
+                      ]),
+                      _vm._v(" "),
+                      _c("textarea", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.newRecipe.desc,
+                            expression: "newRecipe.desc"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        attrs: { name: "", id: "", cols: "30", rows: "10" },
+                        domProps: { value: _vm.newRecipe.desc },
+                        on: {
+                          input: function($event) {
+                            if ($event.target.composing) {
+                              return
+                            }
+                            _vm.$set(_vm.newRecipe, "desc", $event.target.value)
+                          }
+                        }
+                      })
+                    ]
+                  )
+                ]),
+                _vm._v(" "),
                 _vm._l(_vm.newRecipe.ingredients, function(
                   newIngredient,
                   index
@@ -37985,18 +38093,32 @@ var render = function() {
                   "button",
                   {
                     staticClass: "col btn btn-success m-2",
-                    on: { click: _vm.createNewRecipe }
+                    on: {
+                      click: function($event) {
+                        return _vm.finishNewRecipe()
+                      }
+                    }
                   },
                   [_vm._v("Recept feltöltése")]
                 )
               ])
             ])
           ])
-        : _c("div", { staticClass: "col col-6-lg col-2-xs" }, [_vm._m(0)])
+        : _vm.recipeSteps.stepThree
+        ? _c("div", { staticClass: "mx-auto text-center" }, [_vm._m(0)])
+        : _c("div", { staticClass: "col col-6-lg col-2-xs" }, [_vm._m(1)])
     ])
   ])
 }
 var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "alert alert-success" }, [
+      _c("h2", [_vm._v("Sikeres recept feltöltés!")])
+    ])
+  },
   function() {
     var _vm = this
     var _h = _vm.$createElement
