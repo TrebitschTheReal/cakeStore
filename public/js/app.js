@@ -2067,8 +2067,8 @@ __webpack_require__.r(__webpack_exports__);
       //stepTwo = alapanyag hozzárendelés
       recipeSteps: {
         //TODO: in production ezeket beállítani normálisan
-        stepOne: true,
-        stepTwo: false
+        stepOne: false,
+        stepTwo: true
       },
       recipeName: '',
       serverResponseData: null,
@@ -2197,10 +2197,16 @@ __webpack_require__.r(__webpack_exports__);
         console.log('Response headers: ', error.response.headers);
       });
     },
-    linkIngredientToNewIngredient: function linkIngredientToNewIngredient(index, event) {
-      var actualSelectedIngredientName = event.target.value;
+    test: function test(changedNewIngredientListID, event) {},
+    getLastIDofNewRecipeIngredientsArray: function getLastIDofNewRecipeIngredientsArray() {
+      if (this.newRecipe.ingredients.length > 0) {
+        return Math.max.apply(Math, this.newRecipe.ingredients.map(function (o) {
+          return o.listID;
+        })) + 1;
+      } else return 0;
+    },
+    linkFetchedIngredientStatsToTheNewlyCreatedIngredient: function linkFetchedIngredientStatsToTheNewlyCreatedIngredient(index) {
       var availableIngredient = [];
-      var newIngredient = [];
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
@@ -2209,38 +2215,10 @@ __webpack_require__.r(__webpack_exports__);
         for (var _iterator = this.availableIngredients[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
           availableIngredient = _step.value;
 
-          if (availableIngredient.name === actualSelectedIngredientName) {
-            //console.log(availableIngredient.name);
-            //console.log(availableIngredient.id);
-            //console.log(availableIngredient.unit_price);
-            var _iteratorNormalCompletion2 = true;
-            var _didIteratorError2 = false;
-            var _iteratorError2 = undefined;
-
-            try {
-              for (var _iterator2 = this.newRecipe.ingredients[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
-                newIngredient = _step2.value;
-
-                if (index === newIngredient.listID) {
-                  newIngredient.id = availableIngredient.id;
-                  newIngredient.unitType = availableIngredient.unit_type;
-                  newIngredient.unitPrice = availableIngredient.unit_price;
-                }
-              }
-            } catch (err) {
-              _didIteratorError2 = true;
-              _iteratorError2 = err;
-            } finally {
-              try {
-                if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
-                  _iterator2["return"]();
-                }
-              } finally {
-                if (_didIteratorError2) {
-                  throw _iteratorError2;
-                }
-              }
-            }
+          if (availableIngredient.name === this.newRecipe.ingredients[index].name) {
+            this.newRecipe.ingredients[index].id = availableIngredient.id;
+            this.newRecipe.ingredients[index].unitType = availableIngredient.unit_type;
+            this.newRecipe.ingredients[index].unitPrice = availableIngredient.unit_price;
           }
         }
       } catch (err) {
@@ -2257,13 +2235,6 @@ __webpack_require__.r(__webpack_exports__);
           }
         }
       }
-    },
-    getLastIDofNewRecipeIngredientsArray: function getLastIDofNewRecipeIngredientsArray() {
-      if (this.newRecipe.ingredients.length > 0) {
-        return Math.max.apply(Math, this.newRecipe.ingredients.map(function (o) {
-          return o.listID;
-        })) + 1;
-      } else return 0;
     }
   }
 });
@@ -37926,30 +37897,32 @@ var render = function() {
                               staticClass: "form-control",
                               attrs: { id: "exampleFormControlSelect1" },
                               on: {
-                                input: function($event) {
-                                  return _vm.linkIngredientToNewIngredient(
-                                    newIngredient.listID,
-                                    $event
-                                  )
-                                },
-                                change: function($event) {
-                                  var $$selectedVal = Array.prototype.filter
-                                    .call($event.target.options, function(o) {
-                                      return o.selected
-                                    })
-                                    .map(function(o) {
-                                      var val =
-                                        "_value" in o ? o._value : o.value
-                                      return val
-                                    })
-                                  _vm.$set(
-                                    newIngredient,
-                                    "name",
-                                    $event.target.multiple
-                                      ? $$selectedVal
-                                      : $$selectedVal[0]
-                                  )
-                                }
+                                change: [
+                                  function($event) {
+                                    var $$selectedVal = Array.prototype.filter
+                                      .call($event.target.options, function(o) {
+                                        return o.selected
+                                      })
+                                      .map(function(o) {
+                                        var val =
+                                          "_value" in o ? o._value : o.value
+                                        return val
+                                      })
+                                    _vm.$set(
+                                      newIngredient,
+                                      "name",
+                                      $event.target.multiple
+                                        ? $$selectedVal
+                                        : $$selectedVal[0]
+                                    )
+                                  },
+                                  function($event) {
+                                    return _vm.linkFetchedIngredientStatsToTheNewlyCreatedIngredient(
+                                      index,
+                                      $event
+                                    )
+                                  }
+                                ]
                               }
                             },
                             _vm._l(_vm.availableIngredients, function(

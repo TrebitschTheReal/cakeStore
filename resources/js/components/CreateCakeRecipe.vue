@@ -41,7 +41,7 @@
                      </div>
                      <div class="col col-lg-6 col-xs-12 text-center">
                         <p>Alapanyag</p>
-                        <select class="form-control" v-model="newIngredient.name" id="exampleFormControlSelect1" @input="linkIngredientToNewIngredient(newIngredient.listID, $event)">
+                        <select class="form-control" v-model="newIngredient.name" id="exampleFormControlSelect1" @change="linkFetchedIngredientStatsToTheNewlyCreatedIngredient(index, $event)">
                            <option v-for="(availableIngredient, key) in availableIngredients">{{availableIngredient.name}}</option>
                         </select>
                      </div>
@@ -93,8 +93,8 @@
             //stepTwo = alapanyag hozzárendelés
             recipeSteps: {
                //TODO: in production ezeket beállítani normálisan
-               stepOne: true,
-               stepTwo: false,
+               stepOne: false,
+               stepTwo: true,
             },
             recipeName: '',
             serverResponseData: null,
@@ -244,26 +244,7 @@
                });
          },
 
-         linkIngredientToNewIngredient(index, event) {
-            let actualSelectedIngredientName = event.target.value;
-            let availableIngredient = [];
-            let newIngredient = [];
-
-            for(availableIngredient of this.availableIngredients) {
-               if(availableIngredient.name === actualSelectedIngredientName) {
-                  //console.log(availableIngredient.name);
-                  //console.log(availableIngredient.id);
-                  //console.log(availableIngredient.unit_price);
-
-                  for(newIngredient of this.newRecipe.ingredients){
-                     if(index === newIngredient.listID) {
-                        newIngredient.id = availableIngredient.id;
-                        newIngredient.unitType = availableIngredient.unit_type;
-                        newIngredient.unitPrice = availableIngredient.unit_price;
-                     }
-                  }
-               }
-            }
+         test(changedNewIngredientListID, event) {
 
          },
 
@@ -272,6 +253,18 @@
                return Math.max.apply(Math, this.newRecipe.ingredients.map(function(o) { return o.listID; })) + 1;
             }
             else return 0;
+         },
+
+         linkFetchedIngredientStatsToTheNewlyCreatedIngredient(index) {
+            let availableIngredient = [];
+
+            for (availableIngredient of this.availableIngredients) {
+               if (availableIngredient.name === this.newRecipe.ingredients[index].name) {
+                  this.newRecipe.ingredients[index].id = availableIngredient.id;
+                  this.newRecipe.ingredients[index].unitType = availableIngredient.unit_type;
+                  this.newRecipe.ingredients[index].unitPrice = availableIngredient.unit_price;
+               }
+            }
          }
       },
    }
