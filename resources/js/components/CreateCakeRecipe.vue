@@ -41,7 +41,7 @@
                      </div>
                      <div class="col col-lg-6 col-xs-12 text-center">
                         <p>Alapanyag</p>
-                        <select class="form-control" v-model="newIngredient.name" id="exampleFormControlSelect1">
+                        <select class="form-control" v-model="newIngredient.name" id="exampleFormControlSelect1" @input="linkIngredientToNewIngredient(newIngredient.id, $event)">
                            <option v-for="(availableIngredient, key) in availableIngredients">{{availableIngredient.name}}</option>
                         </select>
                      </div>
@@ -113,7 +113,7 @@
                      },
 
                      {
-                        id: 0,
+                        id: 1,
                         name: 'default',
                         quantity: 0,
                         unitType: '',
@@ -213,9 +213,10 @@
             console.log('-----------------------');
             console.log(this.newRecipe.ingredients);
             console.log('-----------------------');
-
+            let lastIDofNewRecipeIngredientsArray = this.getLastIDofNewRecipeIngredientsArray();
+            console.log('highest id: ', lastIDofNewRecipeIngredientsArray);
             this.newRecipe.ingredients.push({
-               id: 0,
+               id: lastIDofNewRecipeIngredientsArray + 1,
                name: 'default',
                quantity: 0,
                unitType: '',
@@ -239,6 +240,35 @@
                   console.log('Statuscode: ', error.response.status);
                   console.log('Response headers: ', error.response.headers);
                });
+         },
+
+         linkIngredientToNewIngredient(index, event) {
+            let actualSelectedIngredientName = event.target.value;
+            let availableIngredient = [];
+            let newIngredient = [];
+
+            for(availableIngredient of this.availableIngredients) {
+               if(availableIngredient.name === actualSelectedIngredientName) {
+                  //console.log(availableIngredient.name);
+                  //console.log(availableIngredient.id);
+                  //console.log(availableIngredient.unit_price);
+
+                  for(newIngredient of this.newRecipe.ingredients){
+                     if(index === newIngredient.id) {
+                        newIngredient.unitType = availableIngredient.unit_type;
+                        //newIngredient.id = availableIngredient.id;
+                     }
+                  }
+               }
+            }
+
+         },
+
+         getLastIDofNewRecipeIngredientsArray() {
+            if(this.newRecipe.ingredients.length > 0) {
+               return Math.max.apply(Math, this.newRecipe.ingredients.map(function(o) { return o.id; }));
+            }
+            else return -1;
          }
       },
    }

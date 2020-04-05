@@ -2084,7 +2084,7 @@ __webpack_require__.r(__webpack_exports__);
           unitType: '',
           unitPrice: 0
         }, {
-          id: 0,
+          id: 1,
           name: 'default',
           quantity: 0,
           unitType: '',
@@ -2170,8 +2170,10 @@ __webpack_require__.r(__webpack_exports__);
       console.log('-----------------------');
       console.log(this.newRecipe.ingredients);
       console.log('-----------------------');
+      var lastIDofNewRecipeIngredientsArray = this.getLastIDofNewRecipeIngredientsArray();
+      console.log('highest id: ', lastIDofNewRecipeIngredientsArray);
       this.newRecipe.ingredients.push({
-        id: 0,
+        id: lastIDofNewRecipeIngredientsArray + 1,
         name: 'default',
         quantity: 0,
         unitType: '',
@@ -2193,6 +2195,72 @@ __webpack_require__.r(__webpack_exports__);
         console.log('Statuscode: ', error.response.status);
         console.log('Response headers: ', error.response.headers);
       });
+    },
+    linkIngredientToNewIngredient: function linkIngredientToNewIngredient(index, event) {
+      var actualSelectedIngredientName = event.target.value;
+      var availableIngredient = [];
+      var newIngredient = [];
+      var _iteratorNormalCompletion = true;
+      var _didIteratorError = false;
+      var _iteratorError = undefined;
+
+      try {
+        for (var _iterator = this.availableIngredients[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
+          availableIngredient = _step.value;
+
+          if (availableIngredient.name === actualSelectedIngredientName) {
+            //console.log(availableIngredient.name);
+            //console.log(availableIngredient.id);
+            //console.log(availableIngredient.unit_price);
+            var _iteratorNormalCompletion2 = true;
+            var _didIteratorError2 = false;
+            var _iteratorError2 = undefined;
+
+            try {
+              for (var _iterator2 = this.newRecipe.ingredients[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
+                newIngredient = _step2.value;
+
+                if (index === newIngredient.id) {
+                  newIngredient.unitType = availableIngredient.unit_type; //newIngredient.id = availableIngredient.id;
+                }
+              }
+            } catch (err) {
+              _didIteratorError2 = true;
+              _iteratorError2 = err;
+            } finally {
+              try {
+                if (!_iteratorNormalCompletion2 && _iterator2["return"] != null) {
+                  _iterator2["return"]();
+                }
+              } finally {
+                if (_didIteratorError2) {
+                  throw _iteratorError2;
+                }
+              }
+            }
+          }
+        }
+      } catch (err) {
+        _didIteratorError = true;
+        _iteratorError = err;
+      } finally {
+        try {
+          if (!_iteratorNormalCompletion && _iterator["return"] != null) {
+            _iterator["return"]();
+          }
+        } finally {
+          if (_didIteratorError) {
+            throw _iteratorError;
+          }
+        }
+      }
+    },
+    getLastIDofNewRecipeIngredientsArray: function getLastIDofNewRecipeIngredientsArray() {
+      if (this.newRecipe.ingredients.length > 0) {
+        return Math.max.apply(Math, this.newRecipe.ingredients.map(function (o) {
+          return o.id;
+        }));
+      } else return -1;
     }
   }
 });
@@ -37855,6 +37923,12 @@ var render = function() {
                               staticClass: "form-control",
                               attrs: { id: "exampleFormControlSelect1" },
                               on: {
+                                input: function($event) {
+                                  return _vm.linkIngredientToNewIngredient(
+                                    newIngredient.id,
+                                    $event
+                                  )
+                                },
                                 change: function($event) {
                                   var $$selectedVal = Array.prototype.filter
                                     .call($event.target.options, function(o) {
