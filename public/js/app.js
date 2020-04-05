@@ -2067,8 +2067,8 @@ __webpack_require__.r(__webpack_exports__);
       //stepTwo = alapanyag hozzárendelés
       recipeSteps: {
         //TODO: in production ezeket beállítani normálisan
-        stepOne: false,
-        stepTwo: true
+        stepOne: true,
+        stepTwo: false
       },
       recipeName: '',
       serverResponseData: null,
@@ -2078,17 +2078,19 @@ __webpack_require__.r(__webpack_exports__);
         name: 'Recept Feltöltése',
         desc: null,
         ingredients: [{
-          id: 0,
-          name: 'default',
-          quantity: 0,
-          unitType: '',
-          unitPrice: 0
+          listID: 0,
+          id: null,
+          name: null,
+          quantity: null,
+          unitType: null,
+          unitPrice: null
         }, {
-          id: 1,
-          name: 'default',
-          quantity: 0,
-          unitType: '',
-          unitPrice: 0
+          listID: 1,
+          id: null,
+          name: null,
+          quantity: null,
+          unitType: null,
+          unitPrice: null
         }]
       },
       availableIngredients: []
@@ -2171,11 +2173,12 @@ __webpack_require__.r(__webpack_exports__);
       console.log(this.newRecipe.ingredients);
       console.log('-----------------------');
       this.newRecipe.ingredients.push({
-        id: this.getLastIDofNewRecipeIngredientsArray(),
-        name: 'default',
-        quantity: 0,
-        unitType: '',
-        unitPrice: 0
+        listID: this.getLastIDofNewRecipeIngredientsArray(),
+        id: null,
+        name: null,
+        quantity: null,
+        unitType: null,
+        unitPrice: null
       });
     },
     removeIngredientRow: function removeIngredientRow(index) {
@@ -2218,8 +2221,10 @@ __webpack_require__.r(__webpack_exports__);
               for (var _iterator2 = this.newRecipe.ingredients[Symbol.iterator](), _step2; !(_iteratorNormalCompletion2 = (_step2 = _iterator2.next()).done); _iteratorNormalCompletion2 = true) {
                 newIngredient = _step2.value;
 
-                if (index === newIngredient.id) {
-                  newIngredient.unitType = availableIngredient.unit_type; //newIngredient.id = availableIngredient.id;
+                if (index === newIngredient.listID) {
+                  newIngredient.id = availableIngredient.id;
+                  newIngredient.unitType = availableIngredient.unit_type;
+                  newIngredient.unitPrice = availableIngredient.unit_price;
                 }
               }
             } catch (err) {
@@ -2256,7 +2261,7 @@ __webpack_require__.r(__webpack_exports__);
     getLastIDofNewRecipeIngredientsArray: function getLastIDofNewRecipeIngredientsArray() {
       if (this.newRecipe.ingredients.length > 0) {
         return Math.max.apply(Math, this.newRecipe.ingredients.map(function (o) {
-          return o.id;
+          return o.listID;
         })) + 1;
       } else return 0;
     }
@@ -37923,7 +37928,7 @@ var render = function() {
                               on: {
                                 input: function($event) {
                                   return _vm.linkIngredientToNewIngredient(
-                                    newIngredient.id,
+                                    newIngredient.listID,
                                     $event
                                   )
                                 },

@@ -41,7 +41,7 @@
                      </div>
                      <div class="col col-lg-6 col-xs-12 text-center">
                         <p>Alapanyag</p>
-                        <select class="form-control" v-model="newIngredient.name" id="exampleFormControlSelect1" @input="linkIngredientToNewIngredient(newIngredient.id, $event)">
+                        <select class="form-control" v-model="newIngredient.name" id="exampleFormControlSelect1" @input="linkIngredientToNewIngredient(newIngredient.listID, $event)">
                            <option v-for="(availableIngredient, key) in availableIngredients">{{availableIngredient.name}}</option>
                         </select>
                      </div>
@@ -93,8 +93,8 @@
             //stepTwo = alapanyag hozzárendelés
             recipeSteps: {
                //TODO: in production ezeket beállítani normálisan
-               stepOne: false,
-               stepTwo: true,
+               stepOne: true,
+               stepTwo: false,
             },
             recipeName: '',
             serverResponseData: null,
@@ -105,19 +105,21 @@
                   desc: null,
                   ingredients: [
                      {
-                        id: 0,
-                        name: 'default',
-                        quantity: 0,
-                        unitType: '',
-                        unitPrice: 0,
+                        listID: 0,
+                        id: null,
+                        name: null,
+                        quantity: null,
+                        unitType: null,
+                        unitPrice: null,
                      },
 
                      {
-                        id: 1,
-                        name: 'default',
-                        quantity: 0,
-                        unitType: '',
-                        unitPrice: 0,
+                        listID: 1,
+                        id: null,
+                        name: null,
+                        quantity: null,
+                        unitType: null,
+                        unitPrice: null,
                      },
                   ]
             },
@@ -215,11 +217,12 @@
             console.log('-----------------------');
 
             this.newRecipe.ingredients.push({
-               id: this.getLastIDofNewRecipeIngredientsArray(),
-               name: 'default',
-               quantity: 0,
-               unitType: '',
-               unitPrice: 0,
+               listID: this.getLastIDofNewRecipeIngredientsArray(),
+               id: null,
+               name: null,
+               quantity: null,
+               unitType: null,
+               unitPrice: null,
             });
          },
 
@@ -253,9 +256,10 @@
                   //console.log(availableIngredient.unit_price);
 
                   for(newIngredient of this.newRecipe.ingredients){
-                     if(index === newIngredient.id) {
+                     if(index === newIngredient.listID) {
+                        newIngredient.id = availableIngredient.id;
                         newIngredient.unitType = availableIngredient.unit_type;
-                        //newIngredient.id = availableIngredient.id;
+                        newIngredient.unitPrice = availableIngredient.unit_price;
                      }
                   }
                }
@@ -265,7 +269,7 @@
 
          getLastIDofNewRecipeIngredientsArray() {
             if(this.newRecipe.ingredients.length > 0) {
-               return Math.max.apply(Math, this.newRecipe.ingredients.map(function(o) { return o.id; })) + 1;
+               return Math.max.apply(Math, this.newRecipe.ingredients.map(function(o) { return o.listID; })) + 1;
             }
             else return 0;
          }
