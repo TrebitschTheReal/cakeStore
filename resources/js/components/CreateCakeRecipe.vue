@@ -244,10 +244,6 @@
                });
          },
 
-         test(changedNewIngredientListID, event) {
-
-         },
-
          getLastIDofNewRecipeIngredientsArray() {
             if(this.newRecipe.ingredients.length > 0) {
                return Math.max.apply(Math, this.newRecipe.ingredients.map(function(o) { return o.listID; })) + 1;
@@ -256,9 +252,7 @@
          },
 
          linkFetchedIngredientStatsToTheNewlyCreatedIngredient(index) {
-            let availableIngredient = [];
-
-            for (availableIngredient of this.availableIngredients) {
+            for (let availableIngredient of this.availableIngredients) {
                if (availableIngredient.name === this.newRecipe.ingredients[index].name) {
                   this.newRecipe.ingredients[index].id = availableIngredient.id;
                   this.newRecipe.ingredients[index].unitType = availableIngredient.unit_type;
@@ -266,6 +260,8 @@
                }
             }
          }
+
+
       },
    }
 </script>

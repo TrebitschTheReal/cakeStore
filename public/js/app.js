@@ -2197,7 +2197,6 @@ __webpack_require__.r(__webpack_exports__);
         console.log('Response headers: ', error.response.headers);
       });
     },
-    test: function test(changedNewIngredientListID, event) {},
     getLastIDofNewRecipeIngredientsArray: function getLastIDofNewRecipeIngredientsArray() {
       if (this.newRecipe.ingredients.length > 0) {
         return Math.max.apply(Math, this.newRecipe.ingredients.map(function (o) {
@@ -2206,14 +2205,13 @@ __webpack_require__.r(__webpack_exports__);
       } else return 0;
     },
     linkFetchedIngredientStatsToTheNewlyCreatedIngredient: function linkFetchedIngredientStatsToTheNewlyCreatedIngredient(index) {
-      var availableIngredient = [];
       var _iteratorNormalCompletion = true;
       var _didIteratorError = false;
       var _iteratorError = undefined;
 
       try {
         for (var _iterator = this.availableIngredients[Symbol.iterator](), _step; !(_iteratorNormalCompletion = (_step = _iterator.next()).done); _iteratorNormalCompletion = true) {
-          availableIngredient = _step.value;
+          var availableIngredient = _step.value;
 
           if (availableIngredient.name === this.newRecipe.ingredients[index].name) {
             this.newRecipe.ingredients[index].id = availableIngredient.id;
