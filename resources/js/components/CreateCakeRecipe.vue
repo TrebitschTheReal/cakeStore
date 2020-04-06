@@ -12,7 +12,7 @@
                   <div class="col col-6-lg col-2-xs">
                      <div class="form-group">
                         <label for="recipe-name">Recept neve:</label>
-                        <input required type="text" v-model="recipeName" class="form-control" id="recipe-name"
+                        <input @keyup="validateNewRecipeName()" required type="text" v-model="recipeName" class="form-control" id="recipe-name"
                                aria-describedby="recipe-name"
                                placeholder="Írd be az új recept nevét">
                      </div>
@@ -85,6 +85,15 @@
             </div>
          </div>
 
+         <div class="my-3 col col-lg-12 col-xs-12">
+            <div v-for="(error, index) in errors">
+               <transition-group name="bounce" tag="p">
+                  <p :key="index" @click="errorHandling('delete', index)"
+                     class="col col-lg-6 col-xs-6 alert mx-auto alert-danger text-center">{{error}}</p>
+               </transition-group>
+            </div>
+         </div>
+
       </div>
    </div>
 </template>
@@ -111,33 +120,35 @@
             },
             recipeName: '',
             serverResponseData: null,
-            errors: [],
             newRecipe: {
-                  id: null,
-                  name: 'Recept Feltöltése',
-                  desc: null,
-                  ingredients: [
-                     {
-                        listID: 0,
-                        id: null,
-                        name: null,
-                        quantity: null,
-                        unitType: null,
-                        unitPrice: null,
-                        sumIngredientPrice: null,
-                     },
+               id: null,
+               name: 'Recept Feltöltése',
+               desc: null,
+               ingredients: [
+                  {
+                     listID: 0,
+                     id: null,
+                     name: null,
+                     quantity: null,
+                     unitType: null,
+                     unitPrice: null,
+                     sumIngredientPrice: null,
+                  },
 
-                     {
-                        listID: 1,
-                        id: null,
-                        name: null,
-                        quantity: null,
-                        unitType: null,
-                        unitPrice: null,
-                        sumIngredientPrice: null,
-                     },
-                  ]
+                  {
+                     listID: 1,
+                     id: null,
+                     name: null,
+                     quantity: null,
+                     unitType: null,
+                     unitPrice: null,
+                     sumIngredientPrice: null,
+                  },
+               ],
             },
+
+            isError: false,
+            errors: [],
             availableIngredients: [],
          }
          },
@@ -145,8 +156,10 @@
       methods: {
          registerNewRecipe() {
             this.handleSteps('pending');
+            this.validateNewRecipeName();
 
-            if (this.validateNewRecipeName()) {
+            //Ha a hibalista üres
+            if (this.errors.length === 0) {
                axios.post('/registernewrecipe', {
                   recipeName: this.recipeName,
                })
@@ -162,22 +175,27 @@
                      console.log('Response headers: ', error.response.headers);
                   });
 
-
+            //Ha a hibalista nem üres
             } else {
                this.handleSteps('register');
-               alert('Legalább 3 karakter!');
             }
          },
 
+         //Recept név validálása
          validateNewRecipeName() {
-            let validationState = false;
+            this.errorHandling('clear');
 
-            if (this.recipeName.length < 1) {
-               return validationState;
+            //Ha a feltétel NEM felel meg:
+            if (
+               //regex - csak betűk (kis / nagy) és számok, min 3, max 40 karakter
+               !/^[a-zA-Z0-9_ ]{3,40} *$/g.test(this.recipeName)
+            ) {
+               this.errorHandling('push', 'A névben csak betűk és számok szerepelhetnek! Minimum 3 és maximum 40 karakter!');
+            //Ha megfelel:
+            } else {
+               //Végigmegyünk a tömbön, megkeressük a hibaüzenet stringjét, és újrarendezzük a tömböt a hibaüzenet nélkül.
+               this.errors.filter(e => e !== 'A névben csak betűk és számok szerepelhetnek! Minimum 3 és maximum 40 karakter!')
             }
-
-            validationState = true;
-            return validationState;
          },
 
          validateNewRecipeContent() {
@@ -195,10 +213,11 @@
                console.log('Error: Már létezik!');
             }
             else if(statuscode === 406) {
-               console.log('Error: Nem megfelelő név!')
+               this.errorHandling('push', 'Nem megfelelő név!')
             }
 
             this.handleSteps('register');
+            this.errorHandling('show');
          },
 
          //A feltöltés lépéseit kezeli.
@@ -310,9 +329,27 @@
             for (let newIngredient of this.newRecipe.ingredients) {
                newIngredient.sumIngredientPrice = newIngredient.quantity * newIngredient.unitPrice;
             }
-         }
+         },
 
-
+         // Hibakezelő. Az első paraméter a műveletre utal, a második a hibaüzenet, az index pedig a kattintásra kivenni kívánt üzenet indexe.
+         // A javascript absztraksziója miatt az errorMsg és az index opcionális
+         errorHandling(operation, errorMsg, index) {
+            if(operation === 'push' && !this.errors.includes(errorMsg)) {
+               this.errors.push(errorMsg);
+            }
+            else if(operation === 'delete') {
+               this.errors.splice(index, 1);
+            }
+            else if(operation === 'show') {
+               this.isError = true;
+            }
+            else if(operation === 'hide') {
+               this.isError = false;
+            }
+            else if(operation === 'clear') {
+               this.errors = [];
+            }
+         },
       },
    }
 </script>

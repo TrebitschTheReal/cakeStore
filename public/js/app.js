@@ -2067,6 +2067,15 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     //Ezt innen ki lehet venni, ha befejeződik az elem fejlesztése.
@@ -2086,7 +2095,6 @@ __webpack_require__.r(__webpack_exports__);
       },
       recipeName: '',
       serverResponseData: null,
-      errors: [],
       newRecipe: {
         id: null,
         name: 'Recept Feltöltése',
@@ -2109,6 +2117,8 @@ __webpack_require__.r(__webpack_exports__);
           sumIngredientPrice: null
         }]
       },
+      isError: false,
+      errors: [],
       availableIngredients: []
     };
   },
@@ -2117,8 +2127,9 @@ __webpack_require__.r(__webpack_exports__);
       var _this = this;
 
       this.handleSteps('pending');
+      this.validateNewRecipeName(); //Ha a hibalista üres
 
-      if (this.validateNewRecipeName()) {
+      if (this.errors.length === 0) {
         axios.post('/registernewrecipe', {
           recipeName: this.recipeName
         }).then(function (response) {
@@ -2132,21 +2143,24 @@ __webpack_require__.r(__webpack_exports__);
           console.log('Backend error: ', error.response.data);
           console.log('Statuscode: ', error.response.status);
           console.log('Response headers: ', error.response.headers);
-        });
+        }); //Ha a hibalista nem üres
       } else {
         this.handleSteps('register');
-        alert('Legalább 3 karakter!');
       }
     },
+    //Recept név validálása
     validateNewRecipeName: function validateNewRecipeName() {
-      var validationState = false;
+      this.errorHandling('clear'); //Ha a feltétel NEM felel meg:
 
-      if (this.recipeName.length < 1) {
-        return validationState;
+      if ( //regex - csak betűk (kis / nagy) és számok, min 3, max 40 karakter
+      !/^[a-zA-Z0-9_ ]{3,40} *$/g.test(this.recipeName)) {
+        this.errorHandling('push', 'A névben csak betűk és számok szerepelhetnek! Minimum 3 és maximum 40 karakter!'); //Ha megfelel:
+      } else {
+        //Végigmegyünk a tömbön, megkeressük a hibaüzenet stringjét, és újrarendezzük a tömböt a hibaüzenet nélkül.
+        this.errors.filter(function (e) {
+          return e !== 'A névben csak betűk és számok szerepelhetnek! Minimum 3 és maximum 40 karakter!';
+        });
       }
-
-      validationState = true;
-      return validationState;
     },
     validateNewRecipeContent: function validateNewRecipeContent() {
       return true;
@@ -2160,10 +2174,11 @@ __webpack_require__.r(__webpack_exports__);
       if (statuscode === 409) {
         console.log('Error: Már létezik!');
       } else if (statuscode === 406) {
-        console.log('Error: Nem megfelelő név!');
+        this.errorHandling('push', 'Nem megfelelő név!');
       }
 
       this.handleSteps('register');
+      this.errorHandling('show');
     },
     //A feltöltés lépéseit kezeli.
     //register  -  első lépés
@@ -2305,6 +2320,21 @@ __webpack_require__.r(__webpack_exports__);
             throw _iteratorError2;
           }
         }
+      }
+    },
+    // Hibakezelő. Az első paraméter a műveletre utal, a második a hibaüzenet, az index pedig a kattintásra kivenni kívánt üzenet indexe.
+    // A javascript absztraksziója miatt az errorMsg és az index opcionális
+    errorHandling: function errorHandling(operation, errorMsg, index) {
+      if (operation === 'push' && !this.errors.includes(errorMsg)) {
+        this.errors.push(errorMsg);
+      } else if (operation === 'delete') {
+        this.errors.splice(index, 1);
+      } else if (operation === 'show') {
+        this.isError = true;
+      } else if (operation === 'hide') {
+        this.isError = false;
+      } else if (operation === 'clear') {
+        this.errors = [];
       }
     }
   }
@@ -37851,6 +37881,9 @@ var render = function() {
                       },
                       domProps: { value: _vm.recipeName },
                       on: {
+                        keyup: function($event) {
+                          return _vm.validateNewRecipeName()
+                        },
                         input: function($event) {
                           if ($event.target.composing) {
                             return
@@ -38116,7 +38149,37 @@ var render = function() {
           ])
         : _vm.recipeSteps.stepThree
         ? _c("div", { staticClass: "mx-auto text-center" }, [_vm._m(0)])
-        : _c("div", { staticClass: "col col-6-lg col-2-xs" }, [_vm._m(1)])
+        : _c("div", { staticClass: "col col-6-lg col-2-xs" }, [_vm._m(1)]),
+      _vm._v(" "),
+      _c(
+        "div",
+        { staticClass: "my-3 col col-lg-12 col-xs-12" },
+        _vm._l(_vm.errors, function(error, index) {
+          return _c(
+            "div",
+            [
+              _c("transition-group", { attrs: { name: "bounce", tag: "p" } }, [
+                _c(
+                  "p",
+                  {
+                    key: index,
+                    staticClass:
+                      "col col-lg-6 col-xs-6 alert mx-auto alert-danger text-center",
+                    on: {
+                      click: function($event) {
+                        return _vm.errorHandling("delete", index)
+                      }
+                    }
+                  },
+                  [_vm._v(_vm._s(error))]
+                )
+              ])
+            ],
+            1
+          )
+        }),
+        0
+      )
     ])
   ])
 }

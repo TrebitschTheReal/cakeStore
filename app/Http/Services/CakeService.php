@@ -83,7 +83,7 @@ class CakeService
 
     private function checkInputLength($recipeName)
     {
-        if (strlen($recipeName) > 3) {
+        if (strlen($recipeName) >= 3) {
             return true;
         }
         return false;
