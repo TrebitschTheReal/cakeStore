@@ -11,6 +11,7 @@
                             <p>{{ingredient.pivot.ingredient_quantity}} egység {{ingredient.name}} - {{ingredient.pivot.ingredient_price}} Ft</p>
                         </div>
                         <p class="font-weight-bold">Alapanyagok ára összesen: {{cake.ingredients_price_sum}} Ft</p>
+                       <p class="font-weight-bold">Leírás: <br><br><span class="font-weight-normal">{{cake.desc}}</span></p>
                     </div>
                 </div>
             </template>

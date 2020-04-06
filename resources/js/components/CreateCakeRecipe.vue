@@ -290,7 +290,6 @@
                })
                   .then((response) => {
                      //this.validateServerResponseOnSuccess(response.data);
-                     console.log('Debug válasz: ', response);
                      this.handleSteps('finish');
                   })
                   .catch((error) => {

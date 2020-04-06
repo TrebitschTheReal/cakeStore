@@ -1935,6 +1935,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   created: function created() {},
   mounted: function mounted() {
@@ -2267,8 +2268,6 @@ __webpack_require__.r(__webpack_exports__);
           newRecipe: this.newRecipe
         }).then(function (response) {
           //this.validateServerResponseOnSuccess(response.data);
-          console.log('Debug válasz: ', response);
-
           _this3.handleSteps('finish');
         })["catch"](function (error) {
           //this.validateServerResponseOnFail(error.response.status);
@@ -37757,6 +37756,15 @@ var render = function() {
                           _vm._s(cake.ingredients_price_sum) +
                           " Ft"
                       )
+                    ]),
+                    _vm._v(" "),
+                    _c("p", { staticClass: "font-weight-bold" }, [
+                      _vm._v("Leírás: "),
+                      _c("br"),
+                      _c("br"),
+                      _c("span", { staticClass: "font-weight-normal" }, [
+                        _vm._v(_vm._s(cake.desc))
+                      ])
                     ])
                   ],
                   2

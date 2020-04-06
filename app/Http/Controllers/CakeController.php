@@ -75,23 +75,11 @@ class CakeController extends Controller
        $newCake->ingredients_price_sum = $newCake->required_ingredients()->where('cake_id', $newCake->id)->sum('ingredient_price');*/
     }
 
-    public function fillNewlyCreatedRecipe(Request $request) {
-       $newRecipeContent = $request->all();
-       $newRecipeId = $newRecipeContent['newRecipe']['id'];
+   public function fillNewlyCreatedRecipe(Request $request) {
+      $newRecipeContent = $request->all();
 
-       $newRecipeDesc = $newRecipeContent['newRecipe']['desc'];
+      $cakeService = new CakeService();
+      $cakeService->fillNewlyRegisteredRecipe($newRecipeContent);
 
-       $newRecipe = Cake::find($newRecipeId);
-       $newRecipe->desc = $newRecipeDesc;
-
-       foreach ($newRecipeContent['newRecipe']['ingredients'] as $newRecipeIngredient => $ingredientValue) {
-          $ingredientID = $ingredientValue['id'];
-          $ingredientName = $ingredientValue['name'];
-          $ingredientQuantity = $ingredientValue['quantity'];
-          $ingredientSumPrice = $ingredientValue['sumIngredientPrice'];
-
-          $newRecipe->required_ingredients()->attach($ingredientID, array('ingredient_quantity' => $ingredientQuantity, 'ingredient_price' => $ingredientSumPrice));
-       }
-
-    }
+   }
 }

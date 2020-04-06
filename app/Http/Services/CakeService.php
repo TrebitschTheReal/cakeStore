@@ -52,8 +52,22 @@ class CakeService
        return $newRecipe;
     }
 
-    public function fillNewlyRegisteredRecipe($newRecipe) {
+    public function fillNewlyRegisteredRecipe($newRecipeContent) {
+       $newRecipeId = $newRecipeContent['newRecipe']['id'];
+       $newRecipeDesc = $newRecipeContent['newRecipe']['desc'];
 
+       $newRecipe = Cake::find($newRecipeId);
+       $newRecipe->desc = $newRecipeDesc;
+
+       foreach ($newRecipeContent['newRecipe']['ingredients'] as $newRecipeIngredient => $ingredientValue) {
+          $ingredientID = $ingredientValue['id'];
+          $ingredientQuantity = $ingredientValue['quantity'];
+          $ingredientSumPrice = $ingredientValue['sumIngredientPrice'];
+
+          $newRecipe->required_ingredients()->attach($ingredientID, array('ingredient_quantity' => $ingredientQuantity, 'ingredient_price' => $ingredientSumPrice));
+       }
+
+       $newRecipe->save();
     }
 
     private function checkInputLength($recipeName) {
