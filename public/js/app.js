@@ -37740,7 +37740,9 @@ var render = function() {
                         _c("p", [
                           _vm._v(
                             _vm._s(ingredient.pivot.ingredient_quantity) +
-                              " egység " +
+                              " " +
+                              _vm._s(ingredient.unit_type) +
+                              " " +
                               _vm._s(ingredient.name) +
                               " - " +
                               _vm._s(ingredient.pivot.ingredient_price) +
