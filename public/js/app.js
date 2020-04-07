@@ -2074,8 +2074,6 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-//
-//
 /* harmony default export */ __webpack_exports__["default"] = ({
   mounted: function mounted() {
     //Ezt innen ki lehet venni, ha befejeződik az elem fejlesztése.
@@ -2131,13 +2129,13 @@ __webpack_require__.r(__webpack_exports__);
 
       if (this.errors.length === 0) {
         axios.post('/registernewrecipe', {
-          recipeName: this.recipeName
+          name: this.recipeName
         }).then(function (response) {
           _this.validateServerResponseOnSuccess(response.data);
 
           console.log(response);
         })["catch"](function (error) {
-          _this.validateServerResponseOnFail(error.response.status);
+          _this.validateServerResponseOnFail(error);
 
           console.log(error);
           console.log('Backend error: ', error.response.data);
@@ -2170,11 +2168,9 @@ __webpack_require__.r(__webpack_exports__);
       this.fetchInredientsList();
       this.handleSteps('fill');
     },
-    validateServerResponseOnFail: function validateServerResponseOnFail(statuscode) {
-      if (statuscode === 409) {
-        console.log('Error: Már létezik!');
-      } else if (statuscode === 406) {
-        this.errorHandling('push', 'Nem megfelelő név!');
+    validateServerResponseOnFail: function validateServerResponseOnFail(error) {
+      if (error.response.status === 422) {
+        this.errorHandling('push', error.response.data.errors.name[0]);
       }
 
       this.handleSteps('register');
@@ -38154,31 +38150,30 @@ var render = function() {
       _c(
         "div",
         { staticClass: "my-3 col col-lg-12 col-xs-12" },
-        _vm._l(_vm.errors, function(error, index) {
-          return _c(
-            "div",
-            [
-              _c("transition-group", { attrs: { name: "bounce", tag: "p" } }, [
-                _c(
-                  "p",
-                  {
-                    key: index,
-                    staticClass:
-                      "col col-lg-6 col-xs-6 alert mx-auto alert-danger text-center",
-                    on: {
-                      click: function($event) {
-                        return _vm.errorHandling("delete", index)
-                      }
+        [
+          _c(
+            "transition-group",
+            { attrs: { name: "bounce", tag: "p" } },
+            _vm._l(_vm.errors, function(error, index) {
+              return _c(
+                "p",
+                {
+                  key: index,
+                  staticClass:
+                    "col col-lg-6 col-xs-6 alert alert-danger mx-auto text-center",
+                  on: {
+                    click: function($event) {
+                      return _vm.errorHandling("delete", index)
                     }
-                  },
-                  [_vm._v(_vm._s(error))]
-                )
-              ])
-            ],
-            1
+                  }
+                },
+                [_vm._v(_vm._s(error))]
+              )
+            }),
+            0
           )
-        }),
-        0
+        ],
+        1
       )
     ])
   ])

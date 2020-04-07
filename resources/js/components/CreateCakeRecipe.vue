@@ -86,12 +86,10 @@
          </div>
 
          <div class="my-3 col col-lg-12 col-xs-12">
-            <div v-for="(error, index) in errors">
-               <transition-group name="bounce" tag="p">
-                  <p :key="index" @click="errorHandling('delete', index)"
-                     class="col col-lg-6 col-xs-6 alert mx-auto alert-danger text-center">{{error}}</p>
-               </transition-group>
-            </div>
+            <transition-group name="bounce" tag="p">
+               <p v-for="(error, index) in errors" :key="index" @click="errorHandling('delete', index)"
+                  class="col col-lg-6 col-xs-6 alert alert-danger mx-auto text-center">{{error}}</p>
+            </transition-group>
          </div>
 
       </div>
@@ -161,14 +159,14 @@
             //Ha a hibalista üres
             if (this.errors.length === 0) {
                axios.post('/registernewrecipe', {
-                  recipeName: this.recipeName,
+                  name: this.recipeName,
                })
                   .then((response) => {
                      this.validateServerResponseOnSuccess(response.data);
                      console.log(response);
                   })
                   .catch((error) => {
-                     this.validateServerResponseOnFail(error.response.status);
+                     this.validateServerResponseOnFail(error);
                      console.log(error);
                      console.log('Backend error: ', error.response.data);
                      console.log('Statuscode: ', error.response.status);
@@ -208,12 +206,9 @@
             this.handleSteps('fill');
          },
 
-         validateServerResponseOnFail(statuscode) {
-            if (statuscode === 409) {
-               console.log('Error: Már létezik!');
-            }
-            else if(statuscode === 406) {
-               this.errorHandling('push', 'Nem megfelelő név!')
+         validateServerResponseOnFail(error) {
+            if (error.response.status === 422) {
+               this.errorHandling('push', error.response.data.errors.name[0])
             }
 
             this.handleSteps('register');

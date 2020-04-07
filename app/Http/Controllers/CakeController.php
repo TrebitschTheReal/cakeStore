@@ -21,45 +21,42 @@ class CakeController extends Controller
 
    public function getAllCakeRecipes()
    {
-
-      //TODO ################ RECEPT FELTÖLTÉS -> létrehozni a feltöltés funkciót  #############################
-
-
-      //TODO ################ RECEPT FELTÖLTÉS -> létrehozni a feltöltés funkciót  #############################
-
-
       $cakes = Cake::with('required_ingredients')->get();
-      $cakeService = new CakeService();
-      $cakeService->generateSumIngredientsPriceForAllCakes($cakes);
-
-
-      return $cakes;
-
-      //Elvileg ez ugyan ezt csinálja, csak a Laravel stringifyolja már az elején.
-      //return response()->json($cakes);
+      return response()->json($cakes);
    }
 
+
+   /*
+    * Új recept regisztrálásánál ide fut be az ajax post.
+    * Lefut a laravel validátora, és ha sikeresen átment rajta, akkor meghívódik a CakeService,
+    * ahol regisztrálódik a recept neve az adatbázisban.
+    * Ha a regisztráció sikeres, akkor a CakeService visszaadja az új recept id-ját, nevét, majd visszaküldi egy 200-as response kóddal frontendre.
+    */
    public function registerNewRecipe(Request $request)
    {
       $cakeService = new CakeService();
-      $responseStatusCode = $cakeService->validateNewCakeNameForRegister($request->recipeName);
 
-      if ($responseStatusCode === 202) {
-         $newRecipe = $cakeService->registerRecipeToDb($request->recipeName);
+      /*
+       * Laravel validátor. Ha sikerül, továbbmegy. Ha elbukik, akkor response 422-es kóddal a validációs hibaüzenettel.
+       */
+      $request->validate([
+         'name' => ['required', 'unique:cakes', 'min:3', 'max:40'],
+      ]);
 
-         return response()->json(array(
-            'success' => true,
-            'new_recipe_id' => $newRecipe->id,
-            'new_recipe_name' => $newRecipe->name
+      $newRecipe = $cakeService->registerRecipeToDb($request->name);
 
-         ), 200);
+      return response()->json(array(
+         'success' => true,
+         'new_recipe_id' => $newRecipe->id,
+         'new_recipe_name' => $newRecipe->name
 
-      } else {
-         return response('Hiba a validálás során', $responseStatusCode);
-      }
+      ), 200);
+
    }
 
-   //Ide érkezik be a request a recept feltöltésekor
+   /*
+    * Ide érkezik be a request a recept feltöltésekor
+    */
    public function fillNewlyCreatedRecipe(Request $request)
    {
       //Átalakítjuk a request jsont egy asszociatív tömbbé.
