@@ -50,6 +50,11 @@ class CakeService
       $newRecipe = Cake::find($newRecipeId);
       $newRecipe->desc = $newRecipeDesc;
 
+      //Lekötjük az ÖSSZES hozzárendelt alapanyagot - ha módosítunk, akkor úgy is feltölti újra az egészet
+      //ha új a torta, akkor pedig eleve nincs még attacholva semmi
+
+      $newRecipe->required_ingredients()->detach();
+
       //Végigiterálunk az asszociatív tömb 'ingredients' ágán
       foreach ($newRecipeContent['newRecipe']['ingredients'] as $newRecipeIngredient => $ingredientValue) {
          $ingredientID = $ingredientValue['id'];
