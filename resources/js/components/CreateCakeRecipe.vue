@@ -22,6 +22,15 @@
             </div>
          </div>
 
+         <div v-if="recipeSteps.stepOne"
+              class="mx-auto">,
+            <div class="form-group">
+               <p>Recept id: </p>
+               <input class="form-control" v-model="modifiableRecipeId" type="number">
+            </div>
+            <button @click="editRecipe" class="btn btn-warning">Modify</button>
+         </div>
+
          <div v-else-if="recipeSteps.stepTwo"
               class="mx-auto card">
             <div class="card-header">
@@ -144,6 +153,7 @@
                   },
                ],
             },
+            modifiableRecipeId: null,
 
             isError: false,
             errors: [],
@@ -345,6 +355,46 @@
                this.errors = [];
             }
          },
+
+         editRecipe() {
+            this.handleSteps('pending');
+
+            axios.post('/modifyrecipe', {
+               modifiableRecipeId: this.modifiableRecipeId,
+            })
+               .then((response) => {
+                  this.newRecipe.id = response.data.id;
+                  this.newRecipe.name = response.data.name;
+                  this.newRecipe.desc = response.data.desc;
+
+                  //kinullázuk az adott recept ingredeitns tömbjét, hogy bele tudjuk pusholni amiket megkaptunk backendről
+                  this.newRecipe.ingredients = [];
+
+                  //végigiterálunk a megkapott alapanyagokon
+                  for(let i = 0; i < response.data.required_ingredients.length; i++) {
+
+                     //minden iterálásnál belepusholunk egy objektumot a módosítandó receptünk tömbjébe.
+                     this.newRecipe.ingredients.push({
+                        listID: i,
+                        id: response.data.required_ingredients[i].id,
+                        name: response.data.required_ingredients[i].name,
+                        unitType: response.data.required_ingredients[i].unit_type,
+                        unitPrice: response.data.required_ingredients[i].unit_price,
+                        quantity: response.data.required_ingredients[i].pivot.ingredient_quantity,
+                        sumIngredientPrice: response.data.required_ingredients[i].pivot.ingredient_price
+                     });
+                  }
+
+                  this.handleSteps('fill');
+               })
+               .catch((error) => {
+                  //this.validateServerResponseOnFail(error.response.status);
+                  console.log(error);
+                  console.log('Backend error: ', error.response.data);
+                  console.log('Statuscode: ', error.response.status);
+                  console.log('Response headers: ', error.response.headers);
+               });
+         }
       },
    }
 </script>

@@ -66,4 +66,10 @@ class CakeController extends Controller
       $cakeService->fillNewlyRegisteredRecipe($newRecipeContent);
 
    }
+
+   public function modifyRecipe(Request $request) {
+      $modifiableCake = Cake::with('required_ingredients')->find($request->modifiableRecipeId);
+
+      return response($modifiableCake);
+   }
 }

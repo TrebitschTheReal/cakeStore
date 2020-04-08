@@ -32,6 +32,8 @@ Route::post('/registernewrecipe', 'CakeController@registerNewRecipe')->name('reg
 Route::get('/cakelist', 'CakeController@getAllCakeRecipes')->name('cakelist')->middleware('auth');
 Route::get('/fetchingredients', 'IngredientController@fetchIngredients')->name('fetchingredients')->middleware('auth');
 
+Route::post('/modifyrecipe', 'CakeController@modifyRecipe')->name('modifyrecipe')->middleware('auth');
+
 
 
 Auth::routes();
