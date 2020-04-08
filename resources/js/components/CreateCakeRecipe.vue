@@ -87,7 +87,7 @@
 
          <div class="my-3 col col-lg-12 col-xs-12">
             <transition-group name="bounce" tag="p">
-               <p v-for="(error, index) in errors" :key="index" @click="errorHandling('delete', index)"
+               <p v-for="(error, index) in errors" :key="error" @click="errorHandling('delete', index)"
                   class="col col-lg-6 col-xs-6 alert alert-danger mx-auto text-center">{{error}}</p>
             </transition-group>
          </div>

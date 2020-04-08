@@ -24,11 +24,14 @@ Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Route::get('/cakerecipes', 'CakeController@index')->name('cakerecipes')->middleware('auth');
 Route::get('/createrecipe', 'CakeController@createRecipeView')->name('createrecipe')->middleware('auth');
 
-//API for cake recipes
-Route::get('/cakelist', 'CakeController@getAllCakeRecipes')->name('cakelist')->middleware('auth');
-Route::get('/fetchingredients', 'IngredientController@fetchIngredients')->name('fetchingredients')->middleware('auth');
+//POST végpontok
 Route::post('/fillnewlycreatedrecipe', 'CakeController@fillNewlyCreatedRecipe')->name('fillnewlycreatedrecipe')->middleware('auth');
 Route::post('/registernewrecipe', 'CakeController@registerNewRecipe')->name('registernewrecipe')->middleware('auth');
+
+//API a torta receptekhez
+Route::get('/cakelist', 'CakeController@getAllCakeRecipes')->name('cakelist')->middleware('auth');
+Route::get('/fetchingredients', 'IngredientController@fetchIngredients')->name('fetchingredients')->middleware('auth');
+
 
 
 Auth::routes();

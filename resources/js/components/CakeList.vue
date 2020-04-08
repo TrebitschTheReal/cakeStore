@@ -1,9 +1,13 @@
 <template>
     <div class="container">
-        <div class="row justify-content-center">
+        <div class="mt-2 mb-4">
+            <h4>Kereső</h4>
+            <input class="form-control" type="text" v-model="search">
+        </div>
 
+        <div class="row justify-content-center">
             <template v-if="showList">
-                 <div class="m-2 card" v-for="cake in cakes" :key="cake.id">
+                 <div class="m-2 card" v-for="cake in filteredList" :key="cake.id">
                     <div class="card-header"><span class="h5">{{cake.name}}</span></div>
                     <div class="card-body">
                         <p class="font-weight-bold">Hozzávalók:</p>
@@ -41,6 +45,15 @@
                 cakes: null,
                 showList: false,
                 actualCakeIngredientsSumPrice: null,
+                search: '',
+            }
+        },
+
+        computed: {
+            filteredList() {
+                return this.cakes.filter(post => {
+                    return post.name.toLowerCase().includes(this.search.toLowerCase())
+                })
             }
         },
 
