@@ -6,18 +6,25 @@
         </div>
 
         <div class="row justify-content-center">
-            <template v-if="showList">
-                 <div class="m-2 card" v-for="cake in filteredList" :key="cake.id">
-                    <div class="card-header"><span class="h5">{{cake.name}}</span></div>
-                    <div class="card-body">
-                        <p class="font-weight-bold">Hozzávalók:</p>
-                        <div v-for="ingredient in cake.required_ingredients">
-                            <p>{{ingredient.pivot.ingredient_quantity}} {{ingredient.unit_type}} {{ingredient.name}} - {{ingredient.pivot.ingredient_price}} Ft</p>
+            <template class="col col-lg-8" v-if="showList">
+                <transition-group name="bounce" tag="div">
+                    <div class="m-2 card" v-for="cake in filteredList" :key="cake.id">
+                        <div class="card-header text-center">
+                            <span class="h5">{{cake.name}}</span>
                         </div>
-                        <p class="font-weight-bold">Alapanyagok ára összesen: {{cake.ingredients_price_sum}} Ft</p>
-                       <p class="font-weight-bold">Leírás: <br><br><span class="font-weight-normal">{{cake.desc}}</span></p>
+                        <div class="card-body">
+                            <p class="font-weight-bold">Hozzávalók:</p>
+                            <div v-for="ingredient in cake.required_ingredients">
+                                <p>{{ingredient.pivot.ingredient_quantity}} {{ingredient.unit_type}} {{ingredient.name}}
+                                    - {{ingredient.pivot.ingredient_price}} Ft</p>
+                            </div>
+                            <p class="font-weight-bold">Alapanyagok ára összesen: {{cake.ingredients_price_sum}} Ft</p>
+                            <p class="font-weight-bold">Leírás: <br><br><span
+                                class="font-weight-normal">{{cake.desc}}</span></p>
+                        </div>
                     </div>
-                </div>
+                </transition-group>
+
             </template>
 
             <div v-else class="my-3 d-flex justify-content-center">
@@ -51,8 +58,8 @@
 
         computed: {
             filteredList() {
-                return this.cakes.filter(post => {
-                    return post.name.toLowerCase().includes(this.search.toLowerCase())
+                return this.cakes.filter(cake => {
+                    return cake.name.toLowerCase().includes(this.search.toLowerCase())
                 })
             }
         },
