@@ -2,28 +2,10 @@
    <div class="container">
       <div class="row">
 
-         <transition name="fade">
-            <div v-if="recipeSteps.stepOne"
-                 class="mx-auto card">
-               <div class="card-header">
-                  <h2 class="text-center">{{newRecipe.name}}</h2>
-               </div>
-               <div class="card-body">
-                  <div class="row">
-                     <div class="col col-6-lg col-2-xs">
-                        <div class="form-group">
-                           <label for="recipe-name">Recept neve:</label>
-                           <input @keyup="validateNewRecipeName()" required type="text" v-model="recipeName"
-                                  class="form-control" id="recipe-name"
-                                  aria-describedby="recipe-name"
-                                  placeholder="Írd be az új recept nevét">
-                        </div>
-                        <button @click="registerNewRecipe" class="col btn btn-primary">Recept regisztrálása</button>
-                     </div>
-                  </div>
-               </div>
-            </div>
-         </transition>
+         <div v-if="recipeSteps.stepOne"
+              class="mx-auto card">
+
+         </div>
 
          <div v-if="recipeSteps.stepOne"
               class="mx-auto">
@@ -59,8 +41,11 @@
                      </div>
                      <div class="col col-lg-6 col-xs-12 text-center">
                         <p>Alapanyag</p>
-                        <select class="form-control" v-model="newIngredient.name" id="exampleFormControlSelect1" @change="linkFetchedIngredientStatsToTheNewlyCreatedIngredient(index, $event)">
-                           <option v-for="(availableIngredient, key) in availableIngredients">{{availableIngredient.name}}</option>
+                        <select class="form-control" v-model="newIngredient.name" id="exampleFormControlSelect1"
+                                @change="linkFetchedIngredientStatsToTheNewlyCreatedIngredient(index, $event)">
+                           <option v-for="(availableIngredient, key) in availableIngredients">
+                              {{availableIngredient.name}}
+                           </option>
                         </select>
                      </div>
                      <div class="col col-lg-1 col-xs-12 text-center">
@@ -71,7 +56,8 @@
                </div>
                <div class="col col-lg-12 col-xs-12">
                   <div class="mt-4 mb-2 alert alert-success">
-                     <h4 class="">Új alapanyag hozzáadása<span @click="addNewIngredientRow" class="float-right btn btn-success">+</span>
+                     <h4 class="">Új alapanyag hozzáadása<span @click="addNewIngredientRow"
+                                                               class="float-right btn btn-success">+</span>
                      </h4>
                   </div>
                </div>
@@ -162,7 +148,7 @@
             errors: [],
             availableIngredients: [],
          }
-         },
+      },
 
       methods: {
          registerNewRecipe() {
@@ -186,7 +172,7 @@
                      console.log('Response headers: ', error.response.headers);
                   });
 
-            //Ha a hibalista nem üres
+               //Ha a hibalista nem üres
             } else {
                this.handleSteps('register');
             }
@@ -202,7 +188,7 @@
                !/^[a-zA-Z0-9_ ]{3,40} *$/g.test(this.recipeName)
             ) {
                this.errorHandling('push', 'A névben csak betűk és számok szerepelhetnek! Minimum 3 és maximum 40 karakter!');
-            //Ha megfelel:
+               //Ha megfelel:
             } else {
                //Végigmegyünk a tömbön, megkeressük a hibaüzenet stringjét, és újrarendezzük a tömböt a hibaüzenet nélkül.
                this.errors.filter(e => e !== 'A névben csak betűk és számok szerepelhetnek! Minimum 3 és maximum 40 karakter!')
@@ -291,10 +277,11 @@
          },
 
          getLastIDofNewRecipeIngredientsArray() {
-            if(this.newRecipe.ingredients.length > 0) {
-               return Math.max.apply(Math, this.newRecipe.ingredients.map(function(o) { return o.listID; })) + 1;
-            }
-            else return 0;
+            if (this.newRecipe.ingredients.length > 0) {
+               return Math.max.apply(Math, this.newRecipe.ingredients.map(function (o) {
+                  return o.listID;
+               })) + 1;
+            } else return 0;
          },
 
          linkFetchedIngredientStatsToTheNewlyCreatedIngredient(index) {
@@ -342,19 +329,15 @@
          // Hibakezelő. Az első paraméter a műveletre utal, a második a hibaüzenet, az index pedig a kattintásra kivenni kívánt üzenet indexe.
          // A javascript absztraksziója miatt az errorMsg és az index opcionális
          errorHandling(operation, errorMsg, index) {
-            if(operation === 'push' && !this.errors.includes(errorMsg)) {
+            if (operation === 'push' && !this.errors.includes(errorMsg)) {
                this.errors.push(errorMsg);
-            }
-            else if(operation === 'delete') {
+            } else if (operation === 'delete') {
                this.errors.splice(index, 1);
-            }
-            else if(operation === 'show') {
+            } else if (operation === 'show') {
                this.isError = true;
-            }
-            else if(operation === 'hide') {
+            } else if (operation === 'hide') {
                this.isError = false;
-            }
-            else if(operation === 'clear') {
+            } else if (operation === 'clear') {
                this.errors = [];
             }
          },
@@ -374,7 +357,7 @@
                   this.newRecipe.ingredients = [];
 
                   //végigiterálunk a megkapott alapanyagokon
-                  for(let i = 0; i < response.data.required_ingredients.length; i++) {
+                  for (let i = 0; i < response.data.required_ingredients.length; i++) {
 
                      //minden iterálásnál belepusholunk egy objektumot a módosítandó receptünk tömbjébe.
                      this.newRecipe.ingredients.push({

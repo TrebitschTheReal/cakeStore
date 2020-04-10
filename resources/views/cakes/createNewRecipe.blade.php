@@ -1,5 +1,5 @@
 @extends('layouts.app')
 
 @section('content')
-   <create-recipe></create-recipe>
+   <recipe-operations></recipe-operations>
 @endsection

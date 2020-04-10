@@ -22,7 +22,7 @@ Auth::routes();
 //Views
 Route::get('/home', 'HomeController@index')->name('home')->middleware('auth');
 Route::get('/cakerecipes', 'CakeController@index')->name('cakerecipes')->middleware('auth');
-Route::get('/createrecipe', 'CakeController@createRecipeView')->name('createrecipe')->middleware('auth');
+Route::get('/recipes', 'CakeController@createRecipeView')->name('recipes')->middleware('auth');
 
 //POST végpontok
 Route::post('/fillnewlycreatedrecipe', 'CakeController@fillNewlyCreatedRecipe')->name('fillnewlycreatedrecipe')->middleware('auth');
