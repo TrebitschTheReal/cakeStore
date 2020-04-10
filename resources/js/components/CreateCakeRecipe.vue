@@ -2,28 +2,31 @@
    <div class="container">
       <div class="row">
 
-         <div v-if="recipeSteps.stepOne"
-              class="mx-auto card">
-            <div class="card-header">
-               <h2 class="text-center">{{newRecipe.name}}</h2>
-            </div>
-            <div class="card-body">
-               <div class="row">
-                  <div class="col col-6-lg col-2-xs">
-                     <div class="form-group">
-                        <label for="recipe-name">Recept neve:</label>
-                        <input @keyup="validateNewRecipeName()" required type="text" v-model="recipeName" class="form-control" id="recipe-name"
-                               aria-describedby="recipe-name"
-                               placeholder="Írd be az új recept nevét">
+         <transition name="fade">
+            <div v-if="recipeSteps.stepOne"
+                 class="mx-auto card">
+               <div class="card-header">
+                  <h2 class="text-center">{{newRecipe.name}}</h2>
+               </div>
+               <div class="card-body">
+                  <div class="row">
+                     <div class="col col-6-lg col-2-xs">
+                        <div class="form-group">
+                           <label for="recipe-name">Recept neve:</label>
+                           <input @keyup="validateNewRecipeName()" required type="text" v-model="recipeName"
+                                  class="form-control" id="recipe-name"
+                                  aria-describedby="recipe-name"
+                                  placeholder="Írd be az új recept nevét">
+                        </div>
+                        <button @click="registerNewRecipe" class="col btn btn-primary">Recept regisztrálása</button>
                      </div>
-                     <button @click="registerNewRecipe" class="col btn btn-primary">Recept létrehozása</button>
                   </div>
                </div>
             </div>
-         </div>
+         </transition>
 
          <div v-if="recipeSteps.stepOne"
-              class="mx-auto">,
+              class="mx-auto">
             <div class="form-group">
                <p>Recept id: </p>
                <input class="form-control" v-model="modifiableRecipeId" type="number">
@@ -129,7 +132,7 @@
             serverResponseData: null,
             newRecipe: {
                id: null,
-               name: 'Recept Feltöltése',
+               name: 'Recept regisztrálása',
                desc: null,
                ingredients: [
                   {
