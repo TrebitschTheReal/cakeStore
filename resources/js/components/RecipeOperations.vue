@@ -2,9 +2,20 @@
    <div class="container">
       <div class="row">
 
+         <!-- Recept művelet kiválasztása -->
+         <stepOperationChoose v-if="recipeSteps.stepOperationChoose"
+                              @choosenOperation="handleSteps($event)"
+         />
+
          <!-- Recept regisztrálása -->
-         <stepRegister v-if="recipeSteps.stepRegister"
+         <stepRegister v-else-if="recipeSteps.stepRegister"
                        @registerNewRecipe="registerNewRecipeToDB($event)"
+         />
+
+         <!-- Recept módosítása -->
+         <stepEdit v-else-if="recipeSteps.stepEdit"
+                   @modifyRecipe="editRecipe($event)"
+
          />
 
          <!-- Recept managelése -->
@@ -32,24 +43,33 @@
    import stepManageRecipe from './steps/stepManageRecipe'
    import loadingSpinner from './loadingSpinner'
    import successRecipeUploadAlert from './successRecipeUploadAlert'
+   import stepOperationChoose from "./steps/stepOperationChoose"
+   import stepEdit from "./steps/stepEdit";
 
    export default {
       name: "RecipeOperations",
       components: {
          stepRegister,
          stepManageRecipe,
+         stepOperationChoose,
          loadingSpinner,
-         successRecipeUploadAlert
+         successRecipeUploadAlert,
+         stepEdit
       },
       data: function () {
          return {
             recipeSuccessMessage: '',
             recipeSteps: {
-               stepRegister: true,
+               stepOperationChoose: true,
+               stepEdit: false,
+               stepRegister: false,
                stepManageRecipe: false,
                stepSuccessRecipeOperation: false,
             },
 
+            /*
+            * Recept modell
+            */
             recipe: {
                id: null,
                name: 'Recept regisztrálása',
@@ -79,7 +99,13 @@
          }
       },
 
+      /*
+      Metódusok
+      */
       methods: {
+         /*
+         * Regisztrálunk egy új receptet az adatbázisban
+         */
          registerNewRecipeToDB(newRecipeName) {
             this.handleSteps('pending');
             axios.post('/registernewrecipe', {
@@ -98,9 +124,11 @@
                });
          },
 
+         /*
+         * Frissítjük a receptet az adatbázisban
+         */
          updateRecipeToDB(modifiedRecipe) {
             this.recipe = modifiedRecipe;
-            console.log('ASDASDASDASDASDASDASJASDSDDS', this.recipe);
             this.handleSteps('pending');
 
             axios.post('/fillnewlycreatedrecipe', {
@@ -120,11 +148,62 @@
                });
          },
 
+         /*
+         * Lekérjük a módosítandó recept adatait és átlépünk a manage operációba a receptet az adatbázisban
+         */
+         editRecipe(modifiableRecipeId) {
+            this.handleSteps('pending');
+            axios.post('/modifyrecipe', {
+               modifiableRecipeId: modifiableRecipeId,
+            })
+               .then((response) => {
+                  this.recipe.id = response.data.id;
+                  this.recipe.name = response.data.name;
+                  this.recipe.desc = response.data.desc;
+
+                  //kinullázuk az adott recept ingredeitns tömbjét, hogy bele tudjuk pusholni amiket megkaptunk backendről
+                  this.recipe.ingredients = [];
+
+                  //végigiterálunk a megkapott alapanyagokon
+                  for (let i = 0; i < response.data.required_ingredients.length; i++) {
+
+                     //minden iterálásnál belepusholunk egy objektumot a módosítandó receptünk tömbjébe.
+                     this.recipe.ingredients.push({
+                        listID: i,
+                        id: response.data.required_ingredients[i].id,
+                        name: response.data.required_ingredients[i].name,
+                        unitType: response.data.required_ingredients[i].unit_type,
+                        unitPrice: response.data.required_ingredients[i].unit_price,
+                        quantity: response.data.required_ingredients[i].pivot.ingredient_quantity,
+                        sumIngredientPrice: response.data.required_ingredients[i].pivot.ingredient_price
+                     });
+                  }
+
+                  this.handleSteps('fill');
+               })
+               .catch((error) => {
+                  //this.validateServerResponseOnFail(error.response.status);
+                  console.log(error);
+                  console.log('Backend error: ', error.response.data);
+                  console.log('Statuscode: ', error.response.status);
+                  console.log('Response headers: ', error.response.headers);
+               });
+         },
+
+         /*
+         * Step kezelő. Ezen keresztül manipuláljuk a megjelenő operációt
+         */
          handleSteps(step) {
+            this.recipeSteps.stepOperationChoose = false;
+
             if (step === 'register') {
                this.recipeSteps.stepRegister = true;
+            } else if (step === 'edit') {
+               this.recipeSteps.stepEdit = true;
             } else if (step === 'pending') {
+               this.recipeSteps.stepOperationChoose = false;
                this.recipeSteps.stepRegister = false;
+               this.recipeSteps.stepEdit = false;
                this.recipeSteps.stepManageRecipe = false;
                this.recipeSteps.stepSuccessRecipeOperation = false;
             } else if (step === 'fill') {
