@@ -3,6 +3,7 @@
       <div class="m-lg-4 m-xs-2">
          <h2 class="text-center">Alapanyag feltöltése</h2>
          <hr>
+         <!-- TODO: valahol itt ki lehessen választani az alapanyagot, mint a recept módosításnál, és töltse fel a visszakapott adat a newIngredient objektumot és viszlát -->
          <div class="card-body form-group">
             <div class="">
                <form class="row"

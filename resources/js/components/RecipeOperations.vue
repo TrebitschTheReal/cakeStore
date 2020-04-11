@@ -2,10 +2,13 @@
    <div class="container">
       <div class="row">
 
+         <!-- Transitiont használunk az elemek beúsztatására. mode="out-in" -> amikor az egyik eltűnik CSAK akkor jöhet a másik-->
+         <transition name="slide-fade" mode="out-in">
          <!-- Recept művelet kiválasztása -->
          <stepOperationChoose v-if="recipeSteps.stepOperationChoose"
                               @choosenOperation="handleSteps($event)"
          />
+
 
          <!-- Recept regisztrálása -->
          <stepRegister v-else-if="recipeSteps.stepRegister"
@@ -33,8 +36,9 @@
                                    :recipeSuccessMessage="recipeSuccessMessage"
          />
 
-         <!-- Töltés animáció -->
+         <!-- Loading spinner -->
          <loadingSpinner v-else/>
+         </transition>
 
       </div>
    </div>
@@ -62,11 +66,15 @@
          successRecipeUploadAlert,
          stepEdit
       },
+      mounted() {
+         this.recipeSteps.stepOperationChoose = true;
+      },
+
       data: function () {
          return {
             recipeSuccessMessage: '',
             recipeSteps: {
-               stepOperationChoose: true,
+               stepOperationChoose: false,
                stepEdit: false,
                stepIngredientUpload: false,
                stepRegister: false,
