@@ -49,9 +49,8 @@
 
         data() {
             return {
-                cakes: null,
+                cakes: {},
                 showList: false,
-                actualCakeIngredientsSumPrice: null,
                 search: '',
             }
         },

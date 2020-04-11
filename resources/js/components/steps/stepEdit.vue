@@ -1,24 +1,29 @@
 <template>
-   <div class="mx-auto card">
-      <div class="card-header">
+   <div class="mx-auto">
+      <div class="m-lg-4 m-xs-2">
          <h2 class="text-center">Recept módosítása</h2>
+         <hr>
       </div>
-      <div class="card-body">
-         <div class="row">
-            <div class="col col-6-lg col-2-xs">
-               <div class="form-group">
-                  <label for="recipe-name">Válassz receptet:</label>
-                  <input required
-                         type="number"
-                         v-model="modifiableRecipeId"
-                         class="form-control" id="recipe-name"
-                         aria-describedby="recipe-name"
-                         placeholder="Írd be a recept id-ját">
+      <div class="col col-lg-12 form-group">
+         <input required
+                type="text"
+                v-model="search"
+                class="form-control" id="recipe-name"
+                aria-describedby="recipe-name"
+                @keyup="testMethod"
+                placeholder="Kezd el írni a recept nevét">
+      </div>
+
+      <template v-if="showList">
+         <transition-group name="bounce" tag="div">
+            <div v-for="cake in filteredList" :key="cake.id" class="card my-2">
+               <div class="text-center btn btn-info"
+                    @click="modifyRecipe(cake.id)"
+               >{{cake.name}}
                </div>
-               <button @click="modifyRecipe" class="col btn btn-warning">Kiválasztott recept módosítása</button>
             </div>
-         </div>
-      </div>
+         </transition-group>
+      </template>
    </div>
 </template>
 
@@ -27,31 +32,49 @@
       name: "stepModify",
 
       mounted() {
-         this.fetchRecipes()
+         this.fetchRecipes();
       },
 
-      data: function () {
+      data() {
          return {
             modifiableRecipeId: null,
-            fetchedRecipes: {}
+            fetchedRecipes: {},
+            showList: false,
+            search: '',
          }
       },
 
-      methods: {
-         modifyRecipe() {
-            this.$emit('modifyRecipe', this.modifiableRecipeId)
+      computed: {
+         filteredList() {
+            this.fetchRecipes();
+            return this.fetchedRecipes.filter(cake => {
+               return cake.name.toLowerCase().includes(this.search.toLowerCase())
+            })
          },
+      },
+
+      methods: {
+         modifyRecipe(cakeId) {
+            this.$emit('modifyRecipe', cakeId)
+         },
+
 
          fetchRecipes() {
             axios.get('/cakelist')
                .then((response) => {
                   this.fetchedRecipes = response.data;
-                  console.log(this.fetchedRecipes);
                })
                .catch((error) => {
                   console.log(error);
                });
+         },
+
+         testMethod() {
+            if (this.filteredList.length) {
+               this.showList = true;
+            }
          }
+
       }
    }
 </script>
