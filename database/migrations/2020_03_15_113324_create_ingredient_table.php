@@ -16,7 +16,7 @@ class CreateIngredientTable extends Migration
         Schema::create('ingredients', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('name', 60);
-            $table->mediumText('desc');
+            $table->mediumText('desc')->nullable();
             $table->string('unit_type', 60);
             $table->mediumInteger('unit_price');
             $table->timestamps();

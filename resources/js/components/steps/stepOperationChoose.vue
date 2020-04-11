@@ -16,6 +16,7 @@
       <div class="col col-lg-6">
          <div class="row">
             <button class="col col-lg-6 btn btn-success p-5"
+                    @click="chooseOperation('ing-upload')"
             >Új alapanyag feltöltése
             </button>
 

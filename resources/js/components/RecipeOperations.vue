@@ -24,6 +24,10 @@
                            @updateRecipe="updateRecipeToDB($event)"
          />
 
+         <!-- Alapanyag feltöltése -->
+         <stepIngredientUpload v-else-if="recipeSteps.stepIngredientUpload"
+         />
+
          <!-- Sikeres recept művelet -->
          <successRecipeUploadAlert v-else-if="recipeSteps.stepSuccessRecipeOperation"
                                    :recipeSuccessMessage="recipeSuccessMessage"
@@ -44,7 +48,8 @@
    import loadingSpinner from './loadingSpinner'
    import successRecipeUploadAlert from './successRecipeUploadAlert'
    import stepOperationChoose from "./steps/stepOperationChoose"
-   import stepEdit from "./steps/stepEdit";
+   import stepEdit from './steps/stepEdit'
+   import stepIngredientUpload from './steps/stepIngredientUpload'
 
    export default {
       name: "RecipeOperations",
@@ -52,6 +57,7 @@
          stepRegister,
          stepManageRecipe,
          stepOperationChoose,
+         stepIngredientUpload,
          loadingSpinner,
          successRecipeUploadAlert,
          stepEdit
@@ -62,6 +68,7 @@
             recipeSteps: {
                stepOperationChoose: true,
                stepEdit: false,
+               stepIngredientUpload: false,
                stepRegister: false,
                stepManageRecipe: false,
                stepSuccessRecipeOperation: false,
@@ -208,7 +215,11 @@
                this.recipeSteps.stepSuccessRecipeOperation = false;
             } else if (step === 'fill') {
                this.recipeSteps.stepManageRecipe = true;
-            } else if (step === 'finish') {
+            }
+            else if(step === 'ing-upload') {
+               this.recipeSteps.stepIngredientUpload = true;
+            }
+            else if (step === 'finish') {
                this.recipeSteps.stepSuccessRecipeOperation = true;
             }
          },

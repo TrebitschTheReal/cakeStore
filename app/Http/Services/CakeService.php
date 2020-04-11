@@ -46,9 +46,15 @@ class CakeService
       $newRecipeId = $newRecipeContent['newRecipe']['id'];
       $newRecipeDesc = $newRecipeContent['newRecipe']['desc'];
 
+      //Validálásra vár
+      //$newRecipeName = $newRecipeContent['newRecipe']['name'];
+
       //Megkeressük a nemrég regisztrált torta receptet az id alapján
       $newRecipe = Cake::find($newRecipeId);
       $newRecipe->desc = $newRecipeDesc;
+
+      //Validálásra vár
+      //$newRecipe->name = $newRecipeName;
 
       //Lekötjük az ÖSSZES hozzárendelt alapanyagot - ha módosítunk, akkor úgy is feltölti újra az egészet
       //ha új a torta, akkor pedig eleve nincs még attacholva semmi
