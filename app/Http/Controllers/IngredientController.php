@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Services\CakeService;
 use App\Http\Services\IngredientService;
 use Illuminate\Http\Request;
 use App\Ingredient;
@@ -28,5 +29,12 @@ class IngredientController extends Controller
 
       $ingredientService = new IngredientService;
       $ingredientService->saveNewIngredient($request);
+   }
+
+   public function modifyExistingIngredient(Request $request) {
+      $newIngredientData = $request->all();
+      $ingredientService = new IngredientService;
+      $ingredientService->updateIngredient($newIngredientData);
+
    }
 }

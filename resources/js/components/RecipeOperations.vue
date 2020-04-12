@@ -4,40 +4,40 @@
 
          <!-- Transitiont használunk az elemek beúsztatására. mode="out-in" -> amikor az egyik eltűnik CSAK akkor jöhet a másik-->
          <transition name="slide-fade" mode="out-in">
-         <!-- Recept művelet kiválasztása -->
-         <stepOperationChoose v-if="recipeSteps.stepOperationChoose"
-                              @choosenOperation="handleSteps($event)"
-         />
+            <!-- Recept művelet kiválasztása -->
+            <stepOperationChoose v-if="recipeSteps.stepOperationChoose"
+                                 @choosenOperation="handleSteps($event)"
+            />
 
 
-         <!-- Recept regisztrálása -->
-         <stepRegister v-else-if="recipeSteps.stepRegister"
-                       @registerNewRecipe="registerNewRecipeToDB($event)"
-         />
+            <!-- Recept regisztrálása -->
+            <stepRegister v-else-if="recipeSteps.stepRegister"
+                          @registerNewRecipe="registerNewRecipeToDB($event)"
+            />
 
-         <!-- Recept módosítása -->
-         <stepEdit v-else-if="recipeSteps.stepEdit"
-                   @modifyRecipe="editRecipe($event)"
+            <!-- Recept módosítása -->
+            <stepEdit v-else-if="recipeSteps.stepEdit"
+                      @modifyRecipe="editRecipe($event)"
 
-         />
+            />
 
-         <!-- Recept managelése -->
-         <stepManageRecipe v-else-if="recipeSteps.stepManageRecipe"
-                           :recipe="recipe"
-                           @updateRecipe="updateRecipeToDB($event)"
-         />
+            <!-- Recept managelése -->
+            <stepManageRecipe v-else-if="recipeSteps.stepManageRecipe"
+                              :recipe="recipe"
+                              @updateRecipe="updateRecipeToDB($event)"
+            />
 
-         <!-- Alapanyag feltöltése -->
-         <stepIngredientUpload v-else-if="recipeSteps.stepIngredientUpload"
-         />
+            <!-- Alapanyag feltöltése -->
+            <stepIngredientUpload v-else-if="recipeSteps.stepIngredientUpload"
+            />
 
-         <!-- Sikeres recept művelet -->
-         <successRecipeUploadAlert v-else-if="recipeSteps.stepSuccessRecipeOperation"
-                                   :recipeSuccessMessage="recipeSuccessMessage"
-         />
+            <!-- Sikeres recept művelet -->
+            <successRecipeUploadAlert v-else-if="recipeSteps.stepSuccessRecipeOperation"
+                                      :recipeSuccessMessage="recipeSuccessMessage"
+            />
 
-         <!-- Loading spinner -->
-         <loadingSpinner v-else/>
+            <!-- Loading spinner -->
+            <loadingSpinner v-else/>
          </transition>
 
       </div>
@@ -223,11 +223,9 @@
                this.recipeSteps.stepSuccessRecipeOperation = false;
             } else if (step === 'fill') {
                this.recipeSteps.stepManageRecipe = true;
-            }
-            else if(step === 'ing-upload') {
+            } else if (step === 'ing-upload') {
                this.recipeSteps.stepIngredientUpload = true;
-            }
-            else if (step === 'finish') {
+            } else if (step === 'finish') {
                this.recipeSteps.stepSuccessRecipeOperation = true;
             }
          },
