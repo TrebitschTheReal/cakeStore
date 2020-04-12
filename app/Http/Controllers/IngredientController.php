@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Services\IngredientService;
 use Illuminate\Http\Request;
 use App\Ingredient;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class IngredientController extends Controller
@@ -17,9 +18,13 @@ class IngredientController extends Controller
    public function registerNewIngredient(Request $request) {
 
       //TODO: nem működik ez a szar, mindent átenged 200-al
-      Validator::make($request->all(), [
-         'newIngredient.name' => 'required|unique:ingredients|min:3|max:40',
+      $validator = Validator::make($request->all(), [
+         'FOOOO.name' => 'unique:ingredients'
       ]);
+
+      if( $validator->fails() ) {
+         return $validator->errors();
+      }
 
       $ingredientService = new IngredientService;
       $ingredientService->saveNewIngredient($request);
