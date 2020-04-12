@@ -18,13 +18,30 @@ class IngredientController extends Controller
 
    public function registerNewIngredient(Request $request) {
 
-      //TODO: nem működik ez a szar, mindent átenged 200-al
+      /*
+       * Ha object érkezik a Laravel validátorába, akkor azt a Validator osztály képes kezelni.
+       * Először asszociatív tömbbé alakítja a requestet, majd - mintha JavaScriptben lennénk - ponttal (.)
+       * tudunk hivatkozni az objektumunk egyik mezőjére:  'newIngredient.name'
+       * Fontos!: itt mindent manuálisan kell megadnunk! Tehát a validálás értékének kell egy harmadik paraméter is, ami
+       * az adatbázis oszlopának nevére hivatkozik -> 'unique:ingredients,name'
+       *
+       * Törekedjünk arra, hogy a frontendről axios postnál ugyan azt a nevet kapja az objektum, amilyen oszlopba fel fogjuk tölteni:
+       *
+       *  $validator = Validator::make($request->all(), [
+            'ingredients.name' => 'unique:ingredients'
+          ]);
+       */
+
       $validator = Validator::make($request->all(), [
-         'FOOOO.name' => 'unique:ingredients'
+         'newIngredient.name' => 'unique:ingredients,name'
       ]);
 
-      if( $validator->fails() ) {
-         return $validator->errors();
+      /*
+       * Fontos! Kézzel kell beállítani a response kódot is, mivel 200-at küldene vissza, miután hibával elszáll a backend.
+       * Tehát ha itt nem írjuk oda a response kódot akkor minden esetben 200-at lök vissza a hibaüzenettel együtt.
+       */
+      if( $validator->fails()) {
+         return response($validator->errors(), 422);
       }
 
       $ingredientService = new IngredientService;

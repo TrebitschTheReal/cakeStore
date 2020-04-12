@@ -70,11 +70,8 @@
          },
 
          testMethod() {
-            if (this.filteredList.length) {
-               this.showList = true;
-            }
+            this.filteredList.length ? this.showList = true : '';
          }
-
       }
    }
 </script>

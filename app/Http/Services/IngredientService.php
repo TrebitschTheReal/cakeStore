@@ -39,17 +39,5 @@ class IngredientService
          $cake->ingredients_price_sum = $cake->required_ingredients()->sum('ingredient_price');
          $cake->save();
       }
-
-
-
-      foreach ($cakes as $cake) {
-         foreach ($cake->required_ingredients as $ingredient){
-            $ingredient['pivot']->ingredient_price = $ingredient->unit_price * $ingredient['pivot']->ingredient_quantity;
-            break;
-         }
-         echo($cake['required_ingredients'][0]['pivot']);
-         $cake->save();
-         break;
-      }
    }
 }

@@ -14,7 +14,7 @@
                         <input required
                                class="form-control"
                                :disabled="pending || modify"
-                               v-model="newIngredient.name"
+                               v-model="ingredientModel.name"
                                type="text">
                      </div>
                      <div class="col col-lg-3 col-xs-2 text-center">
@@ -24,7 +24,7 @@
                                 name=""
                                 id=""
                                 required
-                                v-model="newIngredient.unitType"
+                                v-model="ingredientModel.unitType"
                         >
                            <option v-for="type in ingredientUnitTypes"
                                    :value="type"
@@ -33,12 +33,12 @@
                         </select>
                      </div>
                      <div class="col col-lg-3 col-xs-1 text-center">
-                        <p>Ár / {{newIngredient.unitType}}</p>
+                        <p>Ár / {{ingredientModel.unitType}}</p>
                         <input required
                                :disabled="pending"
                                class="form-control"
                                type="number"
-                               v-model="newIngredient.unitPrice"
+                               v-model="ingredientModel.unitPrice"
                         >
                      </div>
                      <spinner v-if="pending"
@@ -73,6 +73,16 @@
          </div>
       </transition>
 
+      <div class="alert-response" v-if="errors.length">
+         <transition-group name="bounce" tag="h3">
+            <h3 v-for="(error, index) in errors"
+                class="alert alert-danger text-center"
+                @click="deleteError(error.message)"
+                :key="index"
+            >{{error.message}}</h3>
+         </transition-group>
+      </div>
+
       <h2 class="text-center">Alapanyag kereső</h2>
       <hr>
 
@@ -88,7 +98,8 @@
 
       <template v-if="showList">
          <transition-group name="bounce" tag="div">
-            <div v-for="ingredient in filteredList" :key="ingredient.id" class="card my-2">
+            <div v-for="ingredient in filteredList"
+                 :key="ingredient.id" class="card my-2">
                <div class="text-center btn btn-info"
                     @click="modifyIngredient(ingredient)"
                >{{ingredient.name}}
@@ -123,13 +134,17 @@
             pending: false,
             ingredientUnitTypes: ['g', 'dkg', 'kg', 'ml', 'cl', 'l', 'db'],
             search: '',
-            newIngredient: {
+            ingredientModel: {
                id: null,
                name: '',
                unitType: 'típus',
                unitPrice: null,
             },
             fetchedIngredients: {},
+            errors: [
+               {message: 'Test error message'},
+               {message: 'Another dummy error message'}
+            ]
          }
       },
 
@@ -145,10 +160,10 @@
          uploadIngredient() {
             this.success = false;
             this.pending = true;
-            this.newIngredient.name = this.newIngredient.name.toLowerCase();
+            this.ingredientModel.name = this.ingredientModel.name.toLowerCase();
 
             axios.post('/registernewingredient', {
-               newIngredient: this.newIngredient,
+               newIngredient: this.ingredientModel,
             })
                .then((response) => {
                   this.resetInput();
@@ -167,16 +182,29 @@
                   console.log('Backend error: ', error.response.data);
                   console.log('Statuscode: ', error.response.status);
                   console.log('Response headers: ', error.response.headers);
+                  this.handleErrors(error.response.data)
                });
+         },
+
+         handleErrors(errors) {
+            let errorsMessage = errors['newIngredient.name'][0];
+            let alreadyHaveThisError = this.errors.filter(e => e.message === errorsMessage).length > 0;
+
+            if(!alreadyHaveThisError) {
+               this.errors.push({message: errorsMessage});
+            }
+
+            this.resetInput();
+            this.pending = false;
          },
 
          uploadModifiedIngredient() {
             this.success = false;
             this.pending = true;
-            this.newIngredient.name = this.newIngredient.name.toLowerCase();
+            this.ingredientModel.name = this.ingredientModel.name.toLowerCase();
 
             axios.post('/modifyexistingingredient', {
-               ingredient: this.newIngredient,
+               ingredient: this.ingredientModel,
             })
                .then((response) => {
                   this.resetInput();
@@ -197,16 +225,27 @@
                });
          },
 
+         checkSearcher() {
+            if(this.search.length === 0) {
+               this.modify =  false;
+               this.resetInput();
+            }
+         },
+
          modifyIngredient(ingredient) {
             this.modify = true;
 
-            this.newIngredient.id = ingredient.id;
-            this.newIngredient.name = ingredient.name;
-            this.newIngredient.unitType = ingredient.unit_type;
-            this.newIngredient.unitPrice = ingredient.unit_price;
+            this.ingredientModel.id = ingredient.id;
+            this.ingredientModel.name = ingredient.name;
+            this.ingredientModel.unitType = ingredient.unit_type;
+            this.ingredientModel.unitPrice = ingredient.unit_price;
             this.search = ingredient.name;
+         },
 
-
+         deleteError(key) {
+            this.errors = this.errors.filter(function( obj ) {
+               return obj.message !== key;
+            });
          },
 
          fetchIngredients() {
@@ -220,15 +259,14 @@
          },
 
          testMethod() {
-            if (this.filteredList.length) {
-               this.showList = true;
-            }
+            this.checkSearcher();
+            this.filteredList.length ? this.showList = true : '';
          },
 
          resetInput() {
-            this.newIngredient.name = '';
-            this.newIngredient.unitType = 'típus';
-            this.newIngredient.unitPrice = null;
+            this.ingredientModel.name = '';
+            this.ingredientModel.unitType = 'típus';
+            this.ingredientModel.unitPrice = null;
          },
 
          uploadManager() {
