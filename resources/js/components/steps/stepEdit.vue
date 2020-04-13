@@ -46,7 +46,6 @@
 
       computed: {
          filteredList() {
-            this.fetchRecipes();
             return this.fetchedRecipes.filter(cake => {
                return cake.name.toLowerCase().includes(this.search.toLowerCase())
             })

@@ -12,7 +12,7 @@
 
             <!-- Recept regisztrálása -->
             <stepRegister v-else-if="recipeSteps.stepRegister"
-                          @registerNewRecipe="registerNewRecipeToDB($event)"
+                          @registerNewRecipe="registerNewRecipeObject($event)"
             />
 
             <!-- Recept módosítása -->
@@ -230,11 +230,6 @@
             }
          },
 
-         validateServerResponseOnSuccess(responseData) {
-            this.registerNewRecipeObject(responseData);
-            this.handleSteps('fill');
-         },
-
          validateServerResponseOnFail(error) {
             if (error.response.status === 422) {
                alert(error.response.data.errors.name);
@@ -243,10 +238,14 @@
          },
 
          registerNewRecipeObject(responseData) {
+            this.handleSteps('pending');
+            console.log('TUTUTUTUTUTU', responseData);
             this.recipe.id = responseData.new_recipe_id;
             this.recipe.name = this.newRecipeNameFirstLetterToUpperCase(responseData.new_recipe_name);
             console.log(this.recipe.id);
-            console.log(this.recipe.name)
+            console.log(this.recipe.name);
+
+            this.handleSteps('fill');
          },
 
          newRecipeNameFirstLetterToUpperCase(newRecipeName) {

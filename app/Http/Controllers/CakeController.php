@@ -6,6 +6,7 @@ use App\Http\Services\CakeService;
 use Illuminate\Http\Request;
 use App\Cake;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Validator;
 
 class CakeController extends Controller
 {
@@ -39,9 +40,26 @@ class CakeController extends Controller
       /*
        * Laravel validátor. Ha sikerül, továbbmegy. Ha elbukik, akkor response 422-es kóddal a validációs hibaüzenettel.
        */
-      $request->validate([
+/*      $request->validate([
          'name' => ['required', 'unique:cakes', 'min:3', 'max:40'],
-      ]);
+      ]);*/
+
+      $rules = [
+         'name' => ['min:2', 'max:50', 'required', 'unique:cakes']
+      ];
+
+      $message = [
+         'name.min' => 'A név legyen minimum 2 karakter hosszú!',
+         'name.max' => 'A név nem lehet hosszabb :max karakternél!',
+         'name.unique' => ':input recept már létezik!',
+         'required' => 'Ne hackeld az oldalt pls, backenden is van validáció!',
+      ];
+
+      $validator = Validator::make($request->all(), $rules, $message);
+
+      if( $validator->fails()) {
+         return response($validator->errors(), 422);
+      }
 
       $newRecipe = $cakeService->registerRecipeToDb($request->name);
 
