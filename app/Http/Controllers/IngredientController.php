@@ -83,6 +83,22 @@ class IngredientController extends Controller
    }
 
    public function modifyExistingIngredient(Request $request) {
+
+      $rules = [
+         'ingredients.unit_price' => ['max:8', 'required']
+      ];
+
+      $message = [
+         'ingredients.unit_price.max' => 'Ha valóban ennyibe kerülne az alapanyag, akkor kár is ezzel a programmal vesződni..',
+         'ingredients.unit_price.required' => 'Ne hackeld az oldalt pls, backenden is van validáció!',
+      ];
+
+      $validator = Validator::make($request->all(), $rules, $message);
+
+      if( $validator->fails()) {
+         return response($validator->errors(), 422);
+      }
+
       $newIngredientData = $request->all();
       $ingredientService = new IngredientService;
       $ingredientService->updateIngredient($newIngredientData);

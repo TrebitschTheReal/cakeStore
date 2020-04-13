@@ -3,7 +3,6 @@
       <div class="m-lg-4 m-xs-2">
          <h2 class="text-center">Alapanyagok kezelése</h2>
          <hr>
-         <!-- TODO: valahol itt ki lehessen választani az alapanyagot, mint a recept módosításnál, és töltse fel a visszakapott adat a newIngredient objektumot és viszlát -->
          <transition name="bounce" mode="out-in">
             <div class="card-body form-group">
                <div class="">
@@ -73,15 +72,11 @@
          </div>
       </transition>
 
-      <div class="alert-response">
-         <transition-group name="bounce" tag="h3">
-            <h3 v-for="(error, index) in errors"
-                class="alert alert-danger text-center"
-                @click="deleteError(index)"
-                :key="error + '-' + index"
-            >{{error.message}}</h3>
-         </transition-group>
-      </div>
+      <!-- A fetchedErrors bindelve van a child komponens propjaként, és ott watcholjuk a változást -->
+      <!-- Ha a child komponens emitel egy errorChanged eventet, akkor a visszaérkező paraméter ($event) értékével tesszük egyenlővé a pendinget -->
+      <errorHandler :fetchedErrors="fetchedErrors"
+                    @errorChanged="pending = $event"
+      />
 
       <h2 class="text-center">Alapanyag kereső</h2>
       <hr>
@@ -92,7 +87,7 @@
                 v-model="search"
                 class="form-control" id="recipe-name"
                 aria-describedby="recipe-name"
-                @keyup="testMethod"
+                @keyup="checkSearcher"
                 placeholder="Kezd el írni az alapanyag nevét">
       </div>
 
@@ -113,12 +108,14 @@
 
 <script>
    import spinner from '../loadingSpinner'
+   import errorHandler from "../ErrorHandling";
 
    export default {
       name: "stepIngredientUpload",
 
       components: {
-         spinner
+         spinner,
+         errorHandler
       },
 
       mounted() {
@@ -127,6 +124,7 @@
 
       data() {
          return {
+            fetchedErrors: {},
             successResponse: '',
             modify: false,
             showList: false,
@@ -143,14 +141,11 @@
             fetchedIngredients: {},
             errors: [
                /*
-
                Ilyen formában töltődnek be a hibaüzenetek:
-
 
                {message: 'Test error message'},
                {message: 'Another dummy error message'}
 
-               *
                */
             ]
          }
@@ -181,7 +176,7 @@
                   this.search = '';
                   this.showList = false;
                   this.fetchIngredients();
-                  this.errors = [];
+                  this.fetchedErrors = {};
                   this.successResponse = 'Sikeres alapanyag feltöltés!';
 
                   console.log(response);
@@ -191,42 +186,13 @@
                   console.log('Backend error: ', error.response.data);
                   console.log('Statuscode: ', error.response.status);
                   console.log('Response headers: ', error.response.headers);
-                  this.handleErrors(error.response.data)
+
+                  /*
+                    Beküldjük a 'nyers' error objectet a fetchedErrors fieldbe, ami be van kötve az errorHandler
+                    komponensbe
+                   */
+                  this.fetchedErrors = error.response.data;
                });
-         },
-
-         handleErrors(backendErrors) {
-
-            /*
-            * Reseteljuk a jelenlegi errors tömböt
-            */
-
-            this.errors = [];
-
-            /*
-            * Átalakítjuk a kapott objektumokat egy asszociatív tömbbé
-            */
-            let errors = Object.values(backendErrors);
-
-            /*
-            * Az asszociatív tömböt egy sima tömbbé alakítjuk (ha már úgy is egyedi hibaüzeneteket generálunk backenden,
-            * akkor teljesen felesleges tovább bonyolítani
-            *
-            */
-            errors = errors.flat();
-
-            /*
-            * Végigiterálunk a hibaüzeneteken, és ha még nem szerepel a Vue errors tömbjében,
-            * akkor beletesszük.
-            */
-            for(let error of errors) {
-               let alreadyHaveThisError = this.errors.filter(e => e.message === error).length > 0;
-               if(!alreadyHaveThisError) {
-                  this.errors.push({message: error});
-               }
-            }
-
-            this.pending = false;
          },
 
          uploadModifiedIngredient() {
@@ -235,7 +201,7 @@
             this.ingredientModel.name = this.ingredientModel.name.toLowerCase();
 
             axios.post('/modifyexistingingredient', {
-               ingredient: this.ingredientModel,
+               ingredients: this.ingredientModel,
             })
                .then((response) => {
                   this.resetInput();
@@ -245,6 +211,7 @@
                   this.search = '';
                   this.showList = false;
                   this.fetchIngredients();
+                  this.fetchedErrors = {};
                   this.successResponse = 'Sikeres alapanyag módosítás!';
                   console.log(response);
                })
@@ -253,29 +220,27 @@
                   console.log('Backend error: ', error.response.data);
                   console.log('Statuscode: ', error.response.status);
                   console.log('Response headers: ', error.response.headers);
-                  this.handleErrors(error.response.data);
+                  this.fetchedErrors = error.response.data;
                });
          },
 
          checkSearcher() {
-            if(this.search.length === 0) {
-               this.modify =  false;
+            if (this.search.length === 0) {
+               this.modify = false;
                this.resetInput();
             }
+
+            this.filteredList.length ? this.showList = true : '';
          },
+
 
          modifyIngredient(ingredient) {
             this.modify = true;
-
             this.ingredientModel.id = ingredient.id;
             this.ingredientModel.name = ingredient.name;
             this.ingredientModel.unit_type = ingredient.unit_type;
             this.ingredientModel.unit_price = ingredient.unit_price;
             this.search = ingredient.name;
-         },
-
-         deleteError(index) {
-            this.errors.splice(index, 1);
          },
 
          fetchIngredients() {
@@ -286,11 +251,6 @@
                .catch((error) => {
                   console.log(error);
                });
-         },
-
-         testMethod() {
-            this.checkSearcher();
-            this.filteredList.length ? this.showList = true : '';
          },
 
          resetInput() {

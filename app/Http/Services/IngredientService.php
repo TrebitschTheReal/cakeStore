@@ -19,8 +19,8 @@ class IngredientService
 
    public function updateIngredient($newIngredientData) {
 
-      $ingredient = Ingredient::find($newIngredientData['ingredient']['id']);
-      $ingredient->unit_price = $newIngredientData['ingredient']['unit_price'];
+      $ingredient = Ingredient::find($newIngredientData['ingredients']['id']);
+      $ingredient->unit_price = $newIngredientData['ingredients']['unit_price'];
       $ingredient->save();
 
       $this->updateIngredientSumPricesInExistingCakes();
