@@ -11,16 +11,16 @@ class IngredientService
    public function saveNewIngredient($newIngredientData) {
 
       $newIngredient = new Ingredient;
-      $newIngredient->name = $newIngredientData['newIngredient']['name'];
-      $newIngredient->unit_type = $newIngredientData['newIngredient']['unitType'];
-      $newIngredient->unit_price = $newIngredientData['newIngredient']['unitPrice'];
+      $newIngredient->name = $newIngredientData['ingredients']['name'];
+      $newIngredient->unit_type = $newIngredientData['ingredients']['unit_type'];
+      $newIngredient->unit_price = $newIngredientData['ingredients']['unit_price'];
       $newIngredient->save();
    }
 
    public function updateIngredient($newIngredientData) {
 
       $ingredient = Ingredient::find($newIngredientData['ingredient']['id']);
-      $ingredient->unit_price = $newIngredientData['ingredient']['unitPrice'];
+      $ingredient->unit_price = $newIngredientData['ingredient']['unit_price'];
       $ingredient->save();
 
       $this->updateIngredientSumPricesInExistingCakes();

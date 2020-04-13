@@ -24,7 +24,7 @@
                                 name=""
                                 id=""
                                 required
-                                v-model="ingredientModel.unitType"
+                                v-model="ingredientModel.unit_type"
                         >
                            <option v-for="type in ingredientUnitTypes"
                                    :value="type"
@@ -33,12 +33,12 @@
                         </select>
                      </div>
                      <div class="col col-lg-3 col-xs-1 text-center">
-                        <p>Ár / {{ingredientModel.unitType}}</p>
+                        <p>Ár / {{ingredientModel.unit_type}}</p>
                         <input required
                                :disabled="pending"
                                class="form-control"
                                type="number"
-                               v-model="ingredientModel.unitPrice"
+                               v-model="ingredientModel.unit_price"
                         >
                      </div>
                      <spinner v-if="pending"
@@ -73,12 +73,12 @@
          </div>
       </transition>
 
-      <div class="alert-response" v-if="errors.length">
+      <div class="alert-response">
          <transition-group name="bounce" tag="h3">
             <h3 v-for="(error, index) in errors"
                 class="alert alert-danger text-center"
-                @click="deleteError(error.message)"
-                :key="index"
+                @click="deleteError(index)"
+                :key="error + '-' + index"
             >{{error.message}}</h3>
          </transition-group>
       </div>
@@ -137,13 +137,21 @@
             ingredientModel: {
                id: null,
                name: '',
-               unitType: 'típus',
-               unitPrice: null,
+               unit_type: 'típus',
+               unit_price: null,
             },
             fetchedIngredients: {},
             errors: [
+               /*
+
+               Ilyen formában töltődnek be a hibaüzenetek:
+
+
                {message: 'Test error message'},
                {message: 'Another dummy error message'}
+
+               *
+               */
             ]
          }
       },
@@ -163,7 +171,7 @@
             this.ingredientModel.name = this.ingredientModel.name.toLowerCase();
 
             axios.post('/registernewingredient', {
-               newIngredient: this.ingredientModel,
+               ingredients: this.ingredientModel,
             })
                .then((response) => {
                   this.resetInput();
@@ -173,6 +181,7 @@
                   this.search = '';
                   this.showList = false;
                   this.fetchIngredients();
+                  this.errors = [];
                   this.successResponse = 'Sikeres alapanyag feltöltés!';
 
                   console.log(response);
@@ -186,15 +195,37 @@
                });
          },
 
-         handleErrors(errors) {
-            let errorsMessage = errors['newIngredient.name'][0];
-            let alreadyHaveThisError = this.errors.filter(e => e.message === errorsMessage).length > 0;
+         handleErrors(backendErrors) {
 
-            if(!alreadyHaveThisError) {
-               this.errors.push({message: errorsMessage});
+            /*
+            * Reseteljuk a jelenlegi errors tömböt
+            */
+
+            this.errors = [];
+
+            /*
+            * Átalakítjuk a kapott objektumokat egy asszociatív tömbbé
+            */
+            let errors = Object.values(backendErrors);
+
+            /*
+            * Az asszociatív tömböt egy sima tömbbé alakítjuk (ha már úgy is egyedi hibaüzeneteket generálunk backenden,
+            * akkor teljesen felesleges tovább bonyolítani
+            *
+            */
+            errors = errors.flat();
+
+            /*
+            * Végigiterálunk a hibaüzeneteken, és ha még nem szerepel a Vue errors tömbjében,
+            * akkor beletesszük.
+            */
+            for(let error of errors) {
+               let alreadyHaveThisError = this.errors.filter(e => e.message === error).length > 0;
+               if(!alreadyHaveThisError) {
+                  this.errors.push({message: error});
+               }
             }
 
-            this.resetInput();
             this.pending = false;
          },
 
@@ -222,6 +253,7 @@
                   console.log('Backend error: ', error.response.data);
                   console.log('Statuscode: ', error.response.status);
                   console.log('Response headers: ', error.response.headers);
+                  this.handleErrors(error.response.data);
                });
          },
 
@@ -237,15 +269,13 @@
 
             this.ingredientModel.id = ingredient.id;
             this.ingredientModel.name = ingredient.name;
-            this.ingredientModel.unitType = ingredient.unit_type;
-            this.ingredientModel.unitPrice = ingredient.unit_price;
+            this.ingredientModel.unit_type = ingredient.unit_type;
+            this.ingredientModel.unit_price = ingredient.unit_price;
             this.search = ingredient.name;
          },
 
-         deleteError(key) {
-            this.errors = this.errors.filter(function( obj ) {
-               return obj.message !== key;
-            });
+         deleteError(index) {
+            this.errors.splice(index, 1);
          },
 
          fetchIngredients() {
@@ -265,8 +295,8 @@
 
          resetInput() {
             this.ingredientModel.name = '';
-            this.ingredientModel.unitType = 'típus';
-            this.ingredientModel.unitPrice = null;
+            this.ingredientModel.unit_type = 'típus';
+            this.ingredientModel.unit_price = null;
          },
 
          uploadManager() {
