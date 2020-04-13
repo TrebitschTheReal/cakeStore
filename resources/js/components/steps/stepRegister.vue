@@ -59,6 +59,9 @@
             this.registerNewRecipeToDB();
          },
 
+         /*
+            Regisztráljuk az új receptet az adatbázisban
+          */
          registerNewRecipeToDB(newRecipeName) {
             this.pending = true;
             axios.post('/registernewrecipe', {

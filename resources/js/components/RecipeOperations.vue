@@ -9,7 +9,6 @@
                                  @choosenOperation="handleSteps($event)"
             />
 
-
             <!-- Recept regisztrálása -->
             <stepRegister v-else-if="recipeSteps.stepRegister"
                           @registerNewRecipe="registerNewRecipeObject($event)"
@@ -118,27 +117,6 @@
       Metódusok
       */
       methods: {
-         /*
-         * Regisztrálunk egy új receptet az adatbázisban
-         */
-         registerNewRecipeToDB(newRecipeName) {
-            this.handleSteps('pending');
-            axios.post('/registernewrecipe', {
-               name: newRecipeName,
-            })
-               .then((response) => {
-                  this.validateServerResponseOnSuccess(response.data);
-                  console.log(response);
-               })
-               .catch((error) => {
-                  this.validateServerResponseOnFail(error);
-                  console.log(error);
-                  console.log('Backend error: ', error.response.data);
-                  console.log('Statuscode: ', error.response.status);
-                  console.log('Response headers: ', error.response.headers);
-               });
-         },
-
          /*
          * Frissítjük a receptet az adatbázisban
          */
