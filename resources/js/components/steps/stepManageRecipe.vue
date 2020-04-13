@@ -1,53 +1,55 @@
 <template>
    <div class="mx-auto card">
-      <div class="card-header">
-         <h2 class="text-center">{{recipe.name}}</h2>
-      </div>
-      <div class="card-body">
-         <div class="row">
-            <div class="col col-lg-12 col-xs-12 text-center mb-3">
-               <p class="font-weight-bold">Leírás</p>
-               <textarea v-model="recipe.desc" class="form-control" name="" cols="30" rows="10"/>
-            </div>
+      <form v-on:submit.prevent="finishNewRecipe">
+         <div class="card-header">
+            <h2 class="text-center">{{recipe.name}}</h2>
          </div>
-         <div v-for="(ingredient, index) in recipe.ingredients" class="form-group">
+         <div class="card-body">
             <div class="row">
-               <div class="col col-lg-3 col-xs-12 text-center">
-                  <p>Mennyiség</p>
-                  <input class="form-control" v-model="ingredient.quantity" type="number">
+               <div class="col col-lg-12 col-xs-12 text-center mb-3">
+                  <p class="font-weight-bold">Leírás</p>
+                  <textarea v-model="recipe.desc" class="form-control" name="" cols="30" rows="10"/>
                </div>
-               <div class="col col-lg-2 col-xs-12 text-center">
-                  <p>Egység</p>
-                  <input disabled class="form-control" type="text" v-model="ingredient.unitType">
+            </div>
+            <div v-for="(ingredient, index) in recipe.ingredients" class="form-group">
+               <div class="row">
+                  <div class="col col-lg-3 col-xs-12 text-center">
+                     <p>Mennyiség</p>
+                     <input required class="form-control" v-model="ingredient.quantity" type="number">
+                  </div>
+                  <div class="col col-lg-2 col-xs-12 text-center">
+                     <p>Egység</p>
+                     <input required disabled class="form-control" type="text" v-model="ingredient.unitType">
+                  </div>
+                  <div class="col col-lg-6 col-xs-12 text-center">
+                     <p>Alapanyag</p>
+                     <select required class="form-control" v-model="ingredient.name" id="exampleFormControlSelect1"
+                             @change="linkFetchedIngredientStatsToTheNewlyAddedIngredient(index, $event)">
+                        <option v-for="(availableIngredient, key) in availableIngredients">
+                           {{availableIngredient.name}}
+                        </option>
+                     </select>
+                  </div>
+                  <div class="col col-lg-1 col-xs-12 text-center">
+                     <p class="text-white">-</p>
+                     <p @click="removeIngredientRow(index)" class="btn btn-danger">-</p>
+                  </div>
                </div>
-               <div class="col col-lg-6 col-xs-12 text-center">
-                  <p>Alapanyag</p>
-                  <select class="form-control" v-model="ingredient.name" id="exampleFormControlSelect1"
-                          @change="linkFetchedIngredientStatsToTheNewlyAddedIngredient(index, $event)">
-                     <option v-for="(availableIngredient, key) in availableIngredients">
-                        {{availableIngredient.name}}
-                     </option>
-                  </select>
-               </div>
-               <div class="col col-lg-1 col-xs-12 text-center">
-                  <p class="text-white">-</p>
-                  <p @click="removeIngredientRow(index)" class="btn btn-danger">-</p>
+            </div>
+            <div class="col col-lg-12 col-xs-12">
+               <div class="mt-4 mb-2 alert alert-success">
+                  <h4 class="">Új alapanyag hozzáadása<span @click="addNewIngredientRow"
+                                                            class="float-right btn btn-success">+</span>
+                  </h4>
                </div>
             </div>
          </div>
-         <div class="col col-lg-12 col-xs-12">
-            <div class="mt-4 mb-2 alert alert-success">
-               <h4 class="">Új alapanyag hozzáadása<span @click="addNewIngredientRow"
-                                                         class="float-right btn btn-success">+</span>
-               </h4>
+         <div class="card-footer">
+            <div class="row">
+               <button type="submit" class="col btn btn-success m-2">Recept feltöltése</button>
             </div>
          </div>
-      </div>
-      <div class="card-footer">
-         <div class="row">
-            <button @click="finishNewRecipe()" class="col btn btn-success m-2">Recept feltöltése</button>
-         </div>
-      </div>
+      </form>
    </div>
 </template>
 
@@ -67,7 +69,7 @@
          recipe: {}
       },
 
-      data: function() {
+      data: function () {
          return {
             availableIngredients: [],
          }
@@ -127,8 +129,30 @@
          },
 
          finishNewRecipe() {
-            this.sumNewRecipeIngredientPrices();
-            this.$emit('updateRecipe', this.recipe)
+            if(this.checkDuplicateIngredients()) {
+               this.sumNewRecipeIngredientPrices();
+               this.$emit('updateRecipe', this.recipe)
+            } else {
+               alert('Duplikáció az alapanyagoknál!');
+            }
+         },
+
+         checkDuplicateIngredients() {
+            let cnt = 0;
+
+            for (let ingredient of this.recipe.ingredients) {
+               for (let anotherIngredient of this.recipe.ingredients) {
+                  if (ingredient.name === anotherIngredient.name) {
+                     cnt++
+                  }
+
+                  if (cnt > 1) {
+                     return false;
+                  }
+               }
+               cnt = 0;
+            }
+            return true;
          },
 
          sumNewRecipeIngredientPrices() {
