@@ -32,17 +32,33 @@ class IngredientController extends Controller
        *
        */
 
+      /*
+       * Meghatározzuk a szabályokat a validátornak
+       *
+       * ingredients.name - ingredients az axios postolt objektum neve, és name, az egyik fieldje
+       */
+
       $rules = [
          'ingredients.name' => ['required', 'unique:ingredients', 'min:2', 'max:20'],
+         'ingredients.unit_price' => ['max:8']
       ];
+
+      /*
+       * Egyedi hibaüzenetek a validációhoz amik visszamennek majd frontendre.
+       */
 
       $message = [
          'unique' => 'A :input már szerepel!',
          'required' => 'Ne hackeld az oldalt pls, backenden is van validáció!',
          'ingredients.name.min' => 'Legalább 2 karakter hosszú nevet adj meg!',
-         'max' => 'Ne kisregény legyen az alapanyag neve! Max 20 karakter!'
+         'ingredients.name.max' => 'Ne kisregény legyen az alapanyag neve! Max 20 karakter!',
+         'ingredients.unit_price.max' => 'Ha valóban ennyibe kerülne az alapanyag, akkor kár is ezzel a programmal vesződni..'
 
       ];
+
+      /*
+       * Lefut a validátor
+       */
 
       $validator = Validator::make($request->all(), $rules, $message);
 
@@ -54,6 +70,10 @@ class IngredientController extends Controller
          return response($validator->errors(), 422);
       }
 
+      /*
+       * Ha az input megfelelő (tehát nem dobtunk vissza 422-őt) akkor tovább fut a controller, és meghívja a service osztályt
+       * az input feltöltéséhez.
+       */
       $ingredientService = new IngredientService;
       $ingredientService->saveNewIngredient($request);
    }
