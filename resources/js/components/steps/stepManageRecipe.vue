@@ -42,11 +42,18 @@
                                                             class="float-right btn btn-success">+</span>
                   </h4>
                </div>
+               <errorHandler :fetchedErrors="fetchedErrors"
+                             @errorChanged="pending = $event"
+                             class="my-2"
+               />
             </div>
          </div>
          <div class="card-footer">
             <div class="row">
-               <button type="submit" class="col btn btn-success m-2">Recept feltöltése</button>
+               <spinner v-if="pending === true"
+                        class="mt-4 col col-lg-12"
+               />
+               <button v-else type="submit" class="col-12 btn btn-success m-2">Recept feltöltése</button>
             </div>
          </div>
       </form>
@@ -54,8 +61,17 @@
 </template>
 
 <script>
+   import spinner from '../loadingSpinner'
+   import errorHandler from "../ErrorHandling";
+
    export default {
       name: "stepManageRecipe",
+
+      components: {
+         spinner,
+         errorHandler
+      },
+
 
       /*
       A mounted CSAK akkor fut le, ha true értéket kap az adott step ami aktiválja az aktuális komponenst.
@@ -71,12 +87,13 @@
 
       data: function () {
          return {
+            fetchedErrors: [],
+            pending: false,
             availableIngredients: [],
          }
       },
 
       methods: {
-
          fetchInredientsList() {
             axios.get('/fetchingredients')
                .then((response) => {
@@ -129,16 +146,33 @@
          },
 
          finishNewRecipe() {
-            if(this.checkDuplicateIngredients()) {
+            this.fetchedErrors = [];
+            this.pending = true;
+            /*
+               Ellenőrizzük a duplikációkat
+            */
+            let duplicate = this.checkDuplicateIngredients();
+
+            /*
+               Ha a duplicate változó hossza nem nulla, akkor értelemszerűen találtunk duplikációt.
+            */
+            if(!duplicate.length) {
                this.sumNewRecipeIngredientPrices();
                this.$emit('updateRecipe', this.recipe)
             } else {
-               alert('Duplikáció az alapanyagoknál!');
+               let errorString = 'A ' + duplicate + ' többször szerepel!';
+               this.fetchedErrors = [errorString];
+               this.pending = false;
             }
          },
 
          checkDuplicateIngredients() {
+            /*
+               Végigiterálunk az ingredienteken, és ha duplikációt találunk, azt bepusholjuk a duplicates tömbbe,
+               majd mindenképpen visszaküldjük a tömböt.
+             */
             let cnt = 0;
+            let duplicates = [];
 
             for (let ingredient of this.recipe.ingredients) {
                for (let anotherIngredient of this.recipe.ingredients) {
@@ -147,12 +181,12 @@
                   }
 
                   if (cnt > 1) {
-                     return false;
+                     duplicates.push(ingredient.name);
                   }
                }
                cnt = 0;
             }
-            return true;
+            return duplicates;
          },
 
          sumNewRecipeIngredientPrices() {
