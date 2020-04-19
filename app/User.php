@@ -9,8 +9,10 @@ use Illuminate\Notifications\Notifiable;
 class User extends Authenticatable
 {
     use Notifiable;
+    use Permissions\HasPermissionsTrait;
 
-    /**
+
+   /**
      * The attributes that are mass assignable.
      *
      * @var array

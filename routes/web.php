@@ -36,6 +36,9 @@ Route::get('/fetchingredients', 'IngredientController@fetchIngredients')->name('
 Route::post('/modifyrecipe', 'CakeController@modifyRecipe')->name('modifyrecipe')->middleware('auth');
 
 
+Route::get('/roles', 'PermissionController@Permission');
+
+
 
 Auth::routes();
 

@@ -19,6 +19,7 @@
             </div>
         </div>
     </div>
+
 {{--    @foreach($cakes as $cake)
         {{ $cake->name }}
 
