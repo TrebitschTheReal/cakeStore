@@ -24,7 +24,7 @@
                <td>{{recipe.created_at}}</td>
                <td>{{recipe.updated_at}}</td>
                <td>
-                  <button @click="modifyRecipe(cake.id)" class="btn btn-warning">Módosítás</button>
+                  <button @click="modifyRecipe(recipe.id)" class="btn btn-warning">Módosítás</button>
                </td>
                <td>
                   <button class="btn btn-danger">Törlés</button>
@@ -108,8 +108,8 @@
       },
 
       methods: {
-         modifyRecipe(cakeId) {
-            this.$emit('modifyRecipe', cakeId)
+         modifyRecipe(recipeId) {
+            this.$emit('modifyRecipe', recipeId)
          },
 
          modifyIngredient(ingredient) {

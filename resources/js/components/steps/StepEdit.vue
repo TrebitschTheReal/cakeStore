@@ -22,8 +22,8 @@
 </template>
 
 <script>
-   import spinner from '../loadingSpinner';
-   import tableView from '../TableView';
+   import spinner from '../partials/loadingSpinner';
+   import tableView from '../partials/tableView';
 
    export default {
       name: "stepModify",

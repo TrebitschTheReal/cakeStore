@@ -46,13 +46,13 @@
 </template>
 
 <script>
-   import stepRegister from './steps/stepRegister'
-   import stepManageRecipe from './steps/stepManageRecipe'
-   import loadingSpinner from './loadingSpinner'
-   import successRecipeUploadAlert from './successRecipeUploadAlert'
-   import stepOperationChoose from "./steps/stepOperationChoose"
-   import stepEdit from './steps/stepEdit'
-   import stepIngredientUpload from './steps/stepIngredientUpload'
+   import stepRegister from './steps/StepRegister'
+   import stepManageRecipe from './steps/StepManageRecipe'
+   import loadingSpinner from './partials/loadingSpinner'
+   import successRecipeUploadAlert from './partials/successRecipeUploadAlert'
+   import stepOperationChoose from "./steps/StepOperationChoose"
+   import stepEdit from './steps/StepEdit'
+   import stepIngredientUpload from './steps/StepIngredientUpload'
 
    export default {
       name: "RecipeOperations",

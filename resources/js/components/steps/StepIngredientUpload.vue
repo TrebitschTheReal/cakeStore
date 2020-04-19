@@ -100,9 +100,9 @@
 </template>
 
 <script>
-   import spinner from '../loadingSpinner';
-   import errorHandler from "../ErrorHandling";
-   import tableView from '../TableView';
+   import spinner from '../partials/loadingSpinner';
+   import errorHandler from "../partials/errorHandling";
+   import tableView from '../partials/tableView';
 
    export default {
       name: "stepIngredientUpload",

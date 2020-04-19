@@ -27,8 +27,8 @@
 </template>
 
 <script>
-   import spinner from '../loadingSpinner';
-   import errorHandler from '../ErrorHandling';
+   import spinner from '../partials/loadingSpinner';
+   import errorHandler from '../partials/errorHandling';
 
 
    export default {
