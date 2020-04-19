@@ -55,11 +55,12 @@
                                 </li>
                             @endif
                         @else
-                          @role('developer')
-                          <li class="nav-item">
-                             <a class="nav-link" href="{{ route('login') }}">{{ __('Teszt a rólokhoz (ROLÓ LOL)') }}</a>
-                          </li>
-                          @endrole
+                            @role('developer')
+                            <li class="nav-item">
+                                <a class="nav-link"
+                                   href="{{ route('login') }}">{{ __('Teszt a rólokhoz (ROLÓ LOL)') }}</a>
+                            </li>
+                            @endrole
                             <li class="nav-item">
                                 <a href="{{route('cakerecipes')}}" class="nav-link">Torta recept kereső</a>
                             </li>

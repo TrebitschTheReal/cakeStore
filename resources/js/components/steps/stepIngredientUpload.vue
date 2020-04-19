@@ -4,7 +4,7 @@
          <h2 class="text-center">Alapanyagok kezelése</h2>
          <hr>
          <transition name="bounce" mode="out-in">
-            <div class="card-body form-group">
+            <div class="form-group">
                <div class="">
                   <form class="row"
                         v-on:submit.prevent="uploadManager">
@@ -81,7 +81,7 @@
       <h2 class="text-center">Alapanyag kereső</h2>
       <hr>
 
-      <div class="col col-lg-12 form-group">
+      <div class="col-lg-6 col-xs-12 form-group mx-auto">
          <input required
                 type="text"
                 v-model="search"
@@ -90,32 +90,27 @@
                 @keyup="checkSearcher"
                 placeholder="Kezd el írni az alapanyag nevét">
       </div>
-
-      <template v-if="showList">
-         <transition-group name="bounce" tag="div">
-            <div v-for="ingredient in filteredList"
-                 :key="ingredient.id" class="card my-2">
-               <div class="text-center btn btn-info"
-                    @click="modifyIngredient(ingredient)"
-               >{{ingredient.name}}
-               </div>
-            </div>
-         </transition-group>
-      </template>
+      <tableView v-if="showList"
+                 :filteredList="this.filteredList"
+                 :tableData="'ingredient'"
+                 @modifyIngredient="modifyIngredient($event)"
+      />
 
    </div>
 </template>
 
 <script>
-   import spinner from '../loadingSpinner'
+   import spinner from '../loadingSpinner';
    import errorHandler from "../ErrorHandling";
+   import tableView from '../TableView';
 
    export default {
       name: "stepIngredientUpload",
 
       components: {
          spinner,
-         errorHandler
+         errorHandler,
+         tableView
       },
 
       mounted() {
@@ -247,6 +242,7 @@
             axios.get('/fetchingredients')
                .then((response) => {
                   this.fetchedIngredients = response.data;
+                  this.showList = true;
                })
                .catch((error) => {
                   console.log(error);

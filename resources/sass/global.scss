@@ -1,3 +1,10 @@
 .alert-response {
    cursor: pointer;
 }
+
+/*
+   Fix méret a táblához. Muszáj, mert adatfrissítéskor ugrált.
+ */
+.table-fix-size {
+   width: 57rem !important;
+}
