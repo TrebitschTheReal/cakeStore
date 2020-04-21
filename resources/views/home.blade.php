@@ -20,7 +20,7 @@
         </div>
     </div>
 
-{{--    @foreach($cakes as $cake)
+{{--    @foreach($recipes as $cake)
         {{ $cake->name }}
 
         @foreach($cake->required_ingredients as $ingredient)

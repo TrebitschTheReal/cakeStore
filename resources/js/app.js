@@ -21,6 +21,7 @@ window.Vue = require('vue');
 
 Vue.component('cake-list', require('./components/CakeList.vue').default);
 Vue.component('recipe-operations', require('./components/RecipeOperations').default);
+Vue.component('user-operations', require('./components/UserOperations').default);
 
 /**
  * Next, we will create a fresh Vue application instance and attach it to

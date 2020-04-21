@@ -55,10 +55,9 @@
                                 </li>
                             @endif
                         @else
-                            @role('developer')
+                            @role('admin')
                             <li class="nav-item">
-                                <a class="nav-link"
-                                   href="{{ route('login') }}">{{ __('Teszt a rólokhoz (ROLÓ LOL)') }}</a>
+                                <a href="{{route('users')}}" class="nav-link">Felhasználók adminisztrálása</a>
                             </li>
                             @endrole
                             <li class="nav-item">

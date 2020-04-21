@@ -12,12 +12,12 @@ class CakeController extends Controller
 {
    public function index()
    {
-      return view('cakes/cakeRecipeList');
+      return view('recipes/cakeRecipeList');
    }
 
    public function createRecipeView()
    {
-      return view('cakes/createNewRecipe');
+      return view('recipes/operationsRecipe');
    }
 
    public function getAllCakeRecipes()
