@@ -25,7 +25,7 @@ Auth::routes();
  * a 'role: ' után megadott értéket: admin, stb.
  * middleware: RoleMiddleWare.php
  */
-Route::middleware(['role:admin'])->group( function() {
+Route::middleware('role:admin')->group( function() {
     // VIEWS
     Route::get('/users', 'UserController@getUserView')->name('users');
 
@@ -38,7 +38,7 @@ Route::middleware(['role:admin'])->group( function() {
 /*
  * Manager végpontok
  */
-Route::middleware(['role:admin,manager'])->group( function() {
+Route::middleware('role:admin,manager')->group( function() {
     // VIEWS
     Route::get('/cakerecipes', 'CakeController@index')->name('cakerecipes');
     Route::get('/recipes', 'CakeController@createRecipeView')->name('recipes');
@@ -58,7 +58,7 @@ Route::middleware(['role:admin,manager'])->group( function() {
 /*
  * Reg végpontok
  */
-Route::middleware(['role:admin,manager,reg'])->group( function() {
+Route::middleware('role:admin,manager,reg')->group( function() {
     Route::get('/home', 'HomeController@index')->name('home');
 });
 

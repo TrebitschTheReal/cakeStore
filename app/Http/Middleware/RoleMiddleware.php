@@ -10,9 +10,9 @@ class RoleMiddleware
    /**
     * Handle an incoming request.
     *
-    * @param  \Illuminate\Http\Request  $request
-    * @param  \Closure  $next
-    * @param  string|null  $guard
+    * @param \Illuminate\Http\Request $request
+    * @param \Closure $next
+    * @param string|null $guard
     * @return mixed
     */
 
@@ -31,16 +31,23 @@ class RoleMiddleware
     */
    public function handle($request, Closure $next, $role_one, $role_two = null, $role_three = null, $permission = null)
    {
-      if(!$request->user()->hasRole($role_one) &&
-          !$request->user()->hasRole($role_two) &&
-          !$request->user()->hasRole($role_three)
+      /*
+       * Ha guestként érkezik a request (tehát nem érkezik user paraméter a $requestben)
+       */
+      if (!$request->user()) {
+         abort(404);
+      }
+
+      if (!$request->user()->hasRole($role_one) &&
+         !$request->user()->hasRole($role_two) &&
+         !$request->user()->hasRole($role_three)
       ) {
 
          abort(404);
 
       }
 
-      if($permission !== null && !$request->user()->can($permission)) {
+      if ($permission !== null && !$request->user()->can($permission)) {
 
          abort(404);
       }
