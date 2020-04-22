@@ -56,16 +56,18 @@
                             @endif
                         @else
                             @role('admin')
-                            <li class="nav-item">
-                                <a href="{{route('users')}}" class="nav-link">Felhasználók adminisztrálása</a>
-                            </li>
+                                <li class="nav-item">
+                                    <a href="{{route('users')}}" class="nav-link">Felhasználók adminisztrálása</a>
+                                </li>
                             @endrole
-                            <li class="nav-item">
-                                <a href="{{route('cakerecipes')}}" class="nav-link">Torta recept kereső</a>
-                            </li>
-                            <li class="nav-item">
-                                <a href="{{route('recipes')}}" class="nav-link">Receptek adminisztrálása</a>
-                            </li>
+                            @role('admin', 'manager')
+                                <li class="nav-item">
+                                    <a href="{{route('cakerecipes')}}" class="nav-link">Torta recept kereső</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="{{route('recipes')}}" class="nav-link">Receptek adminisztrálása</a>
+                                </li>
+                            @endrole
                             <li class="nav-item dropdown">
                                 <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                                     {{ Auth::user()->name }} <span class="caret"></span>

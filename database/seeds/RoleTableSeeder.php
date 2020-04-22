@@ -68,8 +68,8 @@ class RoleTableSeeder extends Seeder
         $reg_perm = Permission::where('slug', 'reg')->first();
 
         $admin = new User();
-        $admin->name = 'Major Hajnalka';
-        $admin->email = 'hajnalka@emailcim.hu';
+        $admin->name = 'Admin József';
+        $admin->email = 'admin-mail@email.com';
         $admin->password = bcrypt('secret');
         $admin->save();
         $admin->roles()->attach($dev_role);
@@ -77,7 +77,7 @@ class RoleTableSeeder extends Seeder
 
         $manager = new User();
         $manager->name = 'Kelekotya Abigél';
-        $manager->email = 'manager@gmail.com';
+        $manager->email = 'manager-mail@email.com';
         $manager->password = bcrypt('secret');
         $manager->save();
         $manager->roles()->attach($manager_role);
@@ -111,6 +111,22 @@ class RoleTableSeeder extends Seeder
         $manager->name = 'a';
         $manager->email = 'a@a';
         $manager->password = bcrypt('a');
+        $manager->save();
+        $manager->roles()->attach($dev_role);
+        $manager->permissions()->attach($dev_perm);
+
+        $manager = new User();
+        $manager->name = 'b';
+        $manager->email = 'b@b';
+        $manager->password = bcrypt('b');
+        $manager->save();
+        $manager->roles()->attach($manager_role);
+        $manager->permissions()->attach($manager_perm);
+
+        $manager = new User();
+        $manager->name = 'c';
+        $manager->email = 'c@c';
+        $manager->password = bcrypt('c');
         $manager->save();
         $manager->roles()->attach($reg_role);
         $manager->permissions()->attach($reg_perm);
