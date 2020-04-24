@@ -3,10 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Http\Services\CakeService;
+use App\Http\Services\ValidatorService;
 use Illuminate\Http\Request;
 use App\Cake;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Log;
 
 class CakeController extends Controller
 {
@@ -35,31 +35,17 @@ class CakeController extends Controller
     */
    public function registerNewRecipe(Request $request)
    {
-      $cakeService = new CakeService();
+      $input = $request->all();
+      Log::info(print_r($input, true));
+      $validatorService = new ValidatorService();
+      $response = $validatorService->validateNewRecipeName($input);
 
-      /*
-       * Laravel validátor. Ha sikerül, továbbmegy. Ha elbukik, akkor response 422-es kóddal a validációs hibaüzenettel.
-       */
-/*      $request->validate([
-         'name' => ['required', 'unique:cakes', 'min:3', 'max:40'],
-      ]);*/
-
-      $rules = [
-         'name' => ['min:2', 'max:50', 'required', 'unique:cakes']
-      ];
-
-      $message = [
-         'name.min' => 'A név legyen minimum 2 karakter hosszú!',
-         'name.max' => 'A név nem lehet hosszabb :max karakternél!',
-         'name.unique' => ':input recept már létezik!',
-         'required' => 'Ne hackeld az oldalt pls, backenden is van validáció!',
-      ];
-
-      $validator = Validator::make($request->all(), $rules, $message);
-
-      if( $validator->fails()) {
-         return response($validator->errors(), 422);
+      if($response !== true) {
+         return response($response, 422);
       }
+
+
+      $cakeService = new CakeService();
 
       $newRecipe = $cakeService->registerRecipeToDb($request->name);
 
@@ -79,6 +65,8 @@ class CakeController extends Controller
    {
       //Átalakítjuk a request jsont egy asszociatív tömbbé.
       $newRecipeContent = $request->all();
+
+      Log::info(print_r($request->all(), true));
 
       $cakeService = new CakeService();
       $cakeService->fillNewlyRegisteredRecipe($newRecipeContent);

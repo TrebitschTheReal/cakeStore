@@ -4,7 +4,6 @@
 namespace App\Http\Services;
 
 use App\Cake;
-use Illuminate\Support\Facades\DB;
 
 class CakeService
 {
