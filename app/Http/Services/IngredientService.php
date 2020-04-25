@@ -58,6 +58,8 @@ class IngredientService
           * Elmentjük a módosított tortát, ezt követően a következő ciklusba ugrunk
           */
          $newCake->save();
+
+         //TODO: validálni a sum értékeket, hogy ne legyen túlcsordulás
       }
 
    }
