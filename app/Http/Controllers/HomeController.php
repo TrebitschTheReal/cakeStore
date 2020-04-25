@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Services\CakeService;
 use Illuminate\Http\Request;
 use App\Cake;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {
@@ -16,9 +17,8 @@ class HomeController extends Controller
 
     public function index()
     {
-        $cakes = Cake::all();
-
-
-        return view('home', compact('cakes'));
+       //Visszaküldjük a session szerinti bejelentkezett usert
+       $user = Auth::user();
+       return view('home', compact('user'));
     }
 }

@@ -1,5 +1,8 @@
 <template>
    <div>
+      <decisionModal :modalContent="modalContent"
+                     @deleteConfirmed="deleteItem()"
+      />
       <div v-if="recipeTable" class="table-fix-size table-responsive col mx-auto">
          <table class="table">
             <thead class="thead-dark">
@@ -9,8 +12,7 @@
                <th scope="col">Anyag költség</th>
                <th scope="col">Feltöltés dátuma</th>
                <th scope="col">Utolsó módosítás dátuma</th>
-               <th scope="col"></th>
-               <th scope="col"></th>
+               <th colspan="2" scope="col"></th>
             </tr>
             </thead>
             <tbody>
@@ -23,11 +25,12 @@
                <td>{{recipe.ingredients_price_sum}} Ft</td>
                <td>{{recipe.created_at}}</td>
                <td>{{recipe.updated_at}}</td>
-               <td>
-                  <button @click="modifyRecipe(recipe.id)" class="btn btn-warning">Módosítás</button>
+               <td colspan="2" v-if="pending">
+                  <spinner/>
                </td>
-               <td>
-                  <button class="btn btn-danger">Törlés</button>
+               <td colspan="2" v-else>
+                  <button @click="modifyRecipe(recipe.id)" class="btn btn-warning">Módosítás</button>
+                  <button @click="prepareToDeleteItem(recipe.id, recipe.name, 'recipe')" class="btn btn-danger">Törlés</button>
                </td>
             </tr>
             <!--
@@ -123,8 +126,15 @@
 </template>
 
 <script>
+   import spinner from './loadingSpinner';
+   import decisionModal from "./decisionModal";
+
    export default {
       name: "TableView",
+      components: {
+         spinner,
+         decisionModal
+      },
 
       /*
          Megkapjuk propsnak a filteredListet és a tábla típusát. Ha 'recipe' akkor a recipe renderelődik ki,
@@ -136,6 +146,7 @@
       props: {
          filteredList: {},
          tableData: '',
+         pending: Boolean,
       },
 
       mounted() {
@@ -147,6 +158,14 @@
             recipeTable: false,
             ingredientTable: false,
             userTable: false,
+            modalContent: {
+               modalHeader: String,
+               modalBody: String,
+               modalYes: String,
+               modalNo: String,
+            },
+            deletableItemId: Number,
+            deletableItemType: String,
          }
       },
 
@@ -161,6 +180,67 @@
 
          modifyUser(user) {
             this.$emit('modifyUser', user)
+         },
+
+         //Felkészülünk a modal megnyitására, az elem törlésére
+         prepareToDeleteItem(removeableId, removableName, removableType) {
+            //Létrehozzuk a modal tartalmát
+            this.createModalContent(
+               'Elem törlése',
+               'Biztos törölni akarod ezt: ' + removableName +'? A törlés végleges',
+               'Igen',
+               'Nem');
+            //Beállítjuk a törlendő elem ID-át, típusát
+            this.deletableItemId = removeableId;
+            this.deletableItemType = removableType;
+
+            //Megjelenítjük a modalt
+            $('#decisionModal').modal('show');
+         },
+
+         deleteItem() {
+            // Létrehozunk egy változót a post végpontnak
+            let deleteEndPoint;
+            // És a listafrissítésnek
+            let listUpdateEvent;
+            //Elindítjuk a loading spinnert
+            this.$emit('startPending');
+
+            //Ha a törlendő elem típusa recept ...
+            if (this.deletableItemType === 'recipe') {
+               //A végpont változó az elemnek megfelelő végpontot kapja
+               deleteEndPoint = '/deleterecipe';
+               listUpdateEvent = 'fetchRecipes';
+            } else if (this.deletableItemType === 'user') {
+               deleteEndPoint = '/deleteuser';
+               listUpdateEvent = 'fetchUsers';
+            } else if (this.deletableItemType === 'ingredient') {
+               deleteEndPoint = '/deleteingredient';
+               listUpdateEvent = 'fetchIngredients';
+            }
+
+            //Elindul a törlés POST
+            axios.post(deleteEndPoint, {
+               recipeId: this.deletableItemId,
+            })
+               .then((response) => {
+                  //Emitelünk egy 'frissítés' eventet, amit a szülő komponens elkap, és lefrissíti a listát
+                  this.$emit(listUpdateEvent);
+                  //Emitelünk egy 'siker' eventet, amit a szülő oldalon elkap a parent, és lekezeli a successt
+                  this.$emit('succesResponse', 'Sikeresen törölted az elemet!');
+               })
+               .catch((error) => {
+                  //Emiteljük a hibaüzenetet a parentnek, ami lekezeli
+                  this.$emit('fetchedErrors', error.response.data);
+               });
+         },
+
+         //Létrehozzuk a felugró 'decisionModal' szöveges tartalmát
+         createModalContent(header, body, yes, no) {
+            this.modalContent.modalHeader = header;
+            this.modalContent.modalBody = body;
+            this.modalContent.modalYes = yes;
+            this.modalContent.modalNo = no;
          },
 
          setTableContent() {

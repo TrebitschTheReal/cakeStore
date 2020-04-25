@@ -48,6 +48,8 @@ Route::middleware('role:admin,manager')->group( function() {
     Route::post('/registernewrecipe', 'CakeController@registerNewRecipe')->name('registernewrecipe');
     Route::post('/registernewingredient', 'IngredientController@registerNewIngredient')->name('registernewingredient');
     Route::post('/modifyexistingingredient', 'IngredientController@modifyExistingIngredient')->name('modifyexistingingredient');
+    Route::post('/deleterecipe', 'CakeController@deleteRecipe')->name('deleterecipe');
+
 
     //API
     Route::get('/cakelist', 'CakeController@getAllCakeRecipes')->name('cakelist');

@@ -12,10 +12,26 @@
                 aria-describedby="recipe-name"
                 placeholder="Kezd el írni a recept nevét">
       </div>
+      <transition name="bounce">
+         <div class="alert-response" v-if="success">
+            <h3 class="alert alert-success text-center"
+                @click="success = false"
+            >{{successResponse}}</h3>
+         </div>
+      </transition>
+      <errorHandler :fetchedErrors="fetchedErrors"
+                    @errorChanged="pending = $event"
+      />
       <tableView v-if="showList"
                  :filteredList="this.filteredList"
                  :tableData="'recipe'"
+                 :pending="pending"
                  @modifyRecipe="modifyRecipe($event)"
+                 @fetchRecipes="fetchRecipes"
+                 @succesResponse="generateSuccessResponse($event)"
+                 @fetchedErrors="fetchedErrors = $event"
+                 @startPending="pending = true"
+                 @endPending="pending = false"
       />
       <spinner v-else/>
    </div>
@@ -24,6 +40,7 @@
 <script>
    import spinner from '../partials/loadingSpinner';
    import tableView from '../partials/tableView';
+   import errorHandler from '../partials/errorHandling';
 
    export default {
       name: "stepModify",
@@ -35,14 +52,18 @@
       components: {
          spinner,
          tableView,
+         errorHandler
       },
 
       data() {
          return {
+            fetchedErrors: {},
             modifiableRecipeId: null,
             fetchedRecipes: {},
             showList: false,
             search: '',
+            success: false,
+            pending: false,
          }
       },
 
@@ -55,16 +76,21 @@
       },
 
       methods: {
-         modifyRecipe(cakeId) {
-            this.$emit('modifyRecipe', cakeId)
+         modifyRecipe(recipeId) {
+            this.$emit('modifyRecipe', recipeId)
          },
 
+         generateSuccessResponse(message) {
+            this.successResponse = message;
+            this.success = true;
+         },
 
          fetchRecipes() {
             axios.get('/cakelist')
                .then((response) => {
                   this.fetchedRecipes = response.data;
                   this.showList = true;
+                  this.pending = false;
                })
                .catch((error) => {
                   console.log(error);

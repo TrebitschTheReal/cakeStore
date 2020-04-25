@@ -58,6 +58,12 @@ class CakeController extends Controller
 
    }
 
+   public function deleteRecipe(Request $request) {
+      $removableCake = Cake::find($request->recipeId);
+      $removableCake->required_ingredients()->detach();
+      $removableCake->delete();
+   }
+
    /*
     * Ide érkezik be a request a recept feltöltésekor
     */
