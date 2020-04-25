@@ -93,7 +93,12 @@
       <tableView v-if="showList"
                  :filteredList="this.filteredList"
                  :tableData="'ingredient'"
+                 :pending="pending"
                  @modifyIngredient="modifyIngredient($event)"
+                 @fetchIngredients="fetchIngredients"
+                 @succesResponse="generateSuccessResponse($event)"
+                 @fetchedErrors="fetchedErrors = $event"
+                 @startPending="pending = true"
       />
 
    </div>
@@ -243,6 +248,7 @@
                .then((response) => {
                   this.fetchedIngredients = response.data;
                   this.showList = true;
+                  this.pending = false;
                })
                .catch((error) => {
                   console.log(error);
@@ -257,7 +263,12 @@
 
          uploadManager() {
             this.modify ? this.uploadModifiedIngredient() : this.uploadIngredient();
-         }
+         },
+
+         generateSuccessResponse(message) {
+            this.successResponse = message;
+            this.success = true;
+         },
 
       },
    }

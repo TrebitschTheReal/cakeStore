@@ -23,21 +23,42 @@ class IngredientService
       $ingredient->unit_price = $newIngredientData['ingredients']['unit_price'];
       $ingredient->save();
 
-      $this->updateIngredientSumPricesInExistingCakes();
+      $this->updateIngredientSumPricesInExistingCakes($ingredient);
 
    }
 
-   public function updateIngredientSumPricesInExistingCakes() {
-      Log::info('------------------------------------------------');
-      $cakes = Cake::with('required_ingredients')->get();
+   /*
+    * Frissítjük az adott recepthez csatolt receptek alapanyagonkénti sum költségeit.
+    */
+   public function updateIngredientSumPricesInExistingCakes($ingredient) {
 
-      //TODO: itt valami gubanc van. Nem mentődik el DB-ben az adat
-      foreach ($cakes as $cake) {
-         foreach ($cake->required_ingredients as $ingredient) {
-            $ingredient['pivot']->ingredient_price = $ingredient->unit_price * $ingredient['pivot']->ingredient_quantity;
-         }
-         $cake->ingredients_price_sum = $cake->required_ingredients()->sum('ingredient_price');
-         $cake->save();
+      /*
+       * Végigiterálunk a megkapott alapanyaghoz rendelt recepteken
+       * Eloquent: $ingredient->cakes    -  visszaadja azokat a recepteket ahol az adott alapanyag csatolva van
+       */
+      foreach ($ingredient->cakes as $cake) {
+         $newPrice = $ingredient->unit_price * $cake->pivot->ingredient_quantity;
+         /*
+          * Frissítjük az adott cake objektum (tehát az alapanyagokhoz rendelt receptek aktuális objektumának)
+          * adott alapanyagra vonatkozó sum értékét (alapanyag mennyisége * új árral)
+          */
+         $ingredient->cakes()->updateExistingPivot($cake->id, ['ingredient_price' => $newPrice]);
+
+         /*
+          * Miután frissítettük a pivot táblát, létre kell hoznunk egy Cake objektumot,
+          * ahol már a frissített pivot tábla értékeivel SUM értéket számolunk az adott recept anyagköltségére:
+          */
+         $newCake = Cake::find($cake->id);
+         $newCake->ingredients_price_sum = $cake->
+                                          required_ingredients()->
+                                          where('cake_id', $cake->id)->
+                                          sum('ingredient_price');
+
+         /*
+          * Elmentjük a módosított tortát, ezt követően a következő ciklusba ugrunk
+          */
+         $newCake->save();
       }
+
    }
 }

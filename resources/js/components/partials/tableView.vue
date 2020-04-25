@@ -65,11 +65,12 @@
                   <td>{{ingredient.unit_price}}</td>
                   <td>{{ingredient.created_at}}</td>
                   <td>{{ingredient.updated_at}}</td>
-                  <td>
-                     <button @click="modifyIngredient(ingredient)" class="btn btn-warning">Módosítás</button>
+                  <td colspan="2" v-if="pending">
+                     <spinner/>
                   </td>
-                  <td>
-                     <button class="btn btn-danger">Törlés</button>
+                  <td colspan="2" v-else>
+                     <button @click="modifyIngredient(ingredient)" class="btn btn-warning">Módosítás</button>
+                     <button @click="prepareToDeleteItem(ingredient.id, ingredient.name, 'ingredient')" class="btn btn-danger">Törlés</button>
                   </td>
                </tr>
                </tbody>
@@ -106,11 +107,12 @@
                   <td>{{user.email}}</td>
                   <td>{{user.created_at}}</td>
                   <td>{{user.updated_at}}</td>
-                  <td>
-                     <button @click="modifyUser(user)" class="btn btn-warning">Módosítás</button>
+                  <td colspan="2" v-if="pending">
+                     <spinner/>
                   </td>
-                  <td>
-                     <button class="btn btn-danger">Törlés</button>
+                  <td colspan="2" v-else>
+                     <button @click="modifyUser(user)" class="btn btn-warning">Módosítás</button>
+                     <button @click="prepareToDeleteItem(user.id, user.name, 'user')" class="btn btn-danger">Törlés</button>
                   </td>
                </tr>
                </tbody>
@@ -187,7 +189,7 @@
             //Létrehozzuk a modal tartalmát
             this.createModalContent(
                'Elem törlése',
-               'Biztos törölni akarod ezt: ' + removableName +'? A törlés végleges',
+               'Biztos törölni akarod: ' + removableName +'? A törlés végleges',
                'Igen',
                'Nem');
             //Beállítjuk a törlendő elem ID-át, típusát
@@ -221,7 +223,7 @@
 
             //Elindul a törlés POST
             axios.post(deleteEndPoint, {
-               recipeId: this.deletableItemId,
+               removableId: this.deletableItemId,
             })
                .then((response) => {
                   //Emitelünk egy 'frissítés' eventet, amit a szülő komponens elkap, és lefrissíti a listát

@@ -50,4 +50,17 @@ class IngredientController extends Controller
       $ingredientService->updateIngredient($input);
 
    }
+
+   public function deleteIngredient(Request $request) {
+
+      $validatorService = new ValidatorService();
+      $response = $validatorService->validateDeleteIngredient($request);
+
+      if($response !== true) {
+         return response($response, 422);
+      }
+
+      $removableIngredient = Ingredient::find($request->removableId);
+      $removableIngredient->delete();
+   }
 }

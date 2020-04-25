@@ -4,6 +4,7 @@
 namespace App\Http\Services;
 
 
+use App\Ingredient;
 use Illuminate\Support\Facades\Validator;
 
 class ValidatorService
@@ -112,6 +113,36 @@ class ValidatorService
 
       if( $validator->fails()) {
          return $validator->errors();
+      }
+      return true;
+   }
+
+   /*
+    * Validáljuk az alapanyag törlését. Ha a törlendő alapanyag hozzá van csatolva egy recepthez,
+    * akkor feltöltünk egy tömböt azokkal receptek neveivel, ahol használva van a törlendő alapanyag,
+    * és visszaküldjük 422-es kóddal
+    *
+    * Ellenkező esetben töröljük.
+    */
+   public function validateDeleteIngredient($request) {
+      $deletableIngredient = Ingredient::find($request->removableId);
+
+      if(sizeof($deletableIngredient->cakes) !== 0) {
+         $error = ['Nem törölheted! Ez az alapanyag hozzá van rendelve a következő receptekhez:'];
+
+         /*
+          * Az alapanyaghoz csatolt receptek listáját így érjük el az Eloquent segítségével:
+          * $aktuálisAlapanyag->cakes
+          *
+          * update: a fejlesztés előrehaladtával elkezdtem recipe kulcsszót használni cake helyett
+          * Ez néhol megtévesztő jelent tehát:
+          * TODO: refaktorálni a cake nevet recipere a kódban
+          */
+         foreach ($deletableIngredient->cakes as $recipe) {
+            array_push($error, $recipe->name);
+         }
+
+         return $error;
       }
       return true;
    }

@@ -15,4 +15,11 @@ class UserController extends Controller
         $users = User::with('roles')->get();
         return response()->json($users);
     }
+
+    public function deleteUser(Request $request) {
+       $removableUser = User::find($request->removableId);
+       $removableUser->roles()->detach();
+       $removableUser->permissions()->detach();
+       $removableUser->delete();
+    }
 }

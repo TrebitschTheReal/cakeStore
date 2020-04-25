@@ -31,7 +31,6 @@
                  @succesResponse="generateSuccessResponse($event)"
                  @fetchedErrors="fetchedErrors = $event"
                  @startPending="pending = true"
-                 @endPending="pending = false"
       />
       <spinner v-else/>
    </div>
