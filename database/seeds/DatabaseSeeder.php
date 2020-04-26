@@ -13,9 +13,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call(CakeTableSeeder::class);
         $this->call(IngredientSeeder::class);
-        $this->call(UnitSeeder::class);
         $this->call(RequiredIngredientsSeeder::class);
         $this->call(RoleTableSeeder::class);
+        $this->call(UnitsSeeder::class);
     }
 }
 

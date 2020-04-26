@@ -12,6 +12,7 @@ class ValidatorService
    public function validateAlreadyExistsIngredient($request) {
       $rules = [
          'ingredients.name' => ['required', 'min:2', 'max:20'],
+         'ingredients.quantity' => ['required', 'between:1,50000', 'integer', ],
          'ingredients.unit_type' => ['required', 'min:1', 'max:30'],
          'ingredients.unit_price' => ['required', 'between:1,50000', 'integer', ]
       ];
@@ -20,12 +21,14 @@ class ValidatorService
          'ingredients.name.required' => 'Kötelező nevet megadni!',
          'ingredients.name.min' => 'Legalább :min karakter hosszú nevet adj meg!',
          'ingredients.name.max' => 'Ne kisregény legyen az alapanyag neve! Max :max karakter!',
+         'ingredients.quantity.between' => 'Kérlek ne rizsszemenként töltsd fel a leltárat, köszi!',
+         'ingredients.quantity.integer' => 'Kérlek ne rizsszemenként töltsd fel a leltárat, köszi! ',
          'ingredients.unit_type.required' => 'Kötelező típust megadni!',
          'ingredients.unit_type.min' => 'Legalább :min karakter hosszú legyen az egységtípus!',
          'ingredients.unit_type.max' => 'Max :max karakter lehet az egységtípus!',
          'ingredients.unit_price.required' => 'Ne hackeld az oldalt pls, backenden is van validáció!',
-         'ingredients.unit_price.between' => ':min és :max közötti számot adj meg kérlek!',
          'ingredients.unit_price.integer' => 'Úgy látom már nem is integer típusú a számunk.. ennyire tuti, hogy nem drága az alapanyag :/',
+         'ingredients.unit_price.between' => ':min és :max közötti számot adj meg kérlek!',
       ];
 
       $validator = Validator::make($request, $rules, $message);

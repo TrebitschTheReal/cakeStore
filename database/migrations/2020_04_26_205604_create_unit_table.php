@@ -13,10 +13,18 @@ class CreateUnitTable extends Migration
      */
     public function up()
     {
-        Schema::create('units', function (Blueprint $table) {
-            $table->id();
-            $table->string('unit_type', 60);
-        });
+       Schema::create('units', function (Blueprint $table) {
+          $table->mediumInteger('unit_category');
+          $table->string('category_name');
+          $table->string('type_name');
+          $table->mediumInteger('conversion_rate');
+
+          $table->foreign('unit_category')
+             ->references('unit_category')
+             ->on('ingredient')
+             ->onDelete('cascade');
+
+       });
     }
 
     /**

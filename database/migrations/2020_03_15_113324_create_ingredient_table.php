@@ -17,7 +17,7 @@ class CreateIngredientTable extends Migration
             $table->bigIncrements('id');
             $table->string('name', 60);
             $table->mediumText('desc')->nullable();
-            $table->string('unit_type', 60);
+            $table->mediumInteger('unit_category');
             $table->mediumInteger('unit_price');
             $table->timestamps();
         });

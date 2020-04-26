@@ -8,7 +8,7 @@
                <div class="">
                   <form class="row"
                         v-on:submit.prevent="uploadManager">
-                     <div class="col col-lg-6 col-xs-6 text-center">
+                     <div class="col col-lg-3 col-xs-6 text-center">
                         <p>Alapanyag neve</p>
                         <input required
                                class="form-control"
@@ -16,12 +16,19 @@
                                v-model="ingredientModel.name"
                                type="text">
                      </div>
+                     <div class="col col-lg-3 col-xs-1 text-center">
+                        <p>Mennyiség</p>
+                        <input required
+                               :disabled="pending"
+                               class="form-control"
+                               type="number"
+                        >
+                     </div>
                      <div class="col col-lg-3 col-xs-2 text-center">
                         <p>Egységtípusa</p>
                         <select class="form-control"
                                 :disabled="pending || modify"
                                 name=""
-                                id=""
                                 required
                                 v-model="ingredientModel.unit_type"
                         >
@@ -135,6 +142,7 @@
             ingredientModel: {
                id: null,
                name: '',
+               quantity: null,
                unit_type: 'típus',
                unit_price: null,
             },

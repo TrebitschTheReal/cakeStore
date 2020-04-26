@@ -15,28 +15,28 @@ class IngredientSeeder extends Seeder
         DB::table('ingredients')->insert([
             'name' => 'cukor',
             'desc' => 'This is just a description for ingredient.',
-            'unit_type' => 'g',
+            'unit_category' => 1,
             'unit_price' => 3,
         ]);
 
         DB::table('ingredients')->insert([
             'name' => 'tojás',
             'desc' => 'This is just a description for ingredient.',
-            'unit_type' => 'db',
+            'unit_category' => 1,
             'unit_price' => 21,
         ]);
 
         DB::table('ingredients')->insert([
             'name' => 'vaj',
             'desc' => 'This is just a description for ingredient.',
-            'unit_type' => 'g',
+            'unit_category' => 1,
             'unit_price' => 4,
         ]);
 
         DB::table('ingredients')->insert([
             'name' => 'liszt',
             'desc' => 'This is just a description for ingredient.',
-            'unit_type' => 'g',
+            'unit_category' => 1,
             'unit_price' => 2,
         ]);
     }
