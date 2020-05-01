@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Services\IngredientService;
 use App\Http\Services\ValidatorService;
+use App\Unit;
 use Illuminate\Http\Request;
 use App\Ingredient;
 
@@ -62,5 +63,9 @@ class IngredientController extends Controller
 
       $removableIngredient = Ingredient::find($request->removableId);
       $removableIngredient->delete();
+   }
+
+   public function fetchUnitTypes() {
+      return Unit::all('id', 'unit_category', 'type_name');
    }
 }

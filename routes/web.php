@@ -55,8 +55,10 @@ Route::middleware('role:admin,manager')->group( function() {
 
     //API
     Route::get('/cakelist', 'CakeController@getAllCakeRecipes')->name('cakelist');
-    Route::get('/fetchingredients', 'IngredientController@fetchIngredients')->name('fetchingredients');
+   Route::get('/fetchingredients', 'IngredientController@fetchIngredients')->name('fetchingredients');
     Route::post('/modifyrecipe', 'CakeController@modifyRecipe')->name('modifyrecipe');
+       Route::get('/fetchunittypes', 'IngredientController@fetchUnitTypes')->name('fetchunittypes');
+
 });
 
 /*

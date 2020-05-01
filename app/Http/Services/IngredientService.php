@@ -4,16 +4,25 @@
 namespace App\Http\Services;
 use App\Cake;
 use App\Ingredient;
+use App\Unit;
 use Illuminate\Support\Facades\Log;
+use League\Flysystem\Adapter\Ftp;
 
 class IngredientService
 {
    public function saveNewIngredient($newIngredientData) {
-
       $newIngredient = new Ingredient;
       $newIngredient->name = $newIngredientData['ingredients']['name'];
-      $newIngredient->unit_type = $newIngredientData['ingredients']['unit_type'];
-      $newIngredient->unit_price = $newIngredientData['ingredients']['unit_price'];
+      $newIngredient->uploaded_unit_type = $this->getUploadableIngredientUnitType($newIngredientData);
+      $newIngredient->uploaded_unit_price = $newIngredientData['ingredients']['unit_price'];
+
+      foreach ($newIngredientData['ingredients']['unit_type'] as $key => $value){
+         if($key == 'unit_category') {
+            $newIngredient->unit_category = $value;
+         }
+      }
+
+      $newIngredient->unit_price = $this->calculateIngredientUnitPriceByInput($newIngredientData);
       $newIngredient->save();
    }
 
@@ -24,7 +33,6 @@ class IngredientService
       $ingredient->save();
 
       $this->updateIngredientSumPricesInExistingCakes($ingredient);
-
    }
 
    /*
@@ -62,5 +70,27 @@ class IngredientService
          //TODO: validálni a sum értékeket, hogy ne legyen túlcsordulás
       }
 
+   }
+
+   public function calculateIngredientUnitPriceByInput($newIngredientData) {
+      $unit_conversion_rate = 0;
+
+      foreach ($newIngredientData['ingredients']['unit_type'] as $key => $value){
+         if($key == 'id') {
+            $unit_conversion_rate = Unit::find($value)->conversion_rate;
+         }
+      }
+
+      $ingredientQuantityInSmallestUnitOfItsCategory = $newIngredientData['ingredients']['quantity'] * $unit_conversion_rate;
+
+      return (double)($newIngredientData['ingredients']['unit_price'] / (double)$ingredientQuantityInSmallestUnitOfItsCategory);
+   }
+
+   public function getUploadableIngredientUnitType($newIngredientData) {
+      foreach ($newIngredientData['ingredients']['unit_type'] as $key => $value){
+         if($key == 'type_name') {
+            return $value;
+         }
+      }
    }
 }

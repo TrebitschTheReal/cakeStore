@@ -12,13 +12,14 @@
                         <p>Alapanyag neve</p>
                         <input required
                                class="form-control"
-                               :disabled="pending || modify"
+                               :disabled="pending"
                                v-model="ingredientModel.name"
                                type="text">
                      </div>
                      <div class="col col-lg-3 col-xs-1 text-center">
                         <p>Mennyiség</p>
                         <input required
+                               v-model="ingredientModel.quantity"
                                :disabled="pending"
                                class="form-control"
                                type="number"
@@ -27,19 +28,19 @@
                      <div class="col col-lg-3 col-xs-2 text-center">
                         <p>Egységtípusa</p>
                         <select class="form-control"
-                                :disabled="pending || modify"
+                                :disabled="pending"
                                 name=""
                                 required
                                 v-model="ingredientModel.unit_type"
                         >
                            <option v-for="type in ingredientUnitTypes"
                                    :value="type"
-                           >{{type}}
+                           >{{type.type_name}}
                            </option>
                         </select>
                      </div>
                      <div class="col col-lg-3 col-xs-1 text-center">
-                        <p>Ár / {{ingredientModel.unit_type}}</p>
+                        <p>Ár / {{ingredientModel.unit_type.type_name}}</p>
                         <input required
                                :disabled="pending"
                                class="form-control"
@@ -126,6 +127,7 @@
       },
 
       mounted() {
+         this.fetchUnitTypes();
          this.fetchIngredients();
       },
 
@@ -137,13 +139,13 @@
             showList: false,
             success: false,
             pending: false,
-            ingredientUnitTypes: ['g', 'dkg', 'kg', 'ml', 'cl', 'l', 'db'],
+            ingredientUnitTypes: [],
             search: '',
             ingredientModel: {
                id: null,
                name: '',
                quantity: null,
-               unit_type: 'típus',
+               unit_type: [],
                unit_price: null,
             },
             fetchedIngredients: {},
@@ -246,8 +248,9 @@
             this.modify = true;
             this.ingredientModel.id = ingredient.id;
             this.ingredientModel.name = ingredient.name;
-            this.ingredientModel.unit_type = ingredient.unit_type;
-            this.ingredientModel.unit_price = ingredient.unit_price;
+            this.ingredientModel.unit_type = [];
+            this.ingredientModel.unit_type.push({id: 1, unit_category: 2, type_name: ingredient.uploaded_unit_type});
+            this.ingredientModel.unit_price = ingredient.uploaded_unit_price;
             this.search = ingredient.name;
          },
 
@@ -263,10 +266,21 @@
                });
          },
 
+         fetchUnitTypes() {
+            axios.get('/fetchunittypes')
+               .then((response) => {
+                  this.ingredientUnitTypes = response.data;
+               })
+               .catch((error) => {
+                  console.log(error);
+               });
+         },
+
          resetInput() {
             this.ingredientModel.name = '';
-            this.ingredientModel.unit_type = 'típus';
-            this.ingredientModel.unit_price = null;
+            this.ingredientModel.unit_type = [];
+            this.ingredientModel.quantity = Number;
+            this.ingredientModel.unit_price = Number;
          },
 
          uploadManager() {

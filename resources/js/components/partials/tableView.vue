@@ -46,8 +46,8 @@
                <tr>
                   <th scope="col">#</th>
                   <th scope="col">Alapanyag neve</th>
-                  <th scope="col">Egységtípus</th>
-                  <th scope="col">Egységár</th>
+                  <th scope="col">Feltöltött egységtípus</th>
+                  <th scope="col">Feltöltött egységár</th>
                   <th scope="col">Feltöltés dátuma</th>
                   <th scope="col">Utolsó módosítás dátuma</th>
                   <th scope="col"></th>
@@ -61,8 +61,8 @@
                <tr v-for="ingredient in filteredList" :key="ingredient.id">
                   <th scope="row">{{ingredient.id}}</th>
                   <td>{{ingredient.name}}</td>
-                  <td>{{ingredient.unit_type}}</td>
-                  <td>{{ingredient.unit_price}}</td>
+                  <td>{{ingredient.uploaded_unit_type}}</td>
+                  <td>{{ingredient.uploaded_unit_price}} Ft</td>
                   <td>{{ingredient.created_at}}</td>
                   <td>{{ingredient.updated_at}}</td>
                   <td colspan="2" v-if="pending">

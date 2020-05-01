@@ -14,10 +14,12 @@ class CreateIngredientTable extends Migration
     public function up()
     {
         Schema::create('ingredients', function (Blueprint $table) {
-            $table->bigIncrements('id');
+           $table->bigIncrements('id');
             $table->string('name', 60);
             $table->mediumText('desc')->nullable();
-            $table->mediumInteger('unit_category');
+           $table->mediumInteger('unit_category');
+           $table->string('uploaded_unit_type')->nullable();
+           $table->mediumInteger('uploaded_unit_price')->nullable();
             $table->double('unit_price',20,4);
             $table->timestamps();
         });
