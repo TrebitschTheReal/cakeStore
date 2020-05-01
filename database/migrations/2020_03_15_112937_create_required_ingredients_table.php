@@ -14,21 +14,22 @@ class CreateRequiredIngredientsTable extends Migration
     public function up()
     {
         Schema::create('required_ingredients', function (Blueprint $table) {
-            $table->bigIncrements('id');
-            $table->bigInteger('ingredient_id');
-            $table->mediumInteger('ingredient_quantity')->nullable();
-            $table->bigInteger('cake_id');
-            $table->double('ingredient_price', 20, 4)->nullable();
+           $table->bigIncrements('id');
+           $table->bigInteger('cake_id');
+           $table->bigInteger('ingredient_id');
+           $table->mediumInteger('ingredient_quantity')->nullable();
+           $table->string('ingredient_unit_type')->nullable();
+           $table->double('ingredient_price', 20, 4)->nullable();
 
-            $table->foreign('ingredient_id')
-                ->references('id')
-                ->on('ingredient')
-                ->onDelete('cascade');
+           $table->foreign('ingredient_id')
+              ->references('id')
+              ->on('ingredient')
+              ->onDelete('cascade');
 
-            $table->foreign('cake_id')
-                ->references('id')
-                ->on('cake')
-                ->onDelete('cascade');
+           $table->foreign('cake_id')
+              ->references('id')
+              ->on('cake')
+              ->onDelete('cascade');
         });
     }
 

@@ -18,8 +18,8 @@ class CakeTableSeeder extends Seeder
        $newRecipe->desc = 'This is just a description for the cake.';
        $newRecipe->save();
 
-       $newRecipe->required_ingredients()->attach(1, array('ingredient_quantity' => 4, 'ingredient_price' => 4 * 32.4000));
-       $newRecipe->required_ingredients()->attach(3, array('ingredient_quantity' => 121, 'ingredient_price' => 121 * 1.6778));
+       $newRecipe->required_ingredients()->attach(1, array('ingredient_quantity' => 4, 'ingredient_price' => 4 * 32.4000, 'ingredient_unit_type' => 'db'));
+       $newRecipe->required_ingredients()->attach(3, array('ingredient_quantity' => 121, 'ingredient_price' => 121 * 1.6778, 'ingredient_unit_type' => 'ml'));
 
 
        $newRecipe = new Cake();
@@ -27,9 +27,9 @@ class CakeTableSeeder extends Seeder
        $newRecipe->desc = 'This is just a description for the cake.';
        $newRecipe->save();
 
-       $newRecipe->required_ingredients()->attach(5, array('ingredient_quantity' => 145, 'ingredient_price' => 145 * 0.8397));
-       $newRecipe->required_ingredients()->attach(4, array('ingredient_quantity' => 230, 'ingredient_price' => 230 * 2.5465 ));
-       $newRecipe->required_ingredients()->attach(1, array('ingredient_quantity' => 6, 'ingredient_price' => 3 * 32.4000));
+       $newRecipe->required_ingredients()->attach(5, array('ingredient_quantity' => 145, 'ingredient_price' => 145 * 0.8397, 'ingredient_unit_type' => 'g'));
+       $newRecipe->required_ingredients()->attach(4, array('ingredient_quantity' => 230, 'ingredient_price' => 230 * 2.5465, 'ingredient_unit_type' => 'dkg'));
+       $newRecipe->required_ingredients()->attach(1, array('ingredient_quantity' => 6, 'ingredient_price' => 3 * 32.4000, 'ingredient_unit_type' => 'ml'));
 
 
 /*        DB::table('cakes')->insert([

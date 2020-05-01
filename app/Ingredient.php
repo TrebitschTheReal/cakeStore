@@ -9,7 +9,7 @@ class Ingredient extends Model
     public function cakes()
     {
         return $this->belongsToMany(Cake::class, 'required_ingredients')
-            ->withPivot(['ingredient_quantity', 'ingredient_price']);
+            ->withPivot(['ingredient_quantity', 'ingredient_price', 'ingredient_unit_type']);
     }
 
     /*
