@@ -173,10 +173,14 @@
          uploadIngredient() {
             let axiosPostTo = '';
 
+            // Megvizsgáljuk, hogy van-e id-ja a feltöltendő ingredient modellnek
+
             if(this.ingredientModel.id == null) {
+               // Ha nincs, akkor az új alapanyag feltöltés végpontra postolunk
                axiosPostTo = '/registernewingredient'
             }
             else {
+               // Ha van, akkor a meglévő alapanyag módosítás végpontra posztolunk
                axiosPostTo = '/modifyexistingingredient'
             }
 
