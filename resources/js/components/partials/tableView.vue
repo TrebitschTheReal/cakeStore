@@ -46,6 +46,7 @@
                <tr>
                   <th scope="col">#</th>
                   <th scope="col">Alapanyag neve</th>
+                  <th scope="col">Feltöltött mennyiség</th>
                   <th scope="col">Feltöltött egységtípus</th>
                   <th scope="col">Feltöltött egységár</th>
                   <th scope="col">Feltöltés dátuma</th>
@@ -61,6 +62,7 @@
                <tr v-for="ingredient in filteredList" :key="ingredient.id">
                   <th scope="row">{{ingredient.id}}</th>
                   <td>{{ingredient.name}}</td>
+                  <td>{{ingredient.uploaded_unit_quantity}}</td>
                   <td>{{ingredient.uploaded_unit_type}}</td>
                   <td>{{ingredient.uploaded_unit_price}} Ft</td>
                   <td>{{ingredient.created_at}}</td>

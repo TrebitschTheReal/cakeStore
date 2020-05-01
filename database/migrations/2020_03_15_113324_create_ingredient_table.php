@@ -20,6 +20,7 @@ class CreateIngredientTable extends Migration
            $table->mediumInteger('unit_category');
            $table->string('uploaded_unit_type')->nullable();
            $table->mediumInteger('uploaded_unit_price')->nullable();
+           $table->mediumInteger('uploaded_unit_quantity')->nullable();
             $table->double('unit_price',20,4);
             $table->timestamps();
         });

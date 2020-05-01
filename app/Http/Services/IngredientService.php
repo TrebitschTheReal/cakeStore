@@ -15,6 +15,7 @@ class IngredientService
       $newIngredient->name = $newIngredientData['ingredients']['name'];
       $newIngredient->uploaded_unit_type = $this->getUploadableIngredientUnitType($newIngredientData);
       $newIngredient->uploaded_unit_price = $newIngredientData['ingredients']['unit_price'];
+      $newIngredient->uploaded_unit_quantity = $newIngredientData['ingredients']['quantity'];
 
       foreach ($newIngredientData['ingredients']['unit_type'] as $key => $value){
          if($key == 'unit_category') {

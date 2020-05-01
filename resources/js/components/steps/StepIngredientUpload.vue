@@ -31,16 +31,15 @@
                                 :disabled="pending"
                                 name=""
                                 required
-                                v-model="ingredientModel.unit_type"
+                                v-model="selectedUnitName"
                         >
                            <option v-for="type in ingredientUnitTypes"
-                                   :value="type"
                            >{{type.type_name}}
                            </option>
                         </select>
                      </div>
                      <div class="col col-lg-3 col-xs-1 text-center">
-                        <p>Ár / {{ingredientModel.unit_type.type_name}}</p>
+                        <p>Ár</p>
                         <input required
                                :disabled="pending"
                                class="form-control"
@@ -133,6 +132,7 @@
 
       data() {
          return {
+            selectedUnitName: '',
             fetchedErrors: {},
             successResponse: '',
             modify: false,
@@ -171,6 +171,7 @@
 
       methods: {
          uploadIngredient() {
+            this.matchSeledtedUnitName();
             this.success = false;
             this.pending = true;
             this.ingredientModel.name = this.ingredientModel.name.toLowerCase();
@@ -206,6 +207,8 @@
          },
 
          uploadModifiedIngredient() {
+            console.log(this.ingredientModel.unit_type);
+            this.matchSeledtedUnitName();
             this.success = false;
             this.pending = true;
             this.ingredientModel.name = this.ingredientModel.name.toLowerCase();
@@ -248,9 +251,9 @@
             this.modify = true;
             this.ingredientModel.id = ingredient.id;
             this.ingredientModel.name = ingredient.name;
-            this.ingredientModel.unit_type = [];
-            this.ingredientModel.unit_type.push({id: 1, unit_category: 2, type_name: ingredient.uploaded_unit_type});
+            this.selectedUnitName = ingredient.uploaded_unit_type;
             this.ingredientModel.unit_price = ingredient.uploaded_unit_price;
+            this.ingredientModel.quantity = ingredient.uploaded_unit_quantity;
             this.search = ingredient.name;
          },
 
@@ -279,6 +282,7 @@
          resetInput() {
             this.ingredientModel.name = '';
             this.ingredientModel.unit_type = [];
+            this.selectedUnitName = '';
             this.ingredientModel.quantity = Number;
             this.ingredientModel.unit_price = Number;
          },
@@ -292,6 +296,15 @@
             this.success = true;
          },
 
+         matchSeledtedUnitName() {
+            for (let unit of this.ingredientUnitTypes) {
+               if (unit.type_name === this.selectedUnitName) {
+                  this.ingredientModel.unit_type = unit;
+               }
+            }
+
+            console.log(this.ingredientModel.unit_type);
+         },
       },
    }
 </script>
