@@ -12,7 +12,7 @@ class RequiredIngredientsSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('required_ingredients')->insert([
+/*        DB::table('required_ingredients')->insert([
             'ingredient_id' => 1,
             'ingredient_quantity' => 3,
             'cake_id' => 1,
@@ -52,6 +52,6 @@ class RequiredIngredientsSeeder extends Seeder
             'ingredient_quantity' => 2,
             'cake_id' => 3,
             'ingredient_price' => 63,
-        ]);
+        ]);*/
     }
 }

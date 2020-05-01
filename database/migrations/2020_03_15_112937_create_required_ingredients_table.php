@@ -18,7 +18,7 @@ class CreateRequiredIngredientsTable extends Migration
             $table->bigInteger('ingredient_id');
             $table->mediumInteger('ingredient_quantity')->nullable();
             $table->bigInteger('cake_id');
-            $table->mediumInteger('ingredient_price')->nullable();
+            $table->double('ingredient_price', 20, 4)->nullable();
 
             $table->foreign('ingredient_id')
                 ->references('id')

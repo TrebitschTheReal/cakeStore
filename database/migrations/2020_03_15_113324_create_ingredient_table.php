@@ -18,7 +18,7 @@ class CreateIngredientTable extends Migration
             $table->string('name', 60);
             $table->mediumText('desc')->nullable();
             $table->mediumInteger('unit_category');
-            $table->mediumInteger('unit_price');
+            $table->double('unit_price',20,4);
             $table->timestamps();
         });
     }

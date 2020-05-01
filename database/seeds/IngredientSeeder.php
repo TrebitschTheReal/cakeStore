@@ -1,5 +1,6 @@
 <?php
 
+use App\Ingredient;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 
@@ -13,32 +14,43 @@ class IngredientSeeder extends Seeder
     public function run()
     {
 
-       DB::table('ingredients')->insert([
-          'name' => 'tojás',
-          'desc' => 'This is just a description for ingredient.',
-          'unit_category' => 3,
-          'unit_price' => 21,
-       ]);
+       $ingredient = new Ingredient();
+       $ingredient->name = 'tojás';
+       $ingredient->desc = 'This is just a description for ingredient.';
+       $ingredient->unit_category = 3;
+       $ingredient->unit_price = 32.4;
+       $ingredient->save();
 
-        DB::table('ingredients')->insert([
-            'name' => 'cukor',
-            'desc' => 'This is just a description for ingredient.',
-            'unit_category' => 1,
-            'unit_price' => 3,
-        ]);
+       $ingredient = new Ingredient();
+       $ingredient->name = 'tej';
+       $ingredient->desc = 'This is just a description for ingredient.';
+       $ingredient->unit_category = 2;
+       $ingredient->unit_price = 1.67783573;
+       $ingredient->save();
 
-        DB::table('ingredients')->insert([
-            'name' => 'tej',
-            'desc' => 'This is just a description for ingredient.',
-            'unit_category' => 2,
-            'unit_price' => 4,
-        ]);
 
-        DB::table('ingredients')->insert([
-            'name' => 'étolaj',
-            'desc' => 'This is just a description for ingredient.',
-            'unit_category' => 2,
-            'unit_price' => 2,
-        ]);
+       $ingredient = new Ingredient();
+       $ingredient->name = 'étolaj';
+       $ingredient->desc = 'This is just a description for ingredient.';
+       $ingredient->unit_category = 2;
+       $ingredient->unit_price = 1.353423423554;
+       $ingredient->save();
+
+
+       $ingredient = new Ingredient();
+       $ingredient->name = 'cukor';
+       $ingredient->desc = 'This is just a description for ingredient.';
+       $ingredient->unit_category = 1;
+       $ingredient->unit_price = 2.5465;
+       $ingredient->save();
+
+
+       $ingredient = new Ingredient();
+       $ingredient->name = 'liszt';
+       $ingredient->desc = 'This is just a description for ingredient.';
+       $ingredient->unit_category = 1;
+       $ingredient->unit_price = 0.83967876867867678;
+       $ingredient->save();
+
     }
 }

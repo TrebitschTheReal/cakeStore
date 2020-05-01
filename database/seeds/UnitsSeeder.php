@@ -27,10 +27,38 @@ class UnitsSeeder extends Seeder
       $unit->save();
 
       $unit = new Unit();
+      $unit->unit_category = 1;
+      $unit->category_name = 'tömeg';
+      $unit->type_name = 'kg';
+      $unit->conversion_rate = 1000;
+      $unit->save();
+
+      $unit = new Unit();
       $unit->unit_category = 2;
-      $unit->category_name = 'űrmérték';
+      $unit->category_name = 'térfogat';
       $unit->type_name = 'ml';
       $unit->conversion_rate = 1;
+      $unit->save();
+
+      $unit = new Unit();
+      $unit->unit_category = 2;
+      $unit->category_name = 'térfogat';
+      $unit->type_name = 'cl';
+      $unit->conversion_rate = 10;
+      $unit->save();
+
+      $unit = new Unit();
+      $unit->unit_category = 2;
+      $unit->category_name = 'térfogat';
+      $unit->type_name = 'dl';
+      $unit->conversion_rate = 100;
+      $unit->save();
+
+      $unit = new Unit();
+      $unit->unit_category = 2;
+      $unit->category_name = 'térfogat';
+      $unit->type_name = 'l';
+      $unit->conversion_rate = 1000;
       $unit->save();
 
       $unit = new Unit();
@@ -40,11 +68,5 @@ class UnitsSeeder extends Seeder
       $unit->conversion_rate = 1;
       $unit->save();
 
-      $unit = new Unit();
-      $unit->unit_category = 2;
-      $unit->category_name = 'űrmérték';
-      $unit->type_name = 'dl';
-      $unit->conversion_rate = 10;
-      $unit->save();
    }
 }
