@@ -132,6 +132,10 @@
 
       data() {
          return {
+            // Mivel nem tudunk vue-ban az option attribútumnak selected értéket adni ha a selectre v-modelt teszünk,
+            // ezért szükség van egy segédváltozóra ami alapanyag módosításnál felveszi a korábban feltöltött értéket
+            // Alapanyag feltöltésnél, matcholtatjuk ennek a változónak az értékét a unit objektummal
+            // Ezt a megoldást kell madj használni a recept módosítás felületen is.
             selectedUnitName: '',
             fetchedErrors: {},
             successResponse: '',
@@ -275,6 +279,8 @@
             this.success = true;
          },
 
+         // Ha a segédváltozóban szereplő név megegyezik az unit objektum unit nevének egyikével,
+         // akkor a feltöltendő alapanyag modellünkhöz csatoljuk az adott unit objektumot
          matchSeledtedUnitName() {
             for (let unit of this.ingredientUnitTypes) {
                if (unit.type_name === this.selectedUnitName) {
