@@ -48,7 +48,7 @@ class IngredientController extends Controller
       }
 
       $ingredientService = new IngredientService;
-      $ingredientService->updateIngredient($input);
+      $ingredientService->saveNewIngredient($input);
 
    }
 

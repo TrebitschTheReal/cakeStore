@@ -170,7 +170,13 @@
       },
 
       methods: {
-         uploadIngredient() {
+         uploadIngredient(id) {
+            if(typeof id !== 'undefined') {
+               console.log('Az id: ', id);
+            }
+            else {
+               console.log('hát ez undefined');
+            }
             this.matchSeledtedUnitName();
             this.success = false;
             this.pending = true;
@@ -207,7 +213,6 @@
          },
 
          uploadModifiedIngredient() {
-            console.log(this.ingredientModel.unit_type);
             this.matchSeledtedUnitName();
             this.success = false;
             this.pending = true;
@@ -280,6 +285,7 @@
          },
 
          resetInput() {
+            this.ingredientModel.id = null;
             this.ingredientModel.name = '';
             this.ingredientModel.unit_type = [];
             this.selectedUnitName = '';

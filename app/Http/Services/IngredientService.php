@@ -11,7 +11,13 @@ use League\Flysystem\Adapter\Ftp;
 class IngredientService
 {
    public function saveNewIngredient($newIngredientData) {
-      $newIngredient = new Ingredient;
+      if(isset($newIngredientData['ingredients']['id'])) {
+         $newIngredient = Ingredient::find($newIngredientData['ingredients']['id']);
+      }
+      else {
+         $newIngredient = new Ingredient;
+      }
+
       $newIngredient->name = $newIngredientData['ingredients']['name'];
       $newIngredient->uploaded_unit_type = $this->getUploadableIngredientUnitType($newIngredientData);
       $newIngredient->uploaded_unit_price = $newIngredientData['ingredients']['unit_price'];
