@@ -23,6 +23,6 @@ class Ingredient extends Model
      */
    public function unit()
    {
-      return $this->hasMany('App\Unit', 'unit_category');
+      return $this->hasMany('App\Unit','unit_category','unit_category');
    }
 }

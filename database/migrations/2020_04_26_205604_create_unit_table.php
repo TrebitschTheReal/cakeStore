@@ -18,12 +18,6 @@ class CreateUnitTable extends Migration
           $table->string('category_name');
           $table->string('type_name');
           $table->mediumInteger('conversion_rate');
-
-          $table->foreign('unit_category')
-             ->references('unit_category')
-             ->on('ingredient')
-             ->onDelete('cascade');
-
        });
     }
 

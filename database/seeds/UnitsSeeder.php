@@ -34,6 +34,13 @@ class UnitsSeeder extends Seeder
       $unit->save();
 
       $unit = new Unit();
+      $unit->unit_category = 3;
+      $unit->category_name = 'darab';
+      $unit->type_name = 'db';
+      $unit->conversion_rate = 1;
+      $unit->save();
+
+      $unit = new Unit();
       $unit->unit_category = 2;
       $unit->category_name = 'űrmérték';
       $unit->type_name = 'dl';
