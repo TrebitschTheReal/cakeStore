@@ -7,7 +7,7 @@
             <div class="form-group">
                <div class="">
                   <form class="row"
-                        v-on:submit.prevent="uploadManager">
+                        v-on:submit.prevent="uploadIngredient">
                      <div class="col col-lg-3 col-xs-6 text-center">
                         <p>Alapanyag neve</p>
                         <input required
@@ -170,19 +170,22 @@
       },
 
       methods: {
-         uploadIngredient(id) {
-            if(typeof id !== 'undefined') {
-               console.log('Az id: ', id);
+         uploadIngredient() {
+            let axiosPostTo = '';
+
+            if(this.ingredientModel.id == null) {
+               axiosPostTo = '/registernewingredient'
             }
             else {
-               console.log('hát ez undefined');
+               axiosPostTo = '/modifyexistingingredient'
             }
+
             this.matchSeledtedUnitName();
             this.success = false;
             this.pending = true;
             this.ingredientModel.name = this.ingredientModel.name.toLowerCase();
 
-            axios.post('/registernewingredient', {
+            axios.post(axiosPostTo, {
                ingredients: this.ingredientModel,
             })
                .then((response) => {
@@ -208,36 +211,6 @@
                     Beküldjük a 'nyers' error objectet a fetchedErrors fieldbe, ami be van kötve az errorHandler
                     komponensbe
                    */
-                  this.fetchedErrors = error.response.data;
-               });
-         },
-
-         uploadModifiedIngredient() {
-            this.matchSeledtedUnitName();
-            this.success = false;
-            this.pending = true;
-            this.ingredientModel.name = this.ingredientModel.name.toLowerCase();
-
-            axios.post('/modifyexistingingredient', {
-               ingredients: this.ingredientModel,
-            })
-               .then((response) => {
-                  this.resetInput();
-                  this.success = true;
-                  this.pending = false;
-                  this.modify = false;
-                  this.search = '';
-                  this.showList = false;
-                  this.fetchIngredients();
-                  this.fetchedErrors = {};
-                  this.successResponse = 'Sikeres alapanyag módosítás!';
-                  console.log(response);
-               })
-               .catch((error) => {
-                  console.log(error);
-                  console.log('Backend error: ', error.response.data);
-                  console.log('Statuscode: ', error.response.status);
-                  console.log('Response headers: ', error.response.headers);
                   this.fetchedErrors = error.response.data;
                });
          },
@@ -291,10 +264,6 @@
             this.selectedUnitName = '';
             this.ingredientModel.quantity = Number;
             this.ingredientModel.unit_price = Number;
-         },
-
-         uploadManager() {
-            this.modify ? this.uploadModifiedIngredient() : this.uploadIngredient();
          },
 
          generateSuccessResponse(message) {

@@ -15,7 +15,7 @@
                         <div class="card-body">
                             <p class="font-weight-bold">Hozzávalók:</p>
                             <div v-for="ingredient in cake.required_ingredients">
-                                <p>{{ingredient.pivot.ingredient_quantity}} {{ingredient.unit_type}} {{ingredient.name}}
+                                <p>{{ingredient.pivot.ingredient_quantity}} {{ingredient.pivot.ingredient_unit_type}} {{ingredient.name}}
                                     - {{ingredient.pivot.ingredient_price}} Ft</p>
                             </div>
                             <p class="font-weight-bold">Alapanyagok ára összesen: {{cake.ingredients_price_sum}} Ft</p>

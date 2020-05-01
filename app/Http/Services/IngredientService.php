@@ -11,6 +11,7 @@ use League\Flysystem\Adapter\Ftp;
 class IngredientService
 {
    public function saveNewIngredient($newIngredientData) {
+
       if(isset($newIngredientData['ingredients']['id'])) {
          $newIngredient = Ingredient::find($newIngredientData['ingredients']['id']);
       }
@@ -30,16 +31,12 @@ class IngredientService
       }
 
       $newIngredient->unit_price = $this->calculateIngredientUnitPriceByInput($newIngredientData);
+
+      if(isset($newIngredientData['ingredients']['id'])) {
+         $this->updateIngredientSumPricesInExistingCakes($newIngredient);
+      }
+
       $newIngredient->save();
-   }
-
-   public function updateIngredient($newIngredientData) {
-
-      $ingredient = Ingredient::find($newIngredientData['ingredients']['id']);
-      $ingredient->unit_price = $newIngredientData['ingredients']['unit_price'];
-      $ingredient->save();
-
-      $this->updateIngredientSumPricesInExistingCakes($ingredient);
    }
 
    /*
