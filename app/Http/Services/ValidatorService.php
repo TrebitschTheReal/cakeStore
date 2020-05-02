@@ -5,6 +5,7 @@ namespace App\Http\Services;
 
 
 use App\Ingredient;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class ValidatorService
@@ -148,5 +149,30 @@ class ValidatorService
          return $error;
       }
       return true;
+   }
+
+   public function validateModifyUser($request) {
+      //Todo validálás
+      Log::info($request);
+      die();
+
+      $rules = [
+         'name' => ['required', 'unique:cakes', 'min:2', 'max:30']
+      ];
+
+      $message = [
+         'required' => 'Ne hackeld az oldalt pls, backenden is van validáció!',
+         'name.unique' => ':input recept már létezik!',
+         'name.min' => 'A név legyen minimum 2 karakter hosszú!',
+         'name.max' => 'A név nem lehet hosszabb :max karakternél!',
+      ];
+
+      $validator = Validator::make($request, $rules, $message);
+
+      if( $validator->fails()) {
+         return $validator->errors();
+      }
+      return true;
+
    }
 }

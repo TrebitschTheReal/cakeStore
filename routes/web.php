@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', function () {
-    return view('welcome');
+   return view('welcome');
 });
 
 Auth::routes();
@@ -25,47 +25,48 @@ Auth::routes();
  * a 'role: ' után megadott értéket: admin, stb.
  * middleware: RoleMiddleWare.php
  */
-Route::middleware('role:admin')->group( function() {
-    // VIEWS
-    Route::get('/users', 'UserController@getUserView')->name('users');
+Route::middleware('role:admin')->group(function () {
+   // VIEWS
+   Route::get('/users', 'UserController@getUserView')->name('users');
 
-    //POST
+   //POST
    Route::post('/deleteuser', 'UserController@deleteUser')->name('deleteuser');
+   Route::post('/modifyUser', 'UserController@modifyUser')->name('modifyuser');
 
-    //API
-    Route::get('/getuserlist', 'UserController@getUserList')->name('getuserlist');
+   //API
+   Route::get('/getuserlist', 'UserController@getUserList')->name('getuserlist');
+   Route::get('/getroles', 'UserController@getRoles')->name('getroles');
 });
 
 /*
  * Manager végpontok
  */
-Route::middleware('role:admin,manager')->group( function() {
-    // VIEWS
-    Route::get('/cakerecipes', 'CakeController@index')->name('cakerecipes');
-    Route::get('/recipes', 'CakeController@createRecipeView')->name('recipes');
+Route::middleware('role:admin,manager')->group(function () {
+   // VIEWS
+   Route::get('/cakerecipes', 'CakeController@index')->name('cakerecipes');
+   Route::get('/recipes', 'CakeController@createRecipeView')->name('recipes');
 
-    //POST
-    Route::post('/fillnewlycreatedrecipe', 'CakeController@fillNewlyCreatedRecipe')->name('fillnewlycreatedrecipe');
-    Route::post('/registernewrecipe', 'CakeController@registerNewRecipe')->name('registernewrecipe');
-    Route::post('/registernewingredient', 'IngredientController@registerNewIngredient')->name('registernewingredient');
-    Route::post('/modifyexistingingredient', 'IngredientController@modifyExistingIngredient')->name('modifyexistingingredient');
+   //POST
+   Route::post('/fillnewlycreatedrecipe', 'CakeController@fillNewlyCreatedRecipe')->name('fillnewlycreatedrecipe');
+   Route::post('/registernewrecipe', 'CakeController@registerNewRecipe')->name('registernewrecipe');
+   Route::post('/registernewingredient', 'IngredientController@registerNewIngredient')->name('registernewingredient');
+   Route::post('/modifyexistingingredient', 'IngredientController@modifyExistingIngredient')->name('modifyexistingingredient');
    Route::post('/deleterecipe', 'CakeController@deleteRecipe')->name('deleterecipe');
    Route::post('/deleteingredient', 'IngredientController@deleteIngredient')->name('deleteingredient');
+   Route::post('/modifyrecipe', 'CakeController@modifyRecipe')->name('modifyrecipe');
 
-
-    //API
-    Route::get('/cakelist', 'CakeController@getAllCakeRecipes')->name('cakelist');
+   //API
+   Route::get('/cakelist', 'CakeController@getAllCakeRecipes')->name('cakelist');
    Route::get('/fetchingredients', 'IngredientController@fetchIngredients')->name('fetchingredients');
-    Route::post('/modifyrecipe', 'CakeController@modifyRecipe')->name('modifyrecipe');
-       Route::get('/fetchunittypes', 'IngredientController@fetchUnitTypes')->name('fetchunittypes');
+   Route::get('/fetchunittypes', 'IngredientController@fetchUnitTypes')->name('fetchunittypes');
 
 });
 
 /*
  * Reg végpontok
  */
-Route::middleware('role:admin,manager,reg')->group( function() {
-    Route::get('/home', 'HomeController@index')->name('home');
+Route::middleware('role:admin,manager,reg')->group(function () {
+   Route::get('/home', 'HomeController@index')->name('home');
 });
 
 

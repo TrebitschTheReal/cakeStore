@@ -7,7 +7,7 @@
             <div class="form-group">
                <div class="">
                   <form class="row"
-                        v-on:submit.prevent="uploadManager">
+                        v-on:submit.prevent="uploadUser">
                      <div class="col col-lg-6 col-xs-6 text-center">
                         <p>Felhasználói név</p>
                         <input required
@@ -23,7 +23,7 @@
                                 name=""
                                 id=""
                                 required
-                                v-model="userModel.role"
+                                v-model="userModel.role_name"
                         >
                            <option v-for="type in userRoleTypes"
                                    :value="type"
@@ -36,7 +36,7 @@
                         <input required
                                :disabled="pending"
                                class="form-control"
-                               type="text"
+                               type="email"
                                v-model="userModel.email"
                         >
                      </div>
@@ -98,6 +98,7 @@
                  @succesResponse="generateSuccessResponse($event)"
                  @fetchedErrors="fetchedErrors = $event"
                  @startPending="pending = true"
+                 @modifyUser="modifyUser($event)"
       />
 
    </div>
@@ -118,6 +119,7 @@
       },
 
       mounted() {
+         this.fetchRoles();
          this.fetchUsers();
       },
 
@@ -134,9 +136,12 @@
             userModel: {
                id: null,
                name: '',
-               role: '',
+               role_id: null,
+               role_name: '',
                email: '',
+               role: {}
             },
+            fetchedRoles: {},
             fetchedUsers: {},
             errors: [
                /*
@@ -162,10 +167,12 @@
          uploadUser() {
             this.success = false;
             this.pending = true;
-            this.userModel.name = this.userModel.name.toLowerCase();
 
-            axios.post('/registernewuser', {
-               users: this.userModel,
+            this.matchRoles();
+            console.log(this.userModel);
+
+            axios.post('/modifyUser', {
+               user: this.userModel,
             })
                .then((response) => {
                   this.resetInput();
@@ -174,9 +181,10 @@
                   this.modify = false;
                   this.search = '';
                   this.showList = false;
+                  this.fetchRoles();
                   this.fetchUsers();
                   this.fetchedErrors = {};
-                  this.successResponse = 'Sikeres alapanyag feltöltés!';
+                  this.successResponse = 'Sikeres művelet!';
 
                   console.log(response);
                })
@@ -190,35 +198,6 @@
                     Beküldjük a 'nyers' error objectet a fetchedErrors fieldbe, ami be van kötve az errorHandler
                     komponensbe
                    */
-                  this.fetchedErrors = error.response.data;
-               });
-         },
-
-         uploadModifiedUser() {
-            this.success = false;
-            this.pending = true;
-            this.userModel.name = this.userModel.name.toLowerCase();
-
-            axios.post('/modifyexistinguser', {
-               users: this.userModel,
-            })
-               .then((response) => {
-                  this.resetInput();
-                  this.success = true;
-                  this.pending = false;
-                  this.modify = false;
-                  this.search = '';
-                  this.showList = false;
-                  this.fetchUsers();
-                  this.fetchedErrors = {};
-                  this.successResponse = 'Sikeres alapanyag módosítás!';
-                  console.log(response);
-               })
-               .catch((error) => {
-                  console.log(error);
-                  console.log('Backend error: ', error.response.data);
-                  console.log('Statuscode: ', error.response.status);
-                  console.log('Response headers: ', error.response.headers);
                   this.fetchedErrors = error.response.data;
                });
          },
@@ -241,7 +220,10 @@
 
             if(user.roles.length !== 0) {
                console.log(user.roles.length);
-               this.userModel.role = user.roles[0].name;
+               this.userModel.role_name = user.roles[0].name;
+               this.userModel.role_id = user.roles[0].id;
+
+               console.log(this.userModel);
             }
 
             console.log(user.roles);
@@ -253,6 +235,7 @@
          fetchUsers() {
             axios.get('/getuserlist')
                .then((response) => {
+                  console.log(response.data);
                   this.fetchedUsers = response.data;
                   this.showList = true;
                   this.pending = false;
@@ -262,20 +245,36 @@
                });
          },
 
-         resetInput() {
-            this.userModel.name = '';
-            this.userModel.unit_type = 'típus';
-            this.userModel.unit_price = null;
+         fetchRoles() {
+            axios.get('/getroles')
+               .then((response) => {
+                  this.fetchedRoles = response.data;
+                  console.log(this.fetchedRoles);
+               })
+               .catch((error) => {
+                  console.log(error);
+               });
          },
 
-         uploadManager() {
-            this.modify ? this.uploadModifiedUser() : this.uploadUser();
+         resetInput() {
+            this.userModel.id = null;
+            this.userModel.name = null;
+            this.userModel.role_name = null;
+            this.userModel.email = null;
          },
 
          generateSuccessResponse(message) {
             this.successResponse = message;
             this.success = true;
          },
+
+         matchRoles() {
+            for (let role of this.fetchedRoles) {
+               if(role.name == this.userModel.role_name) {
+                  this.userModel.role_id = role.id;
+               }
+            }
+         }
       },
    }
 </script>
