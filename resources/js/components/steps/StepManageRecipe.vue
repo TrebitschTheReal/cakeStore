@@ -25,9 +25,9 @@
                      <select class="form-control"
                              :disabled="!ingredient.isIngredientSelected"
                              required
-                             v-model="ingredient.selectedUnitName">
+                             v-model="ingredient.unit_type_name">
                         <!-- Azt a tömböt küldjük vissza, ami egyezik az egység categoryval. Tömeg - űrmérték - darab -->
-                        <option v-for="type in getIngredientUnitListByCategory(ingredient.unitCategory, ingredient)"
+                        <option v-for="type in getIngredientUnitListByCategory(ingredient.unit_category, ingredient)"
                         >{{type.type_name}}
                         </option>
                      </select>
@@ -37,7 +37,7 @@
                      <select required class="form-control"
                              v-model="ingredient.name"
                              id="exampleFormControlSelect1"
-                             @change="linkFetchedIngredientStatsToTheNewlyAddedIngredient(ingredient, index, $event)">
+                             @change="getUnitsByIngredientUnitCategory(ingredient, index, $event)">
                         <option v-for="(availableIngredient, key) in availableIngredients">
                            {{availableIngredient.name}}
                         </option>
@@ -133,7 +133,6 @@
                id: null,
                name: null,
                quantity: null,
-               unitType: null,
                unitPrice: null,
             });
          },
@@ -146,26 +145,24 @@
             } else return 0;
          },
 
-         linkFetchedIngredientStatsToTheNewlyAddedIngredient(ingredient) {
+         getUnitsByIngredientUnitCategory(ingredient) {
             ingredient.isIngredientSelected = true;
+            ingredient.quantity = null;
 
-            for (let availableIngredient of this.availableIngredients) {
-               if (availableIngredient.name === ingredient.name) {
-                  ingredient.id = availableIngredient.id;
-                  ingredient.unitType = availableIngredient.unit_type;
-                  ingredient.unitPrice = availableIngredient.unit_price;
-                  ingredient.unitCategory = availableIngredient.unit_category;
-               }
-            }
+            //Ez:
 
             // for (let availableIngredient of this.availableIngredients) {
-            //    if (availableIngredient.name === this.recipe.ingredients[index].name) {
-            //       this.recipe.ingredients[index].id = availableIngredient.id;
-            //       this.recipe.ingredients[index].unitType = availableIngredient.unit_type;
-            //       this.recipe.ingredients[index].unitPrice = availableIngredient.unit_price;
-            //       this.recipe.ingredients[index].unitCategory = availableIngredient.unit_category;
+            //    if (availableIngredient.name === ingredient.name) {
+            //       ingredient.unit_category = availableIngredient.unit_category;
             //    }
             // }
+            //
+            // Megegyezik ezzel:
+
+            this.availableIngredients.filter(function (e) {
+               e.name  === ingredient.name ? ingredient.unit_category = e.unit_category : '';
+            });
+
          },
 
          removeIngredientRow(index) {
@@ -175,6 +172,12 @@
          finishNewRecipe() {
             this.fetchedErrors = [];
             this.pending = true;
+
+            this.prepareIngredientModels();
+            this.prepareUnitModels();
+
+            console.log(this.recipe);
+
             /*
                Ellenőrizzük a duplikációkat
             */
@@ -245,6 +248,29 @@
 
             return unitList;
          },
+
+         prepareIngredientModels() {
+            for(let ingredient of this.recipe.ingredients) {
+               for (let availableIngredient of this.availableIngredients) {
+                  if (availableIngredient.name === ingredient.name) {
+                     ingredient.id = availableIngredient.id;
+                     ingredient.unitPrice = availableIngredient.unit_price;
+                  }
+               }
+            }
+         },
+
+         prepareUnitModels() {
+            for (let ingredient of this.recipe.ingredients) {
+               for (let unit of this.ingredientUnitTypes) {
+                  if (ingredient.unit_type_name === unit.type_name) {
+                     ingredient.unit_id = unit.id;
+                     ingredient.unit_category = unit.unit_category;
+                  }
+               }
+            }
+         }
+
       },
 
    }

@@ -94,7 +94,6 @@
                      id: null,
                      name: null,
                      quantity: null,
-                     unitType: null,
                      unitPrice: null,
                      sumIngredientPrice: null,
                   },
@@ -104,7 +103,6 @@
                      id: null,
                      name: null,
                      quantity: null,
-                     unitType: null,
                      unitPrice: null,
                      sumIngredientPrice: null,
                   },
@@ -166,12 +164,11 @@
                         id: response.data.required_ingredients[i].id,
                         name: response.data.required_ingredients[i].name,
                         isIngredientSelected: true,
-                        unitType: response.data.required_ingredients[i].unit_type,
                         unitPrice: response.data.required_ingredients[i].unit_price,
-                        unitCategory: response.data.required_ingredients[i].unit_category,
                         quantity: response.data.required_ingredients[i].pivot.ingredient_quantity,
                         sumIngredientPrice: response.data.required_ingredients[i].pivot.ingredient_price,
-                        selectedUnitName: response.data.required_ingredients[i].pivot.ingredient_unit_type,
+                        unit_type_name: response.data.required_ingredients[i].pivot.ingredient_unit_type,
+                        unit_category: response.data.required_ingredients[i].unit_category,
                      });
                   }
 
