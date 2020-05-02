@@ -17,13 +17,23 @@
                      <p>Mennyiség</p>
                      <input required class="form-control" v-model="ingredient.quantity" type="number">
                   </div>
-                  <div class="col col-lg-2 col-xs-12 text-center">
+                  <div class="col col-lg-3 col-xs-12 text-center">
                      <p>Egység</p>
-                     <input required disabled class="form-control" type="text" v-model="ingredient.unitType">
+                     <select class="form-control"
+                             :disabled="!ingredient.isIngredientSelected"
+                             required
+                             v-model="ingredient.selectedUnitName">
+                        <!-- Azt a tömböt küldjük vissza, ami egyezik az egység categoryval. Tömeg - űrmérték - darab -->
+                        <option v-for="type in getIngredientUnitListByCategory(ingredient.unitCategory, ingredient)"
+                        >{{type.type_name}}
+                        </option>
+                     </select>
                   </div>
                   <div class="col col-lg-6 col-xs-12 text-center">
                      <p>Alapanyag</p>
-                     <select required class="form-control" v-model="ingredient.name" id="exampleFormControlSelect1"
+                     <select required class="form-control"
+                             v-model="ingredient.name"
+                             id="exampleFormControlSelect1"
                              @change="linkFetchedIngredientStatsToTheNewlyAddedIngredient(index, $event)">
                         <option v-for="(availableIngredient, key) in availableIngredients">
                            {{availableIngredient.name}}
@@ -78,6 +88,7 @@
       Amíg a dom jelen része nincs kirenderelve (a jelenlegi komponens, ami v-ifre van kötve), addig az konkrétan nem is létezik!
        */
       mounted() {
+         this.fetchUnitTypes();
          this.fetchInredientsList();
       },
 
@@ -90,6 +101,7 @@
             fetchedErrors: [],
             pending: false,
             availableIngredients: [],
+            ingredientUnitTypes: [],
          }
       },
 
@@ -137,6 +149,7 @@
                   this.recipe.ingredients[index].id = availableIngredient.id;
                   this.recipe.ingredients[index].unitType = availableIngredient.unit_type;
                   this.recipe.ingredients[index].unitPrice = availableIngredient.unit_price;
+                  this.recipe.ingredients[index].unitCategory = availableIngredient.unit_category;
                }
             }
          },
@@ -195,6 +208,32 @@
             }
          },
 
-      }
+         fetchUnitTypes() {
+            axios.get('/fetchunittypes')
+               .then((response) => {
+                  this.ingredientUnitTypes = response.data;
+               })
+               .catch((error) => {
+                  console.log(error);
+               });
+         },
+
+         getIngredientUnitListByCategory(unit_category, ingredient) {
+            let unitList = this.ingredientUnitTypes.filter(function (e) {
+               ingredient.isIngredientSelected = true;
+               return e.unit_category == unit_category;
+            });
+
+            console.log('length: ', unitList.length);
+
+            if(unitList.length == 0) {
+               ingredient.isIngredientSelected = false;
+               return
+            }
+
+            return unitList;
+         }
+      },
+
    }
 </script>

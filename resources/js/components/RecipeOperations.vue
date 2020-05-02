@@ -165,10 +165,13 @@
                         listID: i,
                         id: response.data.required_ingredients[i].id,
                         name: response.data.required_ingredients[i].name,
+                        isIngredientSelected: false,
                         unitType: response.data.required_ingredients[i].unit_type,
                         unitPrice: response.data.required_ingredients[i].unit_price,
+                        unitCategory: response.data.required_ingredients[i].unit_category,
                         quantity: response.data.required_ingredients[i].pivot.ingredient_quantity,
-                        sumIngredientPrice: response.data.required_ingredients[i].pivot.ingredient_price
+                        sumIngredientPrice: response.data.required_ingredients[i].pivot.ingredient_price,
+                        selectedUnitName: response.data.required_ingredients[i].pivot.ingredient_unit_type,
                      });
                   }
 

@@ -149,7 +149,11 @@
                id: null,
                name: '',
                quantity: null,
-               unit_type: [],
+               unit_type: [
+                  { id: 0 },
+                  { unit_category: 0 },
+                  { type_name: '' },
+               ],
                unit_price: null,
             },
             fetchedIngredients: {},
