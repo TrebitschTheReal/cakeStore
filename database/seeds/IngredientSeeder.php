@@ -16,41 +16,55 @@ class IngredientSeeder extends Seeder
 
        $ingredient = new Ingredient();
        $ingredient->name = 'tojás';
-       $ingredient->desc = 'This is just a description for ingredient.';
+       $ingredient->desc = 'Description';
        $ingredient->unit_category = 3;
+       $ingredient->uploaded_unit_quantity = 10;
+       $ingredient->uploaded_unit_type = 'db';
+       $ingredient->uploaded_unit_price = 320;
        $ingredient->unit_price = 32.4;
        $ingredient->save();
 
        $ingredient = new Ingredient();
        $ingredient->name = 'tej';
-       $ingredient->desc = 'This is just a description for ingredient.';
+       $ingredient->desc = 'Description';
        $ingredient->unit_category = 2;
-       $ingredient->unit_price = 1.67783573;
+       $ingredient->uploaded_unit_quantity = 1;
+       $ingredient->uploaded_unit_type = 'l';
+       $ingredient->uploaded_unit_price = 158;
+       $ingredient->unit_price = 0.158;
        $ingredient->save();
 
 
        $ingredient = new Ingredient();
        $ingredient->name = 'étolaj';
-       $ingredient->desc = 'This is just a description for ingredient.';
+       $ingredient->desc = 'Description';
        $ingredient->unit_category = 2;
-       $ingredient->unit_price = 1.353423423554;
+       $ingredient->uploaded_unit_quantity = 1;
+       $ingredient->uploaded_unit_type = 'l';
+       $ingredient->uploaded_unit_price = 158;
+       $ingredient->unit_price = 0.452;
        $ingredient->save();
 
 
        $ingredient = new Ingredient();
        $ingredient->name = 'cukor';
-       $ingredient->desc = 'This is just a description for ingredient.';
+       $ingredient->desc = 'Description';
        $ingredient->unit_category = 1;
-       $ingredient->unit_price = 2.5465;
+       $ingredient->uploaded_unit_quantity = 1;
+       $ingredient->uploaded_unit_type = 'kg';
+       $ingredient->uploaded_unit_price = 235;
+       $ingredient->unit_price = 0.235;
        $ingredient->save();
 
 
        $ingredient = new Ingredient();
        $ingredient->name = 'liszt';
-       $ingredient->desc = 'This is just a description for ingredient.';
+       $ingredient->desc = 'Description';
        $ingredient->unit_category = 1;
-       $ingredient->unit_price = 0.83967876867867678;
+       $ingredient->uploaded_unit_quantity = 1;
+       $ingredient->uploaded_unit_type = 'kg';
+       $ingredient->uploaded_unit_price = 195;
+       $ingredient->unit_price = 0.195;
        $ingredient->save();
-
     }
 }

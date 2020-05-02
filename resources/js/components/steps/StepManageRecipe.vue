@@ -169,6 +169,8 @@
             this.recipe.ingredients.splice(index, 1);
          },
 
+         // form submitra hívódik: validálás (duplikáció ellenőrzés), majd prepare data for push
+
          finishNewRecipe() {
             this.fetchedErrors = [];
             this.pending = true;
@@ -183,11 +185,18 @@
             */
             let duplicate = this.checkDuplicateIngredients();
 
+            // Megkaptuk a checkDuplicateIngredients függvénytől a duplikált névlistát,
+            // majd filterrel kiszedjük a duplikációkat, hogy a hibaüzenetben csak egyszer szerepeljen az,
+            // amit meg akarunk jeleníteni duplikációként
+
+            duplicate = duplicate.filter(function(item, pos) {
+               return duplicate.indexOf(item) == pos;
+            });
+
             /*
                Ha a duplicate változó hossza nem nulla, akkor értelemszerűen találtunk duplikációt.
             */
             if(!duplicate.length) {
-               this.sumNewRecipeIngredientPrices();
                this.$emit('updateRecipe', this.recipe)
             } else {
                let errorString = 'A ' + duplicate + ' többször szerepel!';
@@ -219,12 +228,6 @@
             return duplicates;
          },
 
-         sumNewRecipeIngredientPrices() {
-            for (let newIngredient of this.recipe.ingredients) {
-               newIngredient.sumIngredientPrice = newIngredient.quantity * newIngredient.unitPrice;
-            }
-         },
-
          fetchUnitTypes() {
             axios.get('/fetchunittypes')
                .then((response) => {
@@ -235,19 +238,21 @@
                });
          },
 
+         // Az egységektípusok select attr, optionjai feltöltésére használjuk.
+         // Végigiterálunk a befetchelt egységtípus tömbön, és visszaküldjük azt az átalakított tömbjét
+         // ahol a unit categoryk megegyeznek.
+         //
+         // filter = visszaad egy tömböt amit aszerint rendez össze, amilyen 'filter' paramétert kap.
+         // fontos: mivel a tömb nem dinaimus adatszerkezet, ezért nem ki és betesz elemeket, hanem minden esetben
+         // újrarendezi az egészet! (performace szempont)
+
          getIngredientUnitListByCategory(unit_category) {
-            let unitList = this.ingredientUnitTypes.filter(function (e) {
+            return this.ingredientUnitTypes.filter(function (e) {
                return e.unit_category == unit_category;
             });
-
-            console.log('length: ', unitList.length);
-
-            if(unitList.length == 0) {
-               return
-            }
-
-            return unitList;
          },
+
+         // Előkészítjük a receptek ingredient 'modelljeit' a postolásra
 
          prepareIngredientModels() {
             for(let ingredient of this.recipe.ingredients) {
@@ -259,6 +264,8 @@
                }
             }
          },
+
+         // Előkészítjük a receptek unit részével kapcsolatos részeit a postolásra
 
          prepareUnitModels() {
             for (let ingredient of this.recipe.ingredients) {
