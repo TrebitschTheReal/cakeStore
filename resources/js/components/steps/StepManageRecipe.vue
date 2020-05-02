@@ -15,7 +15,10 @@
                <div class="row">
                   <div class="col col-lg-3 col-xs-12 text-center">
                      <p>Mennyiség</p>
-                     <input required class="form-control" v-model="ingredient.quantity" type="number">
+                     <input required class="form-control"
+                            v-model="ingredient.quantity"
+                            :disabled="!ingredient.isIngredientSelected"
+                            type="number">
                   </div>
                   <div class="col col-lg-3 col-xs-12 text-center">
                      <p>Egység</p>
@@ -34,7 +37,7 @@
                      <select required class="form-control"
                              v-model="ingredient.name"
                              id="exampleFormControlSelect1"
-                             @change="linkFetchedIngredientStatsToTheNewlyAddedIngredient(index, $event)">
+                             @change="linkFetchedIngredientStatsToTheNewlyAddedIngredient(ingredient, index, $event)">
                         <option v-for="(availableIngredient, key) in availableIngredients">
                            {{availableIngredient.name}}
                         </option>
@@ -143,15 +146,26 @@
             } else return 0;
          },
 
-         linkFetchedIngredientStatsToTheNewlyAddedIngredient(index) {
+         linkFetchedIngredientStatsToTheNewlyAddedIngredient(ingredient) {
+            ingredient.isIngredientSelected = true;
+
             for (let availableIngredient of this.availableIngredients) {
-               if (availableIngredient.name === this.recipe.ingredients[index].name) {
-                  this.recipe.ingredients[index].id = availableIngredient.id;
-                  this.recipe.ingredients[index].unitType = availableIngredient.unit_type;
-                  this.recipe.ingredients[index].unitPrice = availableIngredient.unit_price;
-                  this.recipe.ingredients[index].unitCategory = availableIngredient.unit_category;
+               if (availableIngredient.name === ingredient.name) {
+                  ingredient.id = availableIngredient.id;
+                  ingredient.unitType = availableIngredient.unit_type;
+                  ingredient.unitPrice = availableIngredient.unit_price;
+                  ingredient.unitCategory = availableIngredient.unit_category;
                }
             }
+
+            // for (let availableIngredient of this.availableIngredients) {
+            //    if (availableIngredient.name === this.recipe.ingredients[index].name) {
+            //       this.recipe.ingredients[index].id = availableIngredient.id;
+            //       this.recipe.ingredients[index].unitType = availableIngredient.unit_type;
+            //       this.recipe.ingredients[index].unitPrice = availableIngredient.unit_price;
+            //       this.recipe.ingredients[index].unitCategory = availableIngredient.unit_category;
+            //    }
+            // }
          },
 
          removeIngredientRow(index) {
@@ -218,21 +232,19 @@
                });
          },
 
-         getIngredientUnitListByCategory(unit_category, ingredient) {
+         getIngredientUnitListByCategory(unit_category) {
             let unitList = this.ingredientUnitTypes.filter(function (e) {
-               ingredient.isIngredientSelected = true;
                return e.unit_category == unit_category;
             });
 
             console.log('length: ', unitList.length);
 
             if(unitList.length == 0) {
-               ingredient.isIngredientSelected = false;
                return
             }
 
             return unitList;
-         }
+         },
       },
 
    }
