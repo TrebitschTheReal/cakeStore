@@ -4,6 +4,8 @@
 namespace App\Http\Services;
 
 use App\Cake;
+use App\Unit;
+use Illuminate\Support\Facades\Log;
 
 class CakeService
 {
@@ -64,10 +66,21 @@ class CakeService
       foreach ($newRecipeContent['newRecipe']['ingredients'] as $newRecipeIngredient => $ingredientValue) {
          $ingredientID = $ingredientValue['id'];
          $ingredientQuantity = $ingredientValue['quantity'];
-         $ingredientSumPrice = $ingredientValue['sumIngredientPrice'];
+         $ingredientUniTypeName = $ingredientValue['unit_type_name'];
+         $ingredientPrice = (double)$this->convertToSmallestUnit($ingredientValue) * (double)$ingredientValue['unitPrice'];
+         Log::info('Egységár: ');
+         Log::info($ingredientValue['unitPrice']);
+         Log::info('Ennek az alapanyagnak, összesen, értéke: ');
+         Log::info($ingredientPrice);
+
+
 
          //Laravel - Eloquent - hozzárendeljük az alapanyagot (illetve a mennyiséget és az adott alapanyag sum árát) a tortához
-         $newRecipe->required_ingredients()->attach($ingredientID, array('ingredient_quantity' => $ingredientQuantity, 'ingredient_price' => $ingredientSumPrice));
+         $newRecipe->required_ingredients()->attach($ingredientID, array (
+            'ingredient_quantity' => $ingredientQuantity,
+            'ingredient_unit_type' => $ingredientUniTypeName,
+            'ingredient_price' => $ingredientPrice,
+         ));
       }
 
       //Laravel - Eloquent - összegezzük az alapanyagok költségét - anyagköltség
@@ -77,13 +90,14 @@ class CakeService
       $newRecipe->save();
    }
 
-   private function checkIfRecipeNameAlreadyExists($recipeName)
-   {
-      $recipeName = strtolower($recipeName);
-
-      if (Cake::where('name', '=', $recipeName)->first() === null) {
-         return true;
-      }
-      return false;
+   public function convertToSmallestUnit($ingredient) {
+      Log::info('---------------');
+      Log::info($ingredient);
+      $unit_conversion_rate = Unit::find($ingredient['unit_id'])->conversion_rate;
+      Log::info('Váltószám:');
+      Log::info($unit_conversion_rate);
+      Log::info('Átváltott mennyiség:');
+      Log::info((double)$ingredient['quantity'] * $unit_conversion_rate);
+      return (double)$ingredient['quantity'] * $unit_conversion_rate;
    }
 }
