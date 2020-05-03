@@ -89,9 +89,9 @@
                <thead class="thead-dark">
                <tr>
                   <th scope="col">#</th>
-                  <th scope="col">Felhasználó neve</th>
+                  <th scope="col">Név</th>
                   <th scope="col">Jogosultsági szint</th>
-                  <th scope="col">E-mail címe</th>
+                  <th scope="col">E-mail</th>
                   <th scope="col">Regisztráció dátuma</th>
                   <th scope="col">Utolsó módosítás dátuma</th>
                   <th scope="col"></th>
@@ -113,8 +113,10 @@
                      <spinner/>
                   </td>
                   <td colspan="2" v-else>
-                     <button @click="modifyUser(user)" class="btn btn-warning">Módosítás</button>
-                     <button @click="prepareToDeleteItem(user.id, user.name, 'user')" class="btn btn-danger">Törlés</button>
+                     <button @click="modifyUser(user)"
+                             class="col-12 mb-2 btn btn-warning">Módosítás</button>
+                     <button @click="prepareToDeleteItem(user.id, user.name, 'user')"
+                             class="col-12 btn btn-danger">Törlés</button>
                   </td>
                </tr>
                </tbody>

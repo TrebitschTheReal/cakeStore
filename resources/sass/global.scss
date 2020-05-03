@@ -5,6 +5,14 @@
 /*
    Fix méret a táblához. Muszáj, mert adatfrissítéskor ugrált.
  */
+/*
+
 .table-fix-size {
    width: 57rem !important;
+}*/
+
+@media screen and (max-width: 991px) {
+   .submit-button-margin {
+      width: 92% !important;
+   }
 }
