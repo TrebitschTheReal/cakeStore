@@ -18,7 +18,7 @@ class CakeTableSeeder extends Seeder
        $newRecipe->desc = 'Minta recept. Az értékek lehet, hogy nem stimmelnek. A helyes működés ellenőrzéséhez módosítsd ezt a tortát, vagy készíts egy újat';
        $newRecipe->save();
 
-       $newRecipe->required_ingredients()->attach(1, array('ingredient_quantity' => 4, 'ingredient_price' => 4 * 32.4000, 'ingredient_unit_type' => 'db'));
+       $newRecipe->required_ingredients()->attach(1, array('ingredient_quantity' => 4, 'ingredient_price' => 4 * 45.000, 'ingredient_unit_type' => 'db'));
        $newRecipe->required_ingredients()->attach(3, array('ingredient_quantity' => 121, 'ingredient_price' => 121 * 0.452, 'ingredient_unit_type' => 'ml'));
 
 
@@ -27,9 +27,9 @@ class CakeTableSeeder extends Seeder
        $newRecipe->desc = 'Minta recept. Az értékek lehet, hogy nem stimmelnek. A helyes működés ellenőrzéséhez módosítsd ezt a tortát, vagy készíts egy újat';
        $newRecipe->save();
 
-       $newRecipe->required_ingredients()->attach(5, array('ingredient_quantity' => 145, 'ingredient_price' => 145 * 0.195, 'ingredient_unit_type' => 'g'));
-       $newRecipe->required_ingredients()->attach(4, array('ingredient_quantity' => 15, 'ingredient_price' => 150 * 0.235, 'ingredient_unit_type' => 'dkg'));
-       $newRecipe->required_ingredients()->attach(1, array('ingredient_quantity' => 6, 'ingredient_price' => 3 * 32.4000, 'ingredient_unit_type' => 'db'));
+       $newRecipe->required_ingredients()->attach(5, array('ingredient_quantity' => 145, 'ingredient_price' => 145 * 0.25, 'ingredient_unit_type' => 'g'));
+       $newRecipe->required_ingredients()->attach(4, array('ingredient_quantity' => 15, 'ingredient_price' => 150 * 0.22, 'ingredient_unit_type' => 'dkg'));
+       $newRecipe->required_ingredients()->attach(1, array('ingredient_quantity' => 6, 'ingredient_price' => 6 * 45.000, 'ingredient_unit_type' => 'db'));
 
 
 /*        DB::table('cakes')->insert([
