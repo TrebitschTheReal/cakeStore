@@ -1,32 +1,37 @@
 <template>
    <div class="mx-auto card">
-      <form v-on:submit.prevent="finishNewRecipe">
+      <form @submit.prevent="finishNewRecipe">
          <div class="card-header">
             <p class="text-center font-weight-bold">Recept neve</p>
-            <input class="form-control text-center mx-auto"
+            <input class="form-control text-center"
                    required
                    type="text"
                    v-model="recipe.name">
          </div>
-         <div class="card-body">
+         <div class="card-body recipe-edit-card">
             <div class="row">
-               <div class="col col-lg-12 col-xs-12 text-center mb-3">
-                  <p class="font-weight-bold">Leírás</p>
-                  <textarea v-model="recipe.desc" class="form-control" name="" cols="30" rows="10"/>
+               <div class="col-12 mb-3">
+                  <p class="text-center font-weight-bold">Leírás</p>
+                  <textarea v-model="recipe.desc"
+                            class="form-control"
+                            rows="13"/>
                </div>
             </div>
-            <div v-for="(ingredient, index) in recipe.ingredients" class="form-group">
+            <div v-for="(ingredient, index) in recipe.ingredients"
+                 class="">
                <div class="row">
-                  <div class="col col-lg-3 col-xs-12 text-center">
-                     <p>Mennyiség</p>
+                  <div class="col-lg-3">
+                     <label :for="'quantity-' + index">Mennyiség</label>
                      <input required class="form-control"
+                            :id="'quantity-' + index"
                             v-model="ingredient.quantity"
                             :disabled="!ingredient.isIngredientSelected"
                             type="number">
                   </div>
-                  <div class="col col-lg-3 col-xs-12 text-center">
-                     <p>Egység</p>
+                  <div class="col-lg-3">
+                     <label :for="'unit-' + index">Egység</label>
                      <select class="form-control"
+                             :id="'unit-' + index"
                              :disabled="!ingredient.isIngredientSelected"
                              required
                              v-model="ingredient.unit_type_name">
@@ -36,9 +41,10 @@
                         </option>
                      </select>
                   </div>
-                  <div class="col col-lg-6 col-xs-12 text-center">
-                     <p>Alapanyag</p>
+                  <div class="col-lg-5">
+                     <label :for="'ingredient-' + index">Alapanyag</label>
                      <select required class="form-control"
+                             :id="'ingredient-' + index"
                              v-model="ingredient.name"
                              id="exampleFormControlSelect1"
                              @change="getUnitsByIngredientUnitCategory(ingredient, index, $event)">
@@ -47,13 +53,14 @@
                         </option>
                      </select>
                   </div>
-                  <div class="col col-lg-1 col-xs-12 text-center">
+                  <div class=" col-lg-1">
                      <p class="text-white">-</p>
-                     <p @click="removeIngredientRow(index)" class="btn btn-danger">-</p>
+                     <p @click="removeIngredientRow(index)"
+                        class="btn btn-danger">-</p>
                   </div>
                </div>
             </div>
-            <div class="col col-lg-12 col-xs-12">
+            <div class="">
                <div class="mt-4 mb-2 alert alert-success">
                   <h4 class="">Új alapanyag hozzáadása<span @click="addNewIngredientRow"
                                                             class="float-right btn btn-success">+</span>
@@ -61,16 +68,16 @@
                </div>
                <errorHandler :fetchedErrors="fetchedErrors"
                              @errorChanged="pending = $event"
-                             class="my-2"
+                             class=""
                />
             </div>
          </div>
          <div class="card-footer">
             <div class="row">
                <spinner v-if="pending === true"
-                        class="mt-4 col col-lg-12"
+                        class=""
                />
-               <button v-else type="submit" class="col-12 btn btn-success m-2">Recept feltöltése</button>
+               <button v-else type="submit" class=" btn btn-success">Recept feltöltése</button>
             </div>
          </div>
       </form>
