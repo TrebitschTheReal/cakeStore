@@ -162,7 +162,7 @@ class ValidatorService
          'unique' => ':input e-mail cím már regisztrált!',
 
          'user.name.required' => 'Muszáj megadnod nevet!',
-         'user.name.between' => 'Az alapanyag neve minimum :min és maximum :max karakter hosszú lehet!',
+         'user.name.between' => 'A felhasználó neve minimum :min és maximum :max karakter hosszú lehet!',
 
          'user.email.required' => 'Muszáj megadnod e-mail címet!',
          'user.email.between' => 'Az email minimum :min és maximum :max karakter hosszú lehet!',
