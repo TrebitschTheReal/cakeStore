@@ -1,81 +1,85 @@
 <template>
    <div class="col-12">
-      <h2 class="text-center">Felhasználók kezelése</h2>
-      <hr>
-      <transition name="bounce" mode="out-in">
-         <form class="row"
-               @submit.prevent="uploadUser">
-            <div class="col-lg-4">
-               <label class="control-label">Felhasználói név</label>
-               <input required
-                      class="form-control"
-                      :disabled="pending"
-                      v-model="userModel.name"
-                      type="text">
-            </div>
-            <div class="col-lg-4">
-               <label>Jogosultsági szint</label>
-               <select class="form-control"
-                       :disabled="pending"
-                       name=""
-                       id=""
-                       required
-                       v-model="userModel.role_name">
-                  <option v-for="type in userRoleTypes"
-                          :value="type"
-                  >{{type}}
-                  </option>
-               </select>
-            </div>
-            <div class="col-lg-4">
-               <label>E-mail cím</label>
-               <input required
-                      :disabled="pending"
-                      class="form-control"
-                      type="email"
-                      v-model="userModel.email"
-               >
-            </div>
-            <spinner v-if="pending"
-                     class=""
-            />
-            <template v-else>
-               <input :disabled="pending"
-                      :class="modify ? 'submit-button-margin col-xs-12 col-lg-6 mt-3 mx-auto btn btn-warning' : 'submit-button-margin col-xs-12 col-lg-6 mt-3 mx-auto btn btn-block btn-success'"
-                      type="submit"
-                      :value="modify ? 'Meglévő felhasználó módosítása' : 'Új felhasználói fiók létrehozása'"
+      <div class="user-management">
+         <h2 class="text-center">Felhasználók kezelése</h2>
+         <hr>
+         <transition name="bounce" mode="out-in">
+            <form class="row"
+                  @submit.prevent="uploadUser">
+               <div class="col-lg-4">
+                  <label class="control-label">Felhasználói név</label>
+                  <input required
+                         class="form-control"
+                         :disabled="pending"
+                         v-model="userModel.name"
+                         type="text">
+               </div>
+               <div class="col-lg-4">
+                  <label>Jogosultsági szint</label>
+                  <select class="form-control"
+                          :disabled="pending"
+                          name=""
+                          id=""
+                          required
+                          v-model="userModel.role_name">
+                     <option v-for="type in userRoleTypes"
+                             :value="type"
+                     >{{type}}
+                     </option>
+                  </select>
+               </div>
+               <div class="col-lg-4">
+                  <label>E-mail cím</label>
+                  <input required
+                         :disabled="pending"
+                         class="form-control"
+                         type="email"
+                         v-model="userModel.email"
+                  >
+               </div>
+               <spinner v-if="pending"
+                        class=""
                />
-            </template>
-         </form>
-      </transition>
+               <template v-else>
+                  <input :disabled="pending"
+                         :class="modify ? 'submit-button-margin col-xs-12 col-lg-6 mt-3 mx-auto btn btn-warning' : 'submit-button-margin col-xs-12 col-lg-6 mt-3 mx-auto btn btn-block btn-success'"
+                         type="submit"
+                         :value="modify ? 'Meglévő felhasználó módosítása' : 'Új felhasználói fiók létrehozása'"
+                  />
+               </template>
+            </form>
+         </transition>
 
-      <transition name="bounce">
-         <div class="my-3 alert-response" v-if="success">
-            <h3 class="alert alert-success text-center"
-                @click="success = false"
-            >{{successResponse}}</h3>
+         <transition name="bounce">
+            <div v-if="success"
+                 class="my-3 alert-response">
+               <h3 class="alert alert-success text-center"
+                   @click="success = false"
+               >{{successResponse}}</h3>
+            </div>
+         </transition>
+
+         <!-- A fetchedErrors bindelve van a child komponens propjaként, és ott watcholjuk a változást -->
+         <!-- Ha a child komponens emitel egy errorChanged eventet, akkor a visszaérkező paraméter ($event) értékével tesszük egyenlővé a pendinget -->
+         <errorHandler :fetchedErrors="fetchedErrors"
+                       @errorChanged="pending = $event"
+                       class="my-2"
+         />
+
+         <h2 class="mt-3 text-center">Felhasználó kereső</h2>
+         <hr>
+         <div class="form-group">
+            <input required
+                   type="text"
+                   v-model="search"
+                   class="form-control mx-auto col-lg-8"
+                   id="recipe-name"
+                   aria-describedby="recipe-name"
+                   @keyup="checkSearcher"
+                   placeholder="Kezd el írni a felhasználó nevét">
          </div>
-      </transition>
-
-      <!-- A fetchedErrors bindelve van a child komponens propjaként, és ott watcholjuk a változást -->
-      <!-- Ha a child komponens emitel egy errorChanged eventet, akkor a visszaérkező paraméter ($event) értékével tesszük egyenlővé a pendinget -->
-      <errorHandler :fetchedErrors="fetchedErrors"
-                    @errorChanged="pending = $event"
-                    class="my-2"
-      />
-
-      <h2 class="mt-3 text-center">Felhasználó kereső</h2>
-      <hr>
-      <div class="form-group">
-         <input required
-                type="text"
-                v-model="search"
-                class="form-control mx-auto col-lg-8"
-                id="recipe-name"
-                aria-describedby="recipe-name"
-                @keyup="checkSearcher"
-                placeholder="Kezd el írni a felhasználó nevét">
       </div>
+
       <tableView v-if="showList"
                  class="p-lg-5"
                  :filteredList="this.filteredList"
@@ -185,10 +189,9 @@
                     Beküldjük a 'nyers' error objectet a fetchedErrors fieldbe, ami be van kötve az errorHandler
                     komponensbe
                    */
-                  if(error.response.status == 500) {
+                  if (error.response.status == 500) {
                      this.fetchedErrors = ['Hiba történt! Kérjük vegye fel a kapcsolatot az oldal üzemeltetőjével!']
-                  }
-                  else {
+                  } else {
                      this.fetchedErrors = error.response.data;
                   }
                });
