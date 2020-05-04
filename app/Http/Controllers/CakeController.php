@@ -72,7 +72,12 @@ class CakeController extends Controller
       //Átalakítjuk a request jsont egy asszociatív tömbbé.
       $newRecipeContent = $request->all();
 
-      Log::info(print_r($request->all(), true));
+      $validatorService = new ValidatorService();
+      $response = $validatorService->validateRecipe($newRecipeContent);
+
+      if($response !== true) {
+         return response($response, 422);
+      }
 
       $cakeService = new CakeService();
       $cakeService->fillNewlyRegisteredRecipe($newRecipeContent);

@@ -23,7 +23,7 @@
             <!-- Recept managelése -->
             <stepManageRecipe v-else-if="recipeSteps.stepManageRecipe"
                               :recipe="recipe"
-                              @updateRecipe="updateRecipeToDB($event)"
+                              @updateSuccessful="updateSuccessful()"
             />
 
             <!-- Alapanyag feltöltése -->
@@ -115,28 +115,12 @@
       Metódusok
       */
       methods: {
-         /*
-         * Frissítjük a receptet az adatbázisban
-         */
-         updateRecipeToDB(modifiedRecipe) {
-            this.recipe = modifiedRecipe;
-            this.handleSteps('pending');
 
-            axios.post('/fillnewlycreatedrecipe', {
-               newRecipe: this.recipe,
-            })
-               .then((response) => {
-                  //this.validateServerResponseOnSuccess(response.data);
-                  this.recipeSuccessMessage = 'Sikeres recept feltöltés!';
-                  this.handleSteps('finish');
-               })
-               .catch((error) => {
-                  //this.validateServerResponseOnFail(error.response.status);
-                  console.log(error);
-                  console.log('Backend error: ', error.response.data);
-                  console.log('Statuscode: ', error.response.status);
-                  console.log('Response headers: ', error.response.headers);
-               });
+         // Ez most így csúnya
+         updateSuccessful() {
+            this.handleSteps('pending');
+            this.recipeSuccessMessage = 'Sikeres recept feltöltés!';
+            this.handleSteps('finish');
          },
 
          /*

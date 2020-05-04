@@ -126,6 +126,25 @@ class ValidatorService
       return true;
    }
 
+   public function validateRecipe($request) {
+      $rules = [
+         'newRecipe.name' => ['required', 'between:1,50', 'string'],
+      ];
+
+
+      $message = [
+         'newRecipe.name.required' => 'Muszáj megadnod nevet!',
+         'newRecipe.name.between' => 'Az recept neve minimum :min és maximum :max karakter hosszú lehet!',
+      ];
+
+      $validator = Validator::make($request, $rules, $message);
+
+      if( $validator->fails()) {
+         return $validator->errors();
+      }
+      return true;
+   }
+
    public function validateUser($request) {
       /*
        * Ha ajax postként object érkezik a Laravel validátorába, akkor azt a Validator osztály képes kezelni.

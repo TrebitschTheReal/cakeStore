@@ -201,8 +201,19 @@
                Ha a duplicate változó hossza nem nulla, akkor értelemszerűen találtunk duplikációt.
             */
             if(!duplicate.length) {
-               this.$emit('updateRecipe', this.recipe)
+               // Frissítjük a receptet az adatbázisban
+               axios.post('/fillnewlycreatedrecipe', {
+                  newRecipe: this.recipe,
+               })
+                  .then((response) => {
+                     this.$emit('updateSuccessful')
+                  })
+                  .catch((error) => {
+                     this.fetchedErrors = error.response.data;
+                  });
+
             } else {
+               // Kigeneráljuk a backend és a frontend hibákat
                let errorString = 'A ' + duplicate + ' többször szerepel!';
                this.fetchedErrors = [errorString];
                this.pending = false;
