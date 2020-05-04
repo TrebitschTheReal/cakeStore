@@ -19,7 +19,7 @@
                   <label for="ingredient-quantity">Mennyiség</label>
                   <input required
                          id="ingredient-quantity"
-                         v-model="ingredientModel.quantity"
+                         v-model="ingredientModel.uploaded_unit_quantity"
                          :disabled="pending"
                          class="form-control"
                          type="number"
@@ -144,7 +144,7 @@
             ingredientModel: {
                id: null,
                name: '',
-               quantity: null,
+               uploaded_unit_quantity: null,
                unit_type: [
                   {id: 0},
                   {unit_category: 0},
@@ -238,7 +238,7 @@
             this.ingredientModel.name = ingredient.name;
             this.selectedUnitName = ingredient.uploaded_unit_type;
             this.ingredientModel.unit_price = ingredient.uploaded_unit_price;
-            this.ingredientModel.quantity = ingredient.uploaded_unit_quantity;
+            this.ingredientModel.uploaded_unit_quantity = ingredient.uploaded_unit_quantity;
             this.search = ingredient.name;
          },
 
@@ -269,7 +269,7 @@
             this.ingredientModel.name = '';
             this.ingredientModel.unit_type = [];
             this.selectedUnitName = '';
-            this.ingredientModel.quantity = Number;
+            this.ingredientModel.uploaded_unit_quantity = Number;
             this.ingredientModel.unit_price = Number;
          },
 
@@ -284,6 +284,7 @@
             for (let unit of this.ingredientUnitTypes) {
                if (unit.type_name === this.selectedUnitName) {
                   this.ingredientModel.unit_type = unit;
+                  this.ingredientModel.uploaded_unit_type = unit.type_name;
                }
             }
 

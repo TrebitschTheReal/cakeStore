@@ -36,7 +36,7 @@ class IngredientService
        */
       $newIngredient->uploaded_unit_type = $this->getUploadableIngredientUnitType($newIngredientData);
       $newIngredient->uploaded_unit_price = $newIngredientData['ingredients']['unit_price'];
-      $newIngredient->uploaded_unit_quantity = $newIngredientData['ingredients']['quantity'];
+      $newIngredient->uploaded_unit_quantity = $newIngredientData['ingredients']['uploaded_unit_quantity'];
 
       /*
        * Végigiterálunk az unit_type tömbön, és a unit_category értéket beállítjuk az objektumunk
@@ -121,7 +121,8 @@ class IngredientService
       /*
        * Átváltjuk a feltöltött mennyiséget az adott alapanyag egységtípusának legkisebb mértékegységére.
        */
-      $ingredientQuantityInSmallestUnitOfItsCategory = $newIngredientData['ingredients']['quantity'] * $unit_conversion_rate;
+      //TODO: nullával osztást kivédeni!
+      $ingredientQuantityInSmallestUnitOfItsCategory = $newIngredientData['ingredients']['uploaded_unit_quantity'] * $unit_conversion_rate;
 
       /*
        * Visszaküldjük double értékben az alapanyag típusa szerinti, legkisebb mértékegységgel számolt egységárát.

@@ -33,14 +33,12 @@ class UserController extends Controller
     public function modifyUser(Request $request) {
        $input = $request->all();
 
-       //Todo: validálás!!!
-
-/*       $validatorService = new ValidatorService();
-       $response = $validatorService->validateModifyUser($input);
+       $validatorService = new ValidatorService();
+       $response = $validatorService->validateUser($input);
 
        if($response !== true) {
           return response($response, 422);
-       }*/
+       }
 
 
       /*

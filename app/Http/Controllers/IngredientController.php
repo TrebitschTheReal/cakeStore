@@ -23,7 +23,7 @@ class IngredientController extends Controller
        * (ami pedig a laravel 'out of the box' validátorát használja, de így még jobban el tudjuk különíteni a folyamatokat)
        */
       $validatorService = new ValidatorService();
-      $response = $validatorService->validateNewIngredient($input);
+      $response = $validatorService->validateIngredient($input);
 
       if($response !== true) {
          return response($response, 422);
@@ -41,7 +41,7 @@ class IngredientController extends Controller
    public function modifyExistingIngredient(Request $request) {
       $input = $request->all();
       $validatorService = new ValidatorService();
-      $response = $validatorService->validateAlreadyExistsIngredient($input);
+      $response = $validatorService->validateIngredient($input);
 
       if($response !== true) {
          return response($response, 422);
