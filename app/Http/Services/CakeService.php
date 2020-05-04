@@ -52,6 +52,7 @@ class CakeService
 
       //Megkeressük a nemrég regisztrált torta receptet az id alapján
       $newRecipe = Cake::find($newRecipeId);
+      $newRecipe->name = $newRecipeContent['newRecipe']['name'];
       $newRecipe->desc = $newRecipeDesc;
 
       //Validálásra vár

@@ -2,7 +2,11 @@
    <div class="mx-auto card">
       <form v-on:submit.prevent="finishNewRecipe">
          <div class="card-header">
-            <h2 class="text-center">{{recipe.name}}</h2>
+            <p class="text-center font-weight-bold">Recept neve</p>
+            <input class="form-control text-center mx-auto"
+                   required
+                   type="text"
+                   v-model="recipe.name">
          </div>
          <div class="card-body">
             <div class="row">
