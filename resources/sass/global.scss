@@ -11,19 +11,34 @@
    width: 57rem !important;
 }*/
 
-@media screen and (max-width: 991px) {
+.management {
+   label {
+      font-size: 1rem;
+   }
+}
+
+
+@media screen and (max-width: 639px) {
    .submit-button-margin {
       width: 92% !important;
    }
 
-   .user-management {
+   .management {
       margin-left: 2rem !important;
       margin-right: 2rem !important;
+
+      input, select {
+         margin-bottom: 0.7rem;
+      }
    }
 }
 
 @media screen and (min-width: 640px) {
-   .user-management {
+   .submit-button-margin {
+      width: 92% !important;
+   }
+
+   .management {
       margin-left: 10rem !important;
       margin-right: 10rem !important;
    }

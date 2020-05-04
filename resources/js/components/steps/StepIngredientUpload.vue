@@ -1,103 +1,99 @@
 <template>
-   <div class="mx-auto">
-      <div class="m-lg-4 m-xs-2">
+   <div class="col-12">
+      <div class="management">
          <h2 class="text-center">Alapanyagok kezelése</h2>
          <hr>
          <transition name="bounce" mode="out-in">
-            <div class="form-group">
-               <div class="">
-                  <form class="row"
-                        v-on:submit.prevent="uploadIngredient">
-                     <div class="col col-lg-3 col-xs-6 text-center">
-                        <p>Alapanyag neve</p>
-                        <input required
-                               class="form-control"
-                               :disabled="pending"
-                               v-model="ingredientModel.name"
-                               type="text">
-                     </div>
-                     <div class="col col-lg-3 col-xs-1 text-center">
-                        <p>Mennyiség</p>
-                        <input required
-                               v-model="ingredientModel.quantity"
-                               :disabled="pending"
-                               class="form-control"
-                               type="number"
-                        >
-                     </div>
-                     <div class="col col-lg-3 col-xs-2 text-center">
-                        <p>Egységtípusa</p>
-                        <select class="form-control"
-                                :disabled="pending"
-                                name=""
-                                required
-                                v-model="selectedUnitName"
-                        >
-                           <option v-for="type in ingredientUnitTypes"
-                           >{{type.type_name}}
-                           </option>
-                        </select>
-                     </div>
-                     <div class="col col-lg-3 col-xs-1 text-center">
-                        <p>Ár</p>
-                        <input required
-                               :disabled="pending"
-                               class="form-control"
-                               type="number"
-                               v-model="ingredientModel.unit_price"
-                        >
-                     </div>
-                     <spinner v-if="pending"
-                              class="mt-4 col col-lg-12"
-                     />
-                     <template v-else>
-                        <input v-if="modify"
-                               :disabled="pending"
-                               type="submit"
-                               class="mt-4 col col-lg-12 btn btn-warning"
-                               value="Meglévő alapanyag módosítása"
-                        />
-
-                        <input v-else
-                               :disabled="pending"
-                               class="mt-4 col col-lg-12 btn btn-success"
-                               type="submit"
-                               value="Új alapanyag feltöltése"
-                        />
-                     </template>
-                  </form>
+            <form class="row"
+                  @submit.prevent="uploadIngredient">
+               <div class="col-lg-3">
+                  <label for="ingredient-name">Alapanyag neve</label>
+                  <input required
+                         id="ingredient-name"
+                         class="form-control"
+                         :disabled="pending"
+                         v-model="ingredientModel.name"
+                         type="text">
                </div>
+               <div class="col-lg-3">
+                  <label for="ingredient-quantity">Mennyiség</label>
+                  <input required
+                         id="ingredient-quantity"
+                         v-model="ingredientModel.quantity"
+                         :disabled="pending"
+                         class="form-control"
+                         type="number"
+                  >
+               </div>
+               <div class="col-lg-3">
+                  <label for="ingredient-unit">Egységtípusa</label>
+                  <select class="form-control"
+                          :disabled="pending"
+                          name=""
+                          id="ingredient-unit"
+                          required
+                          v-model="selectedUnitName"
+                  >
+                     <option v-for="type in ingredientUnitTypes"
+                     >{{type.type_name}}
+                     </option>
+                  </select>
+               </div>
+               <div class="col-lg-3">
+                  <label for="price">Ár</label>
+                  <input required
+                         id="price"
+                         :disabled="pending"
+                         class="form-control"
+                         type="number"
+                         v-model="ingredientModel.unit_price"
+                  >
+               </div>
+               <spinner v-if="pending"
+                        class=""
+               />
+               <template v-else>
+                  <input :disabled="pending"
+                         :class="modify ? 'submit-button-margin col-xs-12 col-lg-6 my-3 mx-auto btn btn-warning' : 'submit-button-margin col-xs-12 col-lg-6 my-3 mx-auto btn btn-block btn-success'"
+                         type="submit"
+                         :value="modify ? 'Meglévő alapanyag módosítása' : 'Új alapanyag feltöltése'"
+                  />
+               </template>
+            </form>
+         </transition>
+
+         <transition name="bounce">
+            <div v-if="success"
+                 class="my-3 alert-response">
+               <h3 class="alert alert-success text-center"
+                   @click="success = false"
+               >{{successResponse}}</h3>
             </div>
          </transition>
-      </div>
 
-      <transition name="bounce">
-         <div class="alert-response" v-if="success">
-            <h3 class="alert alert-success text-center"
-                @click="success = false"
-            >{{successResponse}}</h3>
+         <!-- A fetchedErrors bindelve van a child komponens propjaként, és ott watcholjuk a változást -->
+         <!-- Ha a child komponens emitel egy errorChanged eventet, akkor a visszaérkező paraméter ($event) értékével tesszük egyenlővé a pendinget -->
+         <errorHandler :fetchedErrors="fetchedErrors"
+                       @errorChanged="pending = $event"
+                       class="my-2"
+         />
+
+         <h2 class="text-center">Alapanyag kereső</h2>
+         <hr>
+         <div class="form-group">
+            <input required
+                   type="text"
+                   v-model="search"
+                   class="form-control mx-auto col-lg-8"
+                   id="recipe-name"
+                   aria-describedby="recipe-name"
+                   @keyup="checkSearcher"
+                   placeholder="Kezd el írni az alapanyag nevét">
          </div>
-      </transition>
-
-      <!-- A fetchedErrors bindelve van a child komponens propjaként, és ott watcholjuk a változást -->
-      <!-- Ha a child komponens emitel egy errorChanged eventet, akkor a visszaérkező paraméter ($event) értékével tesszük egyenlővé a pendinget -->
-      <errorHandler :fetchedErrors="fetchedErrors"
-                    @errorChanged="pending = $event"
-      />
-
-      <h2 class="text-center">Alapanyag kereső</h2>
-      <hr>
-
-      <div class="col-lg-6 col-xs-12 form-group mx-auto">
-         <input required
-                type="text"
-                v-model="search"
-                class="form-control" id="recipe-name"
-                aria-describedby="recipe-name"
-                @keyup="checkSearcher"
-                placeholder="Kezd el írni az alapanyag nevét">
       </div>
+
       <tableView v-if="showList"
+                 class="p-lg-5"
                  :filteredList="this.filteredList"
                  :tableData="'ingredient'"
                  :pending="pending"
@@ -150,9 +146,9 @@
                name: '',
                quantity: null,
                unit_type: [
-                  { id: 0 },
-                  { unit_category: 0 },
-                  { type_name: '' },
+                  {id: 0},
+                  {unit_category: 0},
+                  {type_name: ''},
                ],
                unit_price: null,
             },
@@ -183,11 +179,10 @@
 
             // Megvizsgáljuk, hogy van-e id-ja a feltöltendő ingredient modellnek
 
-            if(this.ingredientModel.id == null) {
+            if (this.ingredientModel.id == null) {
                // Ha nincs, akkor az új alapanyag feltöltés végpontra postolunk
                axiosPostTo = '/registernewingredient'
-            }
-            else {
+            } else {
                // Ha van, akkor a meglévő alapanyag módosítás végpontra posztolunk
                axiosPostTo = '/modifyexistingingredient'
             }

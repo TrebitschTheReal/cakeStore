@@ -1,25 +1,25 @@
 <template>
    <div class="col-12">
-      <div class="user-management">
+      <div class="management">
          <h2 class="text-center">Felhasználók kezelése</h2>
          <hr>
          <transition name="bounce" mode="out-in">
             <form class="row"
                   @submit.prevent="uploadUser">
                <div class="col-lg-4">
-                  <label class="control-label">Felhasználói név</label>
+                  <label for="name">Felhasználói név</label>
                   <input required
+                         id="name"
                          class="form-control"
                          :disabled="pending"
                          v-model="userModel.name"
                          type="text">
                </div>
                <div class="col-lg-4">
-                  <label>Jogosultsági szint</label>
+                  <label for="role">Jogosultsági szint</label>
                   <select class="form-control"
                           :disabled="pending"
-                          name=""
-                          id=""
+                          id="role"
                           required
                           v-model="userModel.role_name">
                      <option v-for="type in userRoleTypes"
@@ -29,8 +29,9 @@
                   </select>
                </div>
                <div class="col-lg-4">
-                  <label>E-mail cím</label>
+                  <label for="email">E-mail cím</label>
                   <input required
+                         id="email"
                          :disabled="pending"
                          class="form-control"
                          type="email"
@@ -42,7 +43,7 @@
                />
                <template v-else>
                   <input :disabled="pending"
-                         :class="modify ? 'submit-button-margin col-xs-12 col-lg-6 mt-3 mx-auto btn btn-warning' : 'submit-button-margin col-xs-12 col-lg-6 mt-3 mx-auto btn btn-block btn-success'"
+                         :class="modify ? 'submit-button-margin col-xs-12 col-lg-6 my-3 mx-auto btn btn-warning' : 'submit-button-margin col-xs-12 col-lg-6 my-3 mx-auto btn btn-block btn-success'"
                          type="submit"
                          :value="modify ? 'Meglévő felhasználó módosítása' : 'Új felhasználói fiók létrehozása'"
                   />

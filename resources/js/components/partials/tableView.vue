@@ -29,8 +29,10 @@
                   <spinner/>
                </td>
                <td colspan="2" v-else>
-                  <button @click="modifyRecipe(recipe.id)" class="btn btn-warning">Módosítás</button>
-                  <button @click="prepareToDeleteItem(recipe.id, recipe.name, 'recipe')" class="btn btn-danger">Törlés</button>
+                  <button @click="modifyRecipe(recipe.id)"
+                          class="col-12 mb-2 btn btn-warning">Módosítás</button>
+                  <button @click="prepareToDeleteItem(recipe.id, recipe.name, 'recipe')"
+                          class="col-12 btn btn-danger">Törlés</button>
                </td>
             </tr>
             <!--
@@ -71,8 +73,10 @@
                      <spinner/>
                   </td>
                   <td colspan="2" v-else>
-                     <button @click="modifyIngredient(ingredient)" class="btn btn-warning">Módosítás</button>
-                     <button @click="prepareToDeleteItem(ingredient.id, ingredient.name, 'ingredient')" class="btn btn-danger">Törlés</button>
+                     <button @click="modifyIngredient(ingredient)"
+                             class="col-12 mb-2 btn btn-warning">Módosítás</button>
+                     <button @click="prepareToDeleteItem(ingredient.id, ingredient.name, 'ingredient')"
+                             class="col-12 btn btn-danger">Törlés</button>
                   </td>
                </tr>
                </tbody>
