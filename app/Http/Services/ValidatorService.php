@@ -39,12 +39,48 @@ class ValidatorService
        * 'ingredients.name' => ['required', !isset($request['ingredients']['id']) ? 'unique:ingredients' : '', 'between:1,50', 'string', 'regex:(foo|bar|baz)'],
        */
 
-      $rules = [
-         'ingredients.name' => ['required', !isset($request['ingredients']['id']) ? 'unique:ingredients' : '', 'between:1,50', 'string'],
-         'ingredients.uploaded_unit_quantity' => ['required', 'between:1,5000',  'integer'],
-         'ingredients.type_name' => ['required', 'in:ml,cl,dl,l,g,dkg,kg,db'],
-         'ingredients.unit_price' => ['required', 'between:1,150000', 'integer'],
-      ];
+      /*
+       * Léterhozunk egy rules tömböt, majd beállítjuk a szabályokat.
+       * listID: frontenden van rá szükség az összeállítás rendezéséhez.
+       * Ha a recepetet módosítjuk, mindenképp postolódik.
+       */
+
+      $rules = [];
+
+      /*
+       * Új alapanyag felvitele (se id, se listId)
+       */
+      if (!isset($request['ingredients']['id']) && !isset($request['ingredients']['listID'])) {
+         $rules = [
+            'ingredients.name' => ['required', 'unique:ingredients', 'between:1,50', 'string'],
+            'ingredients.uploaded_unit_quantity' => ['required', 'between:1,5000',  'integer'],
+            'ingredients.type_name' => ['required', 'in:ml,cl,dl,l,g,dkg,kg,db'],
+            'ingredients.unit_price' => ['required', 'between:1,150000', 'integer'],
+         ];
+      }
+
+      /*
+       * Meglévő alapanyag módosítása (van id, de nincs list Id)
+       */
+      else if (isset($request['ingredients']['id']) && !isset($request['ingredients']['listID'])) {
+         $rules = [
+            'ingredients.name' => ['required', 'between:1,50', 'string'],
+            'ingredients.uploaded_unit_quantity' => ['required', 'between:1,5000',  'integer'],
+            'ingredients.type_name' => ['required', 'in:ml,cl,dl,l,g,dkg,kg,db'],
+            'ingredients.unit_price' => ['required', 'between:1,150000', 'integer'],
+         ];
+      }
+
+      /*
+       * Recept alapanyag (van id, van listID)
+       */
+      else if (isset($request['ingredients']['id']) && isset($request['ingredients']['listID'])) {
+         $rules = [
+            'ingredients.name' => ['required', 'between:1,50', 'string'],
+            'ingredients.type_name' => ['required', 'in:ml,cl,dl,l,g,dkg,kg,db'],
+            'ingredients.quantity' => ['required', 'between:1,5000', 'integer']
+         ];
+      }
 
       /*
        * Egyedi hibaüzenetek a validációhoz amik visszamennek majd frontendre.
@@ -65,6 +101,9 @@ class ValidatorService
 
          'ingredients.uploaded_unit_quantity.required' => 'Muszáj mennyiséget megadnod!',
          'ingredients.uploaded_unit_quantity.between' => 'A mennyiség :min és :max közötti érték kell, hogy legyen!',
+
+         'ingredients.quantity.required' => 'Muszáj mennyiséget megadnod!',
+         'ingredients.quantity.between' => 'A mennyiség :min és :max közötti érték kell, hogy legyen!'
       ];
 
       /*
@@ -134,7 +173,7 @@ class ValidatorService
       return true;
    }
 
-   public function validateRecipe($request) {
+   public function validateRecipeName($request) {
       $rules = [
          'newRecipe.name' => ['required', 'between:1,50', 'string'],
       ];

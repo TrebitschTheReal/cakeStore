@@ -73,7 +73,25 @@ class CakeController extends Controller
       $newRecipeContent = $request->all();
 
       $validatorService = new ValidatorService();
-      $response = $validatorService->validateRecipe($newRecipeContent);
+
+      foreach ($newRecipeContent['newRecipe']['ingredients'] as $key => $value){
+         $ingredients['ingredients'] = $value ;
+         $response = $validatorService->validateIngredient($ingredients);
+
+         if($response !== true) {
+            return response($response, 422);
+         }
+      }
+
+      $validatorService = new ValidatorService();
+      $response = $validatorService->validateRecipeName($newRecipeContent);
+
+
+
+
+
+
+
 
       if($response !== true) {
          return response($response, 422);

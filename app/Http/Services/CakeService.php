@@ -67,7 +67,7 @@ class CakeService
       foreach ($newRecipeContent['newRecipe']['ingredients'] as $newRecipeIngredient => $ingredientValue) {
          $ingredientID = $ingredientValue['id'];
          $ingredientQuantity = $ingredientValue['quantity'];
-         $ingredientUniTypeName = $ingredientValue['unit_type_name'];
+         $ingredientUniTypeName = $ingredientValue['type_name'];
          $ingredientPrice = (double)$this->convertToSmallestUnit($ingredientValue) * (double)$ingredientValue['unitPrice'];
          Log::info('Egységár: ');
          Log::info($ingredientValue['unitPrice']);

@@ -34,7 +34,7 @@
                              :id="'unit-' + index"
                              :disabled="!ingredient.isIngredientSelected"
                              required
-                             v-model="ingredient.unit_type_name">
+                             v-model="ingredient.type_name">
                         <!-- Azt a tömböt küldjük vissza, ami egyezik az egység categoryval. Tömeg - űrmérték - darab -->
                         <option v-for="type in getIngredientUnitListByCategory(ingredient.unit_category, ingredient)"
                         >{{type.type_name}}
@@ -291,7 +291,7 @@
          prepareUnitModels() {
             for (let ingredient of this.recipe.ingredients) {
                for (let unit of this.ingredientUnitTypes) {
-                  if (ingredient.unit_type_name === unit.type_name) {
+                  if (ingredient.type_name === unit.type_name) {
                      ingredient.unit_id = unit.id;
                      ingredient.unit_category = unit.unit_category;
                   }

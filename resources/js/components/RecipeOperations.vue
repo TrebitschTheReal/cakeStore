@@ -151,7 +151,7 @@
                         unitPrice: response.data.required_ingredients[i].unit_price,
                         quantity: response.data.required_ingredients[i].pivot.ingredient_quantity,
                         sumIngredientPrice: response.data.required_ingredients[i].pivot.ingredient_price,
-                        unit_type_name: response.data.required_ingredients[i].pivot.ingredient_unit_type,
+                        type_name: response.data.required_ingredients[i].pivot.ingredient_unit_type,
                         unit_category: response.data.required_ingredients[i].unit_category,
                      });
                   }
