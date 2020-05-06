@@ -53,10 +53,10 @@
                         </option>
                      </select>
                   </div>
-                  <div class="ingredient-data-row-button col-lg-1">
+                  <div class="col-lg-1">
                      <p class="text-white">-</p>
                      <p @click="removeIngredientRow(index)"
-                        class="btn btn-danger">-</p>
+                        class="ingredient-data-row-button btn btn-danger">-</p>
                   </div>
                </div>
             </div>
@@ -76,7 +76,7 @@
                <spinner v-if="pending === true"
                         class=""
                />
-               <button v-else type="submit" class=" btn btn-success">Recept feltöltése</button>
+               <button v-else type="submit" class="btn btn-block btn-success">Recept feltöltése</button>
             </div>
          </div>
       </form>
