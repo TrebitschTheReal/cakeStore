@@ -31,10 +31,18 @@ class ValidatorService
        * ingredients.name - ingredients az axios postolt objektum neve, és name, az egyik fieldje
        */
 
+      /*
+       * Laravel in:
+       * 'ingredients.name' => ['required', !isset($request['ingredients']['id']) ? 'unique:ingredients' : '', 'between:1,50', 'string', 'in:ml,cl,dl,l,g,dkg,kg,db'],
+       *
+       *  Laravel regex:
+       * 'ingredients.name' => ['required', !isset($request['ingredients']['id']) ? 'unique:ingredients' : '', 'between:1,50', 'string', 'regex:(foo|bar|baz)'],
+       */
+
       $rules = [
          'ingredients.name' => ['required', !isset($request['ingredients']['id']) ? 'unique:ingredients' : '', 'between:1,50', 'string'],
          'ingredients.uploaded_unit_quantity' => ['required', 'between:1,5000',  'integer'],
-         'ingredients.uploaded_unit_type' => ['required', 'between:1,3'],
+         'ingredients.type_name' => ['required', 'in:ml,cl,dl,l,g,dkg,kg,db'],
          'ingredients.unit_price' => ['required', 'between:1,150000', 'integer'],
       ];
 
@@ -46,16 +54,16 @@ class ValidatorService
          'unique' => 'A :input már szerepel!',
          'integer' => 'A megadott érték (már) nem integer típusú. Vagy nagyon nagy számot adtál meg, vagy ügyeskedni próbálsz.',
 
-         'ingredients.name.required' => 'Muszáj megadnod nevet!',
+         'ingredients.name.required' => 'Muszáj nevet megadnod!',
          'ingredients.name.between' => 'Az alapanyag neve minimum :min és maximum :max karakter hosszú lehet!',
 
-         'ingredients.unit_price.required' => 'Muszáj megadnod árat!',
+         'ingredients.unit_price.required' => 'Muszáj árat megadnod!',
          'ingredients.unit_price.between' => 'Az ár :min és :max közötti érték kell, hogy legyen!',
 
-         'ingredients.uploaded_unit_type.required' => 'Muszáj megadnod egységtípust!',
-         'ingredients.uploaded_unit_type.between' => 'asdsxccasdasdsasdsdasdssdsaa',
+         'ingredients.type_name.required' => 'Muszáj egységtípust megadnod!',
+         'ingredients.type_name.in' => 'Csak a megadott egységtípusok közül választhatsz!',
 
-         'ingredients.uploaded_unit_quantity.required' => 'Muszáj megadnod mennyiséget!',
+         'ingredients.uploaded_unit_quantity.required' => 'Muszáj mennyiséget megadnod!',
          'ingredients.uploaded_unit_quantity.between' => 'A mennyiség :min és :max közötti érték kell, hogy legyen!',
       ];
 
@@ -82,7 +90,7 @@ class ValidatorService
       ];
 
       $message = [
-         'required' => 'Ne hackeld az oldalt pls, backenden is van validáció!',
+         'required' => 'Muszáj nevet megadnod!',
          'name.unique' => ':input recept már létezik!',
          'name.min' => 'A név legyen minimum 2 karakter hosszú!',
          'name.max' => 'A név nem lehet hosszabb :max karakternél!',

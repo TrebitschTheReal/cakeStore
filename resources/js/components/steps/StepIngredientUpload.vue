@@ -145,11 +145,6 @@
                id: null,
                name: '',
                uploaded_unit_quantity: null,
-               unit_type: [
-                  {id: 0},
-                  {unit_category: 0},
-                  {type_name: ''},
-               ],
                unit_price: null,
             },
             fetchedIngredients: {},
@@ -267,8 +262,10 @@
          resetInput() {
             this.ingredientModel.id = null;
             this.ingredientModel.name = '';
-            this.ingredientModel.unit_type = [];
             this.selectedUnitName = '';
+            this.ingredientModel.unit_id = null;
+            this.ingredientModel.type_name= null;
+            this.ingredientModel.unit_category= null;
             this.ingredientModel.uploaded_unit_quantity = Number;
             this.ingredientModel.unit_price = Number;
          },
@@ -283,12 +280,11 @@
          matchSeledtedUnitName() {
             for (let unit of this.ingredientUnitTypes) {
                if (unit.type_name === this.selectedUnitName) {
-                  this.ingredientModel.unit_type = unit;
-                  this.ingredientModel.uploaded_unit_type = unit.type_name;
+                  this.ingredientModel.unit_id = unit.id;
+                  this.ingredientModel.type_name= unit.type_name;
+                  this.ingredientModel.unit_category= unit.unit_category;
                }
             }
-
-            console.log(this.ingredientModel.unit_type);
          },
       },
    }
