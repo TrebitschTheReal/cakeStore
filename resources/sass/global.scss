@@ -2,15 +2,6 @@
    cursor: pointer;
 }
 
-/*
-   Fix méret a táblához. Muszáj, mert adatfrissítéskor ugrált.
- */
-/*
-
-.table-fix-size {
-   width: 57rem !important;
-}*/
-
 .management {
    label {
       font-size: 1rem;
@@ -21,8 +12,32 @@
    }
 }
 
-.recipe-edit-card {
+.ingredient-data-row {
+   margin-top: 0.5rem;
+}
 
+@media screen and (max-width: 639px) {
+   .ingredient-data-row-button {
+      width: 100% !important;
+   }
+}
+
+
+.ingredient-add-box {
+   color: #1d643b;
+   background-color: #d7f3e3;
+   margin-top: 2rem;
+   margin-bottom: 2rem;
+   padding-bottom: 3rem;
+   padding-top: 0.8rem;
+   border-radius: 0.3rem;
+   border: 1px solid #c7eed8;
+   padding-right: 1rem;
+   padding-left: 1rem;
+
+   &-text {
+      padding-top: 0.4rem;
+   }
 }
 
 
@@ -34,8 +49,6 @@
    .management {
       margin-left: 2rem !important;
       margin-right: 2rem !important;
-
-
    }
 }
 

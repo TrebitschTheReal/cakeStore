@@ -20,7 +20,7 @@
             <div v-for="(ingredient, index) in recipe.ingredients"
                  class="">
                <div class="row">
-                  <div class="col-lg-3">
+                  <div class="ingredient-data-row col-lg-3">
                      <label :for="'quantity-' + index">Mennyiség</label>
                      <input required class="form-control"
                             :id="'quantity-' + index"
@@ -28,7 +28,7 @@
                             :disabled="!ingredient.isIngredientSelected"
                             type="number">
                   </div>
-                  <div class="col-lg-3">
+                  <div class="ingredient-data-row col-lg-3">
                      <label :for="'unit-' + index">Egység</label>
                      <select class="form-control"
                              :id="'unit-' + index"
@@ -41,7 +41,7 @@
                         </option>
                      </select>
                   </div>
-                  <div class="col-lg-5">
+                  <div class="ingredient-data-row col-lg-5">
                      <label :for="'ingredient-' + index">Alapanyag</label>
                      <select required class="form-control"
                              :id="'ingredient-' + index"
@@ -53,7 +53,7 @@
                         </option>
                      </select>
                   </div>
-                  <div class=" col-lg-1">
+                  <div class="ingredient-data-row-button col-lg-1">
                      <p class="text-white">-</p>
                      <p @click="removeIngredientRow(index)"
                         class="btn btn-danger">-</p>
@@ -61,10 +61,9 @@
                </div>
             </div>
             <div class="">
-               <div class="mt-4 mb-2 alert alert-success">
-                  <h4 class="">Új alapanyag hozzáadása<span @click="addNewIngredientRow"
-                                                            class="float-right btn btn-success">+</span>
-                  </h4>
+               <div class="ingredient-add-box">
+                  <h4 class="ingredient-add-box-text float-left">Új alapanyag hozzáadása</h4>
+                  <h4 @click="addNewIngredientRow" class="float-right btn btn-success">+</h4>
                </div>
                <errorHandler :fetchedErrors="fetchedErrors"
                              @errorChanged="pending = $event"
