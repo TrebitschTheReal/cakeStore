@@ -33,10 +33,13 @@ class ValidatorService
 
       /*
        * Laravel in:
-       * 'ingredients.name' => ['required', !isset($request['ingredients']['id']) ? 'unique:ingredients' : '', 'between:1,50', 'string', 'in:ml,cl,dl,l,g,dkg,kg,db'],
+       * 'ingredients.type_name' => ['required', 'in:ml,cl,dl,l,g,dkg,kg,db']
        *
        *  Laravel regex:
-       * 'ingredients.name' => ['required', !isset($request['ingredients']['id']) ? 'unique:ingredients' : '', 'between:1,50', 'string', 'regex:(foo|bar|baz)'],
+       * 'ingredients.type_name' => ['required', 'regex:(foo|bar|baz)']
+       *
+       * Exists:
+       * 'ingredients.type_name' => ['required', 'exists:units']
        */
 
       /*
@@ -48,13 +51,13 @@ class ValidatorService
       $rules = [];
 
       /*
-       * Új alapanyag felvitele (se id, se listId)
+       * Új alapanyag felvétele (se id, se listId)
        */
       if (!isset($request['ingredients']['id']) && !isset($request['ingredients']['listID'])) {
          $rules = [
             'ingredients.name' => ['required', 'unique:ingredients', 'between:1,50', 'string'],
             'ingredients.uploaded_unit_quantity' => ['required', 'between:1,5000',  'integer'],
-            'ingredients.type_name' => ['required', 'in:ml,cl,dl,l,g,dkg,kg,db'],
+            'ingredients.type_name' => ['required', 'exists:units,type_name'],
             'ingredients.unit_price' => ['required', 'between:1,150000', 'integer'],
          ];
       }
@@ -66,7 +69,7 @@ class ValidatorService
          $rules = [
             'ingredients.name' => ['required', 'between:1,50', 'string'],
             'ingredients.uploaded_unit_quantity' => ['required', 'between:1,5000',  'integer'],
-            'ingredients.type_name' => ['required', 'in:ml,cl,dl,l,g,dkg,kg,db'],
+            'ingredients.type_name' => ['required', 'exists:units,type_name'],
             'ingredients.unit_price' => ['required', 'between:1,150000', 'integer'],
          ];
       }
@@ -76,8 +79,8 @@ class ValidatorService
        */
       else if (isset($request['ingredients']['id']) && isset($request['ingredients']['listID'])) {
          $rules = [
-            'ingredients.name' => ['required', 'between:1,50', 'string'],
-            'ingredients.type_name' => ['required', 'in:ml,cl,dl,l,g,dkg,kg,db'],
+            'ingredients.name' => ['required', 'between:1,50', 'string', 'exists:ingredients'],
+            'ingredients.type_name' => ['required', 'exists:units,type_name'],
             'ingredients.quantity' => ['required', 'between:1,5000', 'integer']
          ];
       }
@@ -92,18 +95,19 @@ class ValidatorService
 
          'ingredients.name.required' => 'Muszáj nevet megadnod!',
          'ingredients.name.between' => 'Az alapanyag neve minimum :min és maximum :max karakter hosszú lehet!',
+         'ingredients.name.exists' => 'Csak a megadott alapanyagokból választhatsz!',
 
          'ingredients.unit_price.required' => 'Muszáj árat megadnod!',
          'ingredients.unit_price.between' => 'Az ár :min és :max közötti érték kell, hogy legyen!',
 
          'ingredients.type_name.required' => 'Muszáj egységtípust megadnod!',
-         'ingredients.type_name.in' => 'Csak a megadott egységtípusok közül választhatsz!',
+         'ingredients.type_name.exists' => 'Csak a megadott egységtípusok közül választhatsz!',
 
          'ingredients.uploaded_unit_quantity.required' => 'Muszáj mennyiséget megadnod!',
          'ingredients.uploaded_unit_quantity.between' => 'A mennyiség :min és :max közötti érték kell, hogy legyen!',
 
          'ingredients.quantity.required' => 'Muszáj mennyiséget megadnod!',
-         'ingredients.quantity.between' => 'A mennyiség :min és :max közötti érték kell, hogy legyen!'
+         'ingredients.quantity.between' => 'A mennyiség :min és :max közötti érték kell, hogy legyen!',
       ];
 
       /*

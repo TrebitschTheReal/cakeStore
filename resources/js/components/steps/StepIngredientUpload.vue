@@ -213,7 +213,11 @@
                     Beküldjük a 'nyers' error objectet a fetchedErrors fieldbe, ami be van kötve az errorHandler
                     komponensbe
                    */
-                  this.fetchedErrors = error.response.data;
+                  if (error.response.status == 500) {
+                     this.fetchedErrors = ['Hiba történt! Kérjük vegye fel a kapcsolatot az oldal üzemeltetőjével!']
+                  } else {
+                     this.fetchedErrors = error.response.data;
+                  }
                });
          },
 

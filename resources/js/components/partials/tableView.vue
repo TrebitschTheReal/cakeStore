@@ -240,8 +240,15 @@
                   this.$emit('succesResponse', 'Sikeresen törölted az elemet!');
                })
                .catch((error) => {
+                  if (error.response.status == 500) {
+                     this.fetchedErrors = ['Hiba történt! Kérjük vegye fel a kapcsolatot az oldal üzemeltetőjével!']
+                  }
+                  else {
+                     this.fetchedErrors = error.response.data;
+                  }
+
                   //Emiteljük a hibaüzenetet a parentnek, ami lekezeli
-                  this.$emit('fetchedErrors', error.response.data);
+                  this.$emit('fetchedErrors', this.fetchedErrors);
                });
          },
 

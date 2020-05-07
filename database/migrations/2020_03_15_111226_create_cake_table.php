@@ -17,7 +17,7 @@ class CreateCakeTable extends Migration
             $table->bigIncrements('id');
             $table->string('name', 60);
             $table->mediumText('desc')->nullable();
-            $table->mediumInteger('ingredients_price_sum')->nullable();
+            $table->double('ingredients_price_sum')->nullable();
             $table->mediumInteger('work_hours')->nullable();
             $table->mediumInteger('work_price')->nullable();
             $table->tinyInteger('tax')->nullable();

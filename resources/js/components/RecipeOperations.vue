@@ -164,6 +164,11 @@
                   console.log('Backend error: ', error.response.data);
                   console.log('Statuscode: ', error.response.status);
                   console.log('Response headers: ', error.response.headers);
+                  if (error.response.status == 500) {
+                     this.fetchedErrors = ['Hiba történt! Kérjük vegye fel a kapcsolatot az oldal üzemeltetőjével!']
+                  } else {
+                     this.fetchedErrors = error.response.data;
+                  }
                });
          },
 

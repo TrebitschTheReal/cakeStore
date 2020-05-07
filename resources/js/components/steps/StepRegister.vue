@@ -79,7 +79,11 @@
                   /*
                     Ha hiba adódik, akkor azt itt, helyben lekezeljük az errorHandler komponensünkkel
                    */
-                  this.fetchedErrors = error.response.data;
+                  if (error.response.status == 500) {
+                     this.fetchedErrors = ['Hiba történt! Kérjük vegye fel a kapcsolatot az oldal üzemeltetőjével!']
+                  } else {
+                     this.fetchedErrors = error.response.data;
+                  }
                   console.log(error);
                   console.log('Backend error: ', error.response.data);
                   console.log('Statuscode: ', error.response.status);
