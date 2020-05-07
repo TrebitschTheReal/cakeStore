@@ -289,6 +289,7 @@
                   this.ingredientModel.unit_category= unit.unit_category;
                }
             }
+            this.selectedUnitName = null;
          },
       },
    }

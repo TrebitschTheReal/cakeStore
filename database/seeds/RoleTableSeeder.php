@@ -108,7 +108,7 @@ class RoleTableSeeder extends Seeder
         $manager->permissions()->attach($reg_perm);
 
         $manager = new User();
-        $manager->name = 'a';
+        $manager->name = 'Admin';
         $manager->email = 'a@a';
         $manager->password = bcrypt('a');
         $manager->save();
@@ -116,7 +116,7 @@ class RoleTableSeeder extends Seeder
         $manager->permissions()->attach($dev_perm);
 
         $manager = new User();
-        $manager->name = 'b';
+        $manager->name = 'Manager';
         $manager->email = 'b@b';
         $manager->password = bcrypt('b');
         $manager->save();
@@ -124,7 +124,7 @@ class RoleTableSeeder extends Seeder
         $manager->permissions()->attach($manager_perm);
 
         $manager = new User();
-        $manager->name = 'c';
+        $manager->name = 'Reg user';
         $manager->email = 'c@c';
         $manager->password = bcrypt('c');
         $manager->save();

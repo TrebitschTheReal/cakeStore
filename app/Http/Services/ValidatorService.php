@@ -53,6 +53,7 @@ class ValidatorService
       /*
        * Új alapanyag felvétele (se id, se listId)
        */
+      Log::info($request);
       if (!isset($request['ingredients']['id']) && !isset($request['ingredients']['listID'])) {
          $rules = [
             'ingredients.name' => ['required', 'unique:ingredients', 'between:1,50', 'string'],
