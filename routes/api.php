@@ -2,7 +2,7 @@
 //
 //
 //
-// Commented out because it generates errors. See:
+// Kikommentelve a biztonság kedvéért Laravel core bug miatt. Info:
 // https://stackoverflow.com/questions/45266254/laravel-unable-to-prepare-route-for-serialization-uses-closure
 //
 //

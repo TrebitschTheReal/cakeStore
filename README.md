@@ -62,7 +62,7 @@ php artisan serve
 
 You're all set!
 
-If you run into any trouble, first try these:
+If you run into any core bug like thing, try these first:
 
 ```
 php artisan cache:clear &&
