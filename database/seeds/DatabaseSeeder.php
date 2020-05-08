@@ -19,5 +19,6 @@ class DatabaseSeeder extends Seeder
     }
 }
 
-
-/*$this->call(UsersTableSeeder::class);*/
+/* Használaton kívül:
+ * $this->call(UsersTableSeeder::class);
+ */
