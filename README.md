@@ -30,6 +30,14 @@ Install dependencies:
 composer install
 npm i
 ```
+Generate app key:
+```
+php artisan key:generate
+````
+Create database with utf8mb4 encoding:
+```
+CREATE DATABASE laravel CHARACTER SET UTF8mb4 COLLATE utf8mb4_unicode_ci;
+```
 Run fresh migration with seed
 
 ```
