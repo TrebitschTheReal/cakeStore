@@ -5,6 +5,11 @@
             <input class="form-control" type="text" v-model="search">
         </div>
 
+        <errorHandler :fetchedErrors="fetchedErrors"
+                      @errorChanged="pending = $event"
+                      class="my-2"
+        />
+
         <div class="row justify-content-center">
             <template class="col col-lg-8" v-if="showList">
                 <transition-group name="bounce" tag="div">
@@ -38,7 +43,13 @@
 </template>
 
 <script>
+    import errorHandler from '../components/partials/errorHandling';
+
     export default {
+        components: {
+            errorHandler,
+        },
+
         created() {
 
         },
@@ -49,6 +60,7 @@
 
         data() {
             return {
+                fetchedErrors: [],
                 cakes: {},
                 showList: false,
                 search: '',

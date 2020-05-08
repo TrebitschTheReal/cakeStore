@@ -205,7 +205,7 @@
                      this.$emit('updateSuccessful')
                   })
                   .catch((error) => {
-                     if (error.response.status == 500) {
+                     if (error.response.status != 422) {
                         this.fetchedErrors = ['Hiba történt! Kérjük vegye fel a kapcsolatot az oldal üzemeltetőjével!']
                      } else {
                         this.fetchedErrors = error.response.data;
