@@ -1,9 +1,9 @@
 # CakeShop
 
 This my degree project, where you can: 
-- see the guest design if you are not logged in yet
+- see the guest design if you are not logged in yet (not much here at the moment)
 - search, and manage stock, build recipes, and create / modify ingredients if you have manager role
-- manage users if you have admin privilige.
+- manage users, create new accounts if you have admin privilige.
 
 ## Project setup for devs
 
@@ -12,7 +12,7 @@ Project requirements:
 - php7.2 at least
 - Composer installed
 - Laravel installed
-- MariaDB installed
+- 10.4.10 MariaDB or 8.0.18 MySql
 
 Clone the project:
 ```
