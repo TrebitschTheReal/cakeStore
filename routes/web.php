@@ -52,7 +52,7 @@ Route::middleware('role:admin,manager')->group(function () {
    Route::post('/manageingredient', 'IngredientController@manageIngredient')->name('manageingredient');
    Route::post('/deleterecipe', 'CakeController@deleteRecipe')->name('deleterecipe');
    Route::post('/deleteingredient', 'IngredientController@deleteIngredient')->name('deleteingredient');
-   Route::post('/modifyrecipe', 'CakeController@modifyRecipe')->name('modifyrecipe');
+   Route::post('/getmodifiablerecipe', 'CakeController@getmodifiableRecipe')->name('getmodifiablerecipe');
 
    //API
    Route::get('/cakelist', 'CakeController@getAllCakeRecipes')->name('cakelist');

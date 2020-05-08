@@ -86,13 +86,6 @@ class CakeController extends Controller
       $validatorService = new ValidatorService();
       $response = $validatorService->validateRecipeName($newRecipeContent);
 
-
-
-
-
-
-
-
       if($response !== true) {
          return response($response, 422);
       }
@@ -102,9 +95,8 @@ class CakeController extends Controller
 
    }
 
-   public function modifyRecipe(Request $request) {
+   public function getmodifiableRecipe(Request $request) {
       $modifiableCake = Cake::with('required_ingredients')->find($request->modifiableRecipeId);
-
       return response($modifiableCake);
    }
 }

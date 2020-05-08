@@ -128,7 +128,7 @@
          */
          editRecipe(modifiableRecipeId) {
             this.handleSteps('pending');
-            axios.post('/modifyrecipe', {
+            axios.post('/getmodifiablerecipe', {
                modifiableRecipeId: modifiableRecipeId,
             })
                .then((response) => {

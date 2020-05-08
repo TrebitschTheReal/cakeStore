@@ -273,7 +273,7 @@
          },
 
          getIngredientUnitListByCategory() {
-            let arr = [];
+            let unitCategoriesByCategory = [];
 
             if(this.ingredientModel.id == null) {
                return this.ingredientUnitTypes
@@ -281,12 +281,11 @@
             else {
                for (let unit of this.ingredientUnitTypes) {
                   if (this.ingredientModel.unit_category === unit.unit_category) {
-                    arr.push(unit);
+                     unitCategoriesByCategory.push(unit);
                   }
                }
             }
-
-            return arr;
+            return unitCategoriesByCategory;
          },
       },
    }
