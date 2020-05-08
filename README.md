@@ -34,7 +34,7 @@ Generate app key:
 ```
 php artisan key:generate
 ````
-Create database with utf8mb4 encoding:
+Create a database with utf8mb4 encoding:
 ```
 CREATE DATABASE laravel CHARACTER SET UTF8mb4 COLLATE utf8mb4_unicode_ci;
 ```
@@ -47,6 +47,10 @@ php artisan migrate:fresh --seed
 Watcher with hot reload:
 ```
 npm run watch
+```
+Or run production build only:
+```
+npm run production
 ```
 
 Start server in localhost - localhost:8000:
