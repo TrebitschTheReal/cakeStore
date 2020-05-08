@@ -76,9 +76,10 @@ class ValidatorService
       }
 
       /*
-       * Recept alapanyag (van id, van listID)
+       * Recept alapanyag - minden más eshetőség (van id, van listID, vagy nincs semmi)
+       * (isset($request['ingredients']['id']) && isset($request['ingredients']['listID'])
        */
-      else if (isset($request['ingredients']['id']) && isset($request['ingredients']['listID'])) {
+      else {
          $rules = [
             'ingredients.name' => ['required', 'between:1,50', 'string', 'exists:ingredients'],
             'ingredients.type_name' => ['required', 'exists:units,type_name'],
@@ -198,25 +199,6 @@ class ValidatorService
    }
 
    public function validateUser($request) {
-      /*
-       * Ha ajax postként object érkezik a Laravel validátorába, akkor azt a Validator osztály képes kezelni.
-       * Először asszociatív tömbbé alakítja a requestet, majd - mintha JavaScriptben lennénk - ponttal (.)
-       * tudunk hivatkozni az objektumunk egyik mezőjére:  'ingredients.name'
-       *
-       * Fontos!: itt mindent manuálisan kell megadnunk! Tehát, ha az axios postnál megadott név nem egyezik a módosítandó oszlop nevével,
-       * akkor szükséges egy 3. paraméter is a $rules tömbbe -> 'unique:ingredients,name'
-       *
-       * Törekedjünk arra, hogy már axios postnál a módosítandó tábla nevét kapja az object, aminek fieldjei legyenek az oszlop nevei lesznek!
-       *
-       * Validátor 3 paramétert vár: input, szabályok, hibaüzenetek
-       *
-       */
-
-      /*
-       * Meghatározzuk a szabályokat a validátornak
-       *
-       * ingredients.name - ingredients az axios postolt objektum neve, és name, az egyik fieldje
-       */
       Log::info($request);
 
       $rules = [
@@ -224,10 +206,6 @@ class ValidatorService
          'user.email' => ['required', !isset($request['user']['id']) ? 'unique:users,email' : '', 'between:1,50',  'string'],
          'user.role_name' => ['required', 'between:1,50', 'string'],
       ];
-
-      /*
-       * Egyedi hibaüzenetek a validációhoz amik visszamennek majd frontendre.
-       */
 
       $message = [
          'unique' => ':input e-mail cím már regisztrált!',
@@ -242,17 +220,8 @@ class ValidatorService
          'user.role_name.between' => 'A jogosultsági szint minimum :min és maximum :max karakter hosszú lehet!',
       ];
 
-      /*
-       * Lefut a validátor: első paraméter az input, második a szabály, harmadik (opcionális) egyedi hibaüzenet
-       */
-
       $validator = Validator::make($request, $rules, $message);
 
-      /*
-       * Fontos! Kézzel kell beállítani a response kódot is, mivel 200-at küldene vissza, miután hibával elszáll a backend.
-       * Tehát ha itt nem írjuk oda a response kódot akkor minden esetben 200-as response codeot tol vissza a hibaüzenettel együtt.
-       * Update: mivel kiszerveztük a validálást, ezért az ezt meghívó függvénybe helyeztük a 420-as kódot, ha ez a folyamat hibával térne vissza.
-       */
       if( $validator->fails()) {
          return $validator->errors();
       }
