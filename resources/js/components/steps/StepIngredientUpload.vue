@@ -32,9 +32,8 @@
                           name=""
                           id="ingredient-unit"
                           required
-                          v-model="selectedUnitName"
-                  >
-                     <option v-for="type in ingredientUnitTypes"
+                          v-model="selectedUnitName">
+                     <option v-for="type in getIngredientUnitListByCategory()"
                      >{{type.type_name}}
                      </option>
                   </select>
@@ -219,6 +218,7 @@
             this.selectedUnitName = ingredient.uploaded_unit_type;
             this.ingredientModel.unit_price = ingredient.uploaded_unit_price;
             this.ingredientModel.uploaded_unit_quantity = ingredient.uploaded_unit_quantity;
+            this.ingredientModel.unit_category = ingredient.unit_category;
             this.search = ingredient.name;
          },
 
@@ -270,6 +270,23 @@
                   this.ingredientModel.unit_category= unit.unit_category;
                }
             }
+         },
+
+         getIngredientUnitListByCategory() {
+            let arr = [];
+
+            if(this.ingredientModel.id == null) {
+               return this.ingredientUnitTypes
+            }
+            else {
+               for (let unit of this.ingredientUnitTypes) {
+                  if (this.ingredientModel.unit_category === unit.unit_category) {
+                    arr.push(unit);
+                  }
+               }
+            }
+
+            return arr;
          },
       },
    }
