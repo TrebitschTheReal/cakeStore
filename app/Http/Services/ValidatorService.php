@@ -53,7 +53,6 @@ class ValidatorService
       /*
        * Új alapanyag felvétele (se id, se listId)
        */
-      Log::info($request);
       if (!isset($request['ingredients']['id']) && !isset($request['ingredients']['listID'])) {
          $rules = [
             'ingredients.name' => ['required', 'unique:ingredients', 'between:1,50', 'string'],
@@ -199,8 +198,6 @@ class ValidatorService
    }
 
    public function validateUser($request) {
-      Log::info($request);
-
       $rules = [
          'user.name' => ['required', 'between:1,50', 'string'],
          'user.email' => ['required', !isset($request['user']['id']) ? 'unique:users,email' : '', 'between:1,50',  'string'],

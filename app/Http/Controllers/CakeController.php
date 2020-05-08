@@ -36,7 +36,6 @@ class CakeController extends Controller
    public function registerNewRecipe(Request $request)
    {
       $input = $request->all();
-      Log::info(print_r($input, true));
       $validatorService = new ValidatorService();
       $response = $validatorService->validateNewRecipeName($input);
 
