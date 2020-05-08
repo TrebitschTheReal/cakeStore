@@ -13,11 +13,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Hibát generál php artisan route:cache esetén. Muszáj controllerből küldeni a view filet.
-// https://stackoverflow.com/questions/45266254/laravel-unable-to-prepare-route-for-serialization-uses-closure
-//Route::get('/', function () {
-//   return view('welcome');
-//});
+/*
+   Hibát generál php artisan route:cache esetén ha nem kontrollerbe irányítjuk a routeokat.
+   Muszáj controllerből dolgozni, ez a Laravel bugja.
+   https://stackoverflow.com/questions/45266254/laravel-unable-to-prepare-route-for-serialization-uses-closure
+*/
 
 Route::get('/', 'HomeController@guest');
 

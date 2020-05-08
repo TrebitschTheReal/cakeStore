@@ -61,3 +61,12 @@ php artisan serve
 (or you can set a virtual host with nginx / apache if you would like.)
 
 You're all set!
+
+If you run into any trouble, first try these:
+
+```
+php artisan cache:clear &&
+php artisan route:clear &&
+php artisan config:clear &&
+php artisan view:clear 
+```
