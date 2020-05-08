@@ -47,10 +47,9 @@ Route::middleware('role:admin,manager')->group(function () {
    Route::get('/recipes', 'CakeController@createRecipeView')->name('recipes');
 
    //POST
-   Route::post('/fillnewlycreatedrecipe', 'CakeController@fillNewlyCreatedRecipe')->name('fillnewlycreatedrecipe');
+   Route::post('/modifyrecipe', 'CakeController@fillNewlyCreatedRecipe')->name('modifyrecipe');
    Route::post('/registernewrecipe', 'CakeController@registerNewRecipe')->name('registernewrecipe');
-   Route::post('/registernewingredient', 'IngredientController@registerNewIngredient')->name('registernewingredient');
-   Route::post('/modifyexistingingredient', 'IngredientController@modifyExistingIngredient')->name('modifyexistingingredient');
+   Route::post('/manageingredient', 'IngredientController@manageIngredient')->name('manageingredient');
    Route::post('/deleterecipe', 'CakeController@deleteRecipe')->name('deleterecipe');
    Route::post('/deleteingredient', 'IngredientController@deleteIngredient')->name('deleteingredient');
    Route::post('/modifyrecipe', 'CakeController@modifyRecipe')->name('modifyrecipe');

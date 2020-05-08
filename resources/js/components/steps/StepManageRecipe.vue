@@ -198,7 +198,7 @@
             */
             if(!duplicate.length) {
                // Frissítjük a receptet az adatbázisban
-               axios.post('/fillnewlycreatedrecipe', {
+               axios.post('/modifyrecipe', {
                   newRecipe: this.recipe,
                })
                   .then((response) => {

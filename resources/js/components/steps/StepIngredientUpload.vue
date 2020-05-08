@@ -170,24 +170,12 @@
 
       methods: {
          uploadIngredient() {
-            let axiosPostTo = '';
-
-            // Megvizsgáljuk, hogy van-e id-ja a feltöltendő ingredient modellnek
-
-            if (this.ingredientModel.id == null) {
-               // Ha nincs, akkor az új alapanyag feltöltés végpontra postolunk
-               axiosPostTo = '/registernewingredient'
-            } else {
-               // Ha van, akkor a meglévő alapanyag módosítás végpontra posztolunk
-               axiosPostTo = '/modifyexistingingredient'
-            }
-
             this.matchSeledtedUnitName();
             this.success = false;
             this.pending = true;
             this.ingredientModel.name = this.ingredientModel.name.toLowerCase();
 
-            axios.post(axiosPostTo, {
+            axios.post('/manageingredient', {
                ingredients: this.ingredientModel,
             })
                .then((response) => {
@@ -199,7 +187,7 @@
                   this.showList = false;
                   this.fetchIngredients();
                   this.fetchedErrors = {};
-                  this.successResponse = 'Sikeres alapanyag feltöltés!';
+                  this.successResponse = 'Sikeres feltöltés!';
                })
                .catch((error) => {
                   /*

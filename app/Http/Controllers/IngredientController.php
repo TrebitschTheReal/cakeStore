@@ -15,7 +15,7 @@ class IngredientController extends Controller
       return response($ingredients);
    }
 
-   public function registerNewIngredient(Request $request) {
+   public function manageIngredient(Request $request) {
       $input = $request->all();
 
       /*
@@ -33,20 +33,6 @@ class IngredientController extends Controller
        * Ha az input megfelelő (tehát nem dobtunk vissza 422-őt) akkor tovább fut a controller, és meghívja a service osztályt
        * az input feltöltéséhez.
        */
-      $ingredientService = new IngredientService;
-      $ingredientService->saveNewIngredient($request);
-
-   }
-
-   public function modifyExistingIngredient(Request $request) {
-      $input = $request->all();
-      $validatorService = new ValidatorService();
-      $response = $validatorService->validateIngredient($input);
-
-      if($response !== true) {
-         return response($response, 422);
-      }
-
       $ingredientService = new IngredientService;
       $ingredientService->saveNewIngredient($input);
 

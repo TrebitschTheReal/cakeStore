@@ -119,7 +119,7 @@
          // Ez most így csúnya
          updateSuccessful() {
             this.handleSteps('pending');
-            this.recipeSuccessMessage = 'Sikeres recept feltöltés!';
+            this.recipeSuccessMessage = 'Sikeres recept módosítás!';
             this.handleSteps('finish');
          },
 
