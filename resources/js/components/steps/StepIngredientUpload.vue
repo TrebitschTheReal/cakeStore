@@ -200,15 +200,8 @@
                   this.fetchIngredients();
                   this.fetchedErrors = {};
                   this.successResponse = 'Sikeres alapanyag feltöltés!';
-
-                  console.log(response);
                })
                .catch((error) => {
-                  console.log(error);
-                  console.log('Backend error: ', error.response.data);
-                  console.log('Statuscode: ', error.response.status);
-                  console.log('Response headers: ', error.response.headers);
-
                   /*
                     Beküldjük a 'nyers' error objectet a fetchedErrors fieldbe, ami be van kötve az errorHandler
                     komponensbe
@@ -249,7 +242,7 @@
                   this.pending = false;
                })
                .catch((error) => {
-                  console.log(error);
+                  this.fetchedErrors = ['Hiba történt! Kérjük vegye fel a kapcsolatot az oldal üzemeltetőjével!']
                });
          },
 
@@ -259,7 +252,7 @@
                   this.ingredientUnitTypes = response.data;
                })
                .catch((error) => {
-                  console.log(error);
+                  this.fetchedErrors = ['Hiba történt! Kérjük vegye fel a kapcsolatot az oldal üzemeltetőjével!']
                });
          },
 

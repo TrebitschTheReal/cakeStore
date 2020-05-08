@@ -161,7 +161,6 @@
             this.pending = true;
 
             this.matchRoles();
-            console.log(this.userModel);
 
             axios.post('/modifyUser', {
                user: this.userModel,
@@ -178,14 +177,8 @@
                   this.fetchedErrors = {};
                   this.successResponse = 'Sikeres művelet!';
 
-                  console.log(response);
                })
                .catch((error) => {
-                  console.log(error);
-                  console.log('Backend error: ', error.response.data);
-                  console.log('Statuscode: ', error.response.status);
-                  console.log('Response headers: ', error.response.headers);
-
                   /*
                     Beküldjük a 'nyers' error objectet a fetchedErrors fieldbe, ami be van kötve az errorHandler
                     komponensbe
@@ -215,29 +208,22 @@
             this.userModel.email = user.email;
 
             if (user.roles.length !== 0) {
-               console.log(user.roles.length);
                this.userModel.role_name = user.roles[0].name;
                this.userModel.role_id = user.roles[0].id;
-
-               console.log(this.userModel);
             }
 
-            console.log(user.roles);
-            console.log(user.roles[0]);
-            console.log(user.roles[0].name);
             this.search = user.name;
          },
 
          fetchUsers() {
             axios.get('/getuserlist')
                .then((response) => {
-                  console.log(response.data);
                   this.fetchedUsers = response.data;
                   this.showList = true;
                   this.pending = false;
                })
                .catch((error) => {
-                  console.log(error);
+                  this.fetchedErrors = ['Hiba történt! Kérjük vegye fel a kapcsolatot az oldal üzemeltetőjével!']
                });
          },
 
@@ -245,10 +231,9 @@
             axios.get('/getroles')
                .then((response) => {
                   this.fetchedRoles = response.data;
-                  console.log(this.fetchedRoles);
                })
                .catch((error) => {
-                  console.log(error);
+                  this.fetchedErrors = ['Hiba történt! Kérjük vegye fel a kapcsolatot az oldal üzemeltetőjével!']
                });
          },
 

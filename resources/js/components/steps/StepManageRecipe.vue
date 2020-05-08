@@ -123,21 +123,13 @@
             axios.get('/fetchingredients')
                .then((response) => {
                   this.availableIngredients = response.data;
-                  console.log(this.availableIngredients);
                })
                .catch((error) => {
-                  console.log(error);
-                  console.log('Backend error: ', error.response.data);
-                  console.log('Statuscode: ', error.response.status);
-                  console.log('Response headers: ', error.response.headers);
+                  this.fetchedErrors = ['Hiba történt! Kérjük vegye fel a kapcsolatot az oldal üzemeltetőjével!']
                });
          },
 
          addNewIngredientRow() {
-            console.log('-----------------------');
-            console.log(this.recipe.ingredients);
-            console.log('-----------------------');
-
             this.recipe.ingredients.push({
                listID: this.getLastIDofNewRecipeIngredientsArray(),
                id: null,
@@ -187,8 +179,6 @@
 
             this.prepareIngredientModels();
             this.prepareUnitModels();
-
-            console.log(this.recipe);
 
             /*
                Ellenőrizzük a duplikációkat
@@ -259,7 +249,7 @@
                   this.ingredientUnitTypes = response.data;
                })
                .catch((error) => {
-                  console.log(error);
+                  this.fetchedErrors = ['Hiba történt! Kérjük vegye fel a kapcsolatot az oldal üzemeltetőjével!']
                });
          },
 

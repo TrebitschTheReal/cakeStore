@@ -66,15 +66,13 @@
         methods: {
             fetchCakes() {
                 this.showList = false;
-                console.log(this.cakesTest);
                 axios.get('/cakelist')
                     .then((response) => {
-                        console.log(response.data);
                         this.cakes = response.data;
                         this.showList = true;
                     })
                     .catch((error) => {
-                        console.log(error);
+                        this.fetchedErrors = ['Hiba történt! Kérjük vegye fel a kapcsolatot az oldal üzemeltetőjével!']
                     });
             },
         }

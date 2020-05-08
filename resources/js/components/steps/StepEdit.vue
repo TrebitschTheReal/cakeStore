@@ -92,7 +92,7 @@
                   this.pending = false;
                })
                .catch((error) => {
-                  console.log(error);
+                  this.fetchedErrors = ['Hiba történt! Kérjük vegye fel a kapcsolatot az oldal üzemeltetőjével!']
                });
          },
       }

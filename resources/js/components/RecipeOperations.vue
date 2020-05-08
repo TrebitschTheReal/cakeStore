@@ -159,11 +159,6 @@
                   this.handleSteps('fill');
                })
                .catch((error) => {
-                  //this.validateServerResponseOnFail(error.response.status);
-                  console.log(error);
-                  console.log('Backend error: ', error.response.data);
-                  console.log('Statuscode: ', error.response.status);
-                  console.log('Response headers: ', error.response.headers);
                   if (error.response.status == 500) {
                      this.fetchedErrors = ['Hiba történt! Kérjük vegye fel a kapcsolatot az oldal üzemeltetőjével!']
                   } else {
@@ -206,12 +201,8 @@
 
          registerNewRecipeObject(responseData) {
             this.handleSteps('pending');
-            console.log('TUTUTUTUTUTU', responseData);
             this.recipe.id = responseData.new_recipe_id;
             this.recipe.name = this.newRecipeNameFirstLetterToUpperCase(responseData.new_recipe_name);
-            console.log(this.recipe.id);
-            console.log(this.recipe.name);
-
             this.handleSteps('fill');
          },
 

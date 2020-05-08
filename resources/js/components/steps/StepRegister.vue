@@ -73,7 +73,6 @@
                     Ha 200-al visszatér a backend, akkor visszaküldjük a response.datát
                    */
                   this.$emit('registerNewRecipe', response.data);
-                  console.log(response);
                })
                .catch((error) => {
                   /*
@@ -84,10 +83,6 @@
                   } else {
                      this.fetchedErrors = error.response.data;
                   }
-                  console.log(error);
-                  console.log('Backend error: ', error.response.data);
-                  console.log('Statuscode: ', error.response.status);
-                  console.log('Response headers: ', error.response.headers);
                });
          },
       }
