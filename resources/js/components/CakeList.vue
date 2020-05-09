@@ -1,8 +1,8 @@
 <template>
     <div class="container">
         <div class="mt-2 mb-4">
-            <h4>Kereső</h4>
-            <input class="form-control" type="text" v-model="search">
+            <h4 class="text-center">Kereső</h4>
+            <input class="form-control" type="text" placeholder="A keresett recept neve" v-model="search">
         </div>
 
         <errorHandler :fetchedErrors="fetchedErrors"
@@ -21,9 +21,9 @@
                             <p class="font-weight-bold">Hozzávalók:</p>
                             <div v-for="ingredient in cake.required_ingredients">
                                 <p>{{ingredient.pivot.ingredient_quantity}} {{ingredient.pivot.ingredient_unit_type}} {{ingredient.name}}
-                                    - {{ingredient.pivot.ingredient_price}} Ft</p>
+                                    - {{Math.round(parseFloat(ingredient.pivot.ingredient_price))}} Ft</p>
                             </div>
-                            <p class="font-weight-bold">Alapanyagok ára összesen: {{cake.ingredients_price_sum}} Ft</p>
+                            <p class="font-weight-bold">Alapanyagok ára összesen: {{Math.round(parseFloat(cake.ingredients_price_sum))}} Ft</p>
                             <p class="font-weight-bold">Leírás: <br><br><span
                                 class="font-weight-normal">{{cake.desc}}</span></p>
                         </div>
