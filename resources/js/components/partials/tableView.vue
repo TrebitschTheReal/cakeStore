@@ -23,8 +23,8 @@
                <th scope="row">{{recipe.id}}</th>
                <td>{{recipe.name}}</td>
                <td>{{recipe.ingredients_price_sum}} Ft</td>
-               <td>{{recipe.created_at}}</td>
-               <td>{{recipe.updated_at}}</td>
+               <td>{{recipe.created_at | moment("YYYY-MM-DD-hh:mm:ss")}}</td>
+               <td>{{recipe.updated_at | moment("YYYY-MM-DD-hh:mm:ss")}}</td>
                <td colspan="2" v-if="pending">
                   <spinner/>
                </td>
@@ -67,8 +67,8 @@
                   <td>{{ingredient.uploaded_unit_quantity}}</td>
                   <td>{{ingredient.uploaded_unit_type}}</td>
                   <td>{{ingredient.uploaded_unit_price}} Ft</td>
-                  <td>{{ingredient.created_at}}</td>
-                  <td>{{ingredient.updated_at}}</td>
+                  <td>{{ingredient.created_at | moment("YYYY-MM-DD-hh:mm:ss")}}</td>
+                  <td>{{ingredient.updated_at | moment("YYYY-MM-DD-hh:mm:ss")}}</td>
                   <td colspan="2" v-if="pending">
                      <spinner/>
                   </td>
@@ -111,8 +111,8 @@
                   <td>{{user.name}}</td>
                   <td>{{user.roles[0].name}}</td>
                   <td>{{user.email}}</td>
-                  <td>{{user.created_at}}</td>
-                  <td>{{user.updated_at}}</td>
+                  <td>{{user.created_at | moment("YYYY-MM-DD-hh:mm:ss")}}</td>
+                  <td>{{user.updated_at | moment("YYYY-MM-DD-hh:mm:ss")}}</td>
                   <td colspan="2" v-if="pending">
                      <spinner/>
                   </td>
@@ -161,6 +161,10 @@
 
       mounted() {
          this.setTableContent();
+      },
+
+      computed: {
+
       },
 
       data() {
@@ -272,7 +276,7 @@
             if (this.tableData === 'user') {
                this.userTable = true;
             }
-         }
+         },
       }
    }
 </script>

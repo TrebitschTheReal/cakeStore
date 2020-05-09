@@ -50,6 +50,10 @@ class IngredientService
          $this->updateIngredientSumPricesInExistingCakes($newIngredient);
       }
 
+      //Frissítjük az updated_at oszlopot
+      $newIngredient->touch();
+
+      //Elmentjük a modellt
       $newIngredient->save();
    }
 
@@ -83,6 +87,9 @@ class IngredientService
          /*
           * Elmentjük a módosított tortát, ezt követően a következő ciklusba ugrunk
           */
+         //Frissítjük az updated_at oszlopot
+         $newCake->touch();
+
          $newCake->save();
 
          //TODO: validálni a sum értékeket, hogy ne legyen túlcsordulás

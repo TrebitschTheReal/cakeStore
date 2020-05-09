@@ -71,6 +71,10 @@ class RegisterController extends Controller
        $user->name = $data['name'];
        $user->email = $data['email'];
        $user->password = Hash::make($data['password']);
+       //Frissítjük az updated_at oszlopot
+       $user->touch();
+
+       //Elmentjük a modellt
        $user->save();
 
        $user->roles()->attach($reg_role);

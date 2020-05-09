@@ -32,6 +32,10 @@ class UserService
 
       $user->name = $input['user']['name'];
       $user->email = $input['user']['email'];
+      //Frissítjük az updated_at oszlopot
+      $user->touch();
+
+      //Elmentjük a modellt
       $user->save();
 
       /*

@@ -20,6 +20,10 @@ class CakeService
          //Laravel - Eloquent - összesíti az adott tortához csatolt ingredientek árát - anyagköltség
          $cake->ingredients_price_sum = $cake->required_ingredients()->where('cake_id', $cake->id)->sum('ingredient_price');
 
+         //Frissítjük az updated_at oszlopot
+         $cake->touch();
+
+         //Elmentjük a modellt
          $cake->save();
       }
    }
@@ -80,6 +84,9 @@ class CakeService
 
       //Laravel - Eloquent - összegezzük az alapanyagok költségét - anyagköltség
       $newRecipe->ingredients_price_sum = $newRecipe->required_ingredients()->where('cake_id', $newRecipe->id)->sum('ingredient_price');
+
+      //Frissítjük az updated_at oszlopot
+      $newRecipe->touch();
 
       //elmentjük a torta receptet
       $newRecipe->save();
