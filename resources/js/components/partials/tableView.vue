@@ -9,7 +9,7 @@
             <tr>
                <th scope="col">#</th>
                <th scope="col">Recept neve</th>
-               <th scope="col">Anyag költség</th>
+               <th scope="col">Anyagköltség</th>
                <th scope="col">Feltöltés dátuma</th>
                <th scope="col">Utolsó módosítás dátuma</th>
                <th colspan="2" scope="col"></th>
@@ -22,7 +22,7 @@
             <tr v-for="recipe in filteredList" :key="recipe.id">
                <th scope="row">{{recipe.id}}</th>
                <td>{{recipe.name}}</td>
-               <td>{{recipe.ingredients_price_sum}} Ft</td>
+               <td>{{Math.round(parseFloat(recipe.ingredients_price_sum))}} Ft</td>
                <td>{{recipe.created_at | moment("YYYY-MM-DD-hh:mm:ss")}}</td>
                <td>{{recipe.updated_at | moment("YYYY-MM-DD-hh:mm:ss")}}</td>
                <td colspan="2" v-if="pending">

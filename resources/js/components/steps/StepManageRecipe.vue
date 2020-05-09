@@ -1,5 +1,5 @@
 <template>
-   <div class="mx-auto card">
+   <div class="mx-auto card recipe-manage-view">
       <form @submit.prevent="finishNewRecipe">
          <div class="card-header">
             <p class="text-center font-weight-bold">Recept neve</p>
@@ -63,7 +63,7 @@
             <div class="">
                <div class="ingredient-add-box">
                   <h4 class="ingredient-add-box-text float-left">Új alapanyag hozzáadása</h4>
-                  <h4 @click="addNewIngredientRow" class="float-right btn btn-success">+</h4>
+                  <h4 @click="addNewIngredientRow" class="add-ingredient-button float-right btn btn-success">+</h4>
                </div>
                <errorHandler :fetchedErrors="fetchedErrors"
                              @errorChanged="pending = $event"

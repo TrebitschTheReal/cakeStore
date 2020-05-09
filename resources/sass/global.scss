@@ -16,13 +16,6 @@
    margin-top: 0.5rem;
 }
 
-@media screen and (max-width: 639px) {
-   .ingredient-data-row-button {
-      width: 100% !important;
-   }
-}
-
-
 .ingredient-add-box {
    color: #1d643b;
    background-color: #d7f3e3;
@@ -40,26 +33,57 @@
    }
 }
 
+//XS screen
+@media screen and (max-width: 320px) {
+   //Fix méret a recept manage nézethez, hogy ne ugrabugráljon.
+   .recipe-manage-view {
+      .ingredient-add-box {
+         overflow: auto;
+         text-align: center;
+      }
 
-@media screen and (max-width: 639px) {
-   .submit-button-margin {
-      width: 92% !important;
-   }
-
-   .management {
-      margin-left: 2rem !important;
-      margin-right: 2rem !important;
+      .add-ingredient-button {
+         width: 100%;
+      }
    }
 }
 
-@media screen and (min-width: 640px) {
-   .submit-button-margin {
-      width: 92% !important;
-   }
+//Mobil
+@media screen and (max-width: 639px) {
+   //Fix méret a recept manage nézethez, hogy ne ugrabugráljon.
+   .recipe-manage-view {
+      width: 22.5rem !important;
 
-   .management {
-      margin-left: 10rem !important;
-      margin-right: 10rem !important;
+      .submit-button-margin {
+         width: 92% !important;
+      }
+
+      .management {
+         margin-left: 2rem !important;
+         margin-right: 2rem !important;
+      }
+
+      .ingredient-data-row-button {
+         width: 100% !important;
+      }
+   }
+}
+
+//Desktop
+@media screen and (min-width: 640px) {
+
+   //Fix méret a recept manage nézethez, hogy ne ugrabugráljon.
+   .recipe-manage-view {
+      width: 37rem !important;
+
+      .submit-button-margin {
+         width: 92% !important;
+      }
+
+      .management {
+         margin-left: 10rem !important;
+         margin-right: 10rem !important;
+      }
    }
 }
 
