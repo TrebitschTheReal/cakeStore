@@ -242,6 +242,7 @@
                   this.$emit(listUpdateEvent);
                   //Emitelünk egy 'siker' eventet, amit a szülő oldalon elkap a parent, és lekezeli a successt
                   this.$emit('succesResponse', 'Sikeresen törölted az elemet!');
+                  this.$emit('resetInput', true);
                })
                .catch((error) => {
                   if (error.response.status != 422) {

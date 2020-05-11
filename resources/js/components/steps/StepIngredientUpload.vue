@@ -101,6 +101,7 @@
                  @succesResponse="generateSuccessResponse($event)"
                  @fetchedErrors="fetchedErrors = $event"
                  @startPending="pending = true"
+                 @resetInput="resetInput($event)"
       />
 
    </div>
@@ -244,7 +245,7 @@
                });
          },
 
-         resetInput() {
+         resetInput(elementRemove) {
             this.ingredientModel.id = null;
             this.ingredientModel.name = '';
             this.selectedUnitName = '';
@@ -253,6 +254,11 @@
             this.ingredientModel.unit_category= null;
             this.ingredientModel.uploaded_unit_quantity = Number;
             this.ingredientModel.unit_price = Number;
+
+            if(elementRemove) {
+               this.search = '';
+               this.modify = false;
+            }
          },
 
          generateSuccessResponse(message) {

@@ -91,6 +91,7 @@
                  @fetchedErrors="fetchedErrors = $event"
                  @startPending="pending = true"
                  @modifyUser="modifyUser($event)"
+                 @resetInput="resetInput($event)"
       />
 
    </div>
@@ -237,11 +238,16 @@
                });
          },
 
-         resetInput() {
+         resetInput(elementRemove) {
             this.userModel.id = null;
             this.userModel.name = null;
             this.userModel.role_name = null;
             this.userModel.email = null;
+
+            if(elementRemove) {
+               this.search = '';
+               this.modify = false;
+            }
          },
 
          generateSuccessResponse(message) {
