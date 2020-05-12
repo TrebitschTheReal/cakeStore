@@ -62,7 +62,7 @@
                             @endrole
                             @role('admin', 'manager')
                                 <li class="nav-item">
-                                    <a href="{{route('cakerecipes')}}" class="nav-link">Torta recept kereső</a>
+                                    <a href="{{route('cakerecipes')}}" class="nav-link">Recept kereső</a>
                                 </li>
                                 <li class="nav-item">
                                     <a href="{{route('recipes')}}" class="nav-link">Receptek adminisztrálása</a>

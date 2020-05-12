@@ -1,4 +1,4 @@
-# CakeShop
+# CakeStore
 
 This my degree project, where you can: 
 - see the guest design if you are not logged in yet (not much here at the moment)

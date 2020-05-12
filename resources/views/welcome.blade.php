@@ -4,9 +4,9 @@
     <div class="container">
         <div class="row justify-content-center text-center">
             <div class="col">
-                <h1 class="">Üdvözlünk a CakeShop oldalán!</h1>
+                <h1 class="">Üdvözlünk a CakeStore oldalán!</h1>
                 <hr class="">
-                <p class="">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Animi cum debitis eius laboriosam necessitatibus neque qui ratione temporibus unde ut.</p>
+                <p class="">Kérjük regisztrálj a felületre annak használatához, vagy ha már rendelkezel fiókkal, akkor lépj be!</p>
             </div>
         </div>
     </div>
