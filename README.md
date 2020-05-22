@@ -70,3 +70,10 @@ php artisan route:clear &&
 php artisan config:clear &&
 php artisan view:clear 
 ```
+#Jscrambler
+It breaks the Vue code, however it's included to the project. If you want to build with it, add `&& jscrambler` 
+to the production line's end in package.json, so the script will look like this:
+
+``
+ "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js && jscrambler"
+``
