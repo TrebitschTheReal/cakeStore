@@ -163,7 +163,7 @@
 
             this.matchRoles();
 
-            axios.post('/modifyUser', {
+            axios.post('/modifyuser', {
                user: this.userModel,
             })
                .then((response) => {

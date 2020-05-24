@@ -35,7 +35,7 @@ Route::middleware('role:admin')->group(function () {
 
    //POST
    Route::post('/deleteuser', 'UserController@deleteUser')->name('deleteuser');
-   Route::post('/modifyUser', 'UserController@modifyUser')->name('modifyuser');
+   Route::post('/modifyuser', 'UserController@modifyUser')->name('modifyuser');
 
    //API
    Route::get('/getuserlist', 'UserController@getUserList')->name('getuserlist');
