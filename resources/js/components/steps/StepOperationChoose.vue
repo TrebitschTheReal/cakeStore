@@ -1,12 +1,12 @@
 <template>
    <div class="col p-1 m-3">
       <div class="row">
-         <button class="col btn btn-primary p-5 m-1"
+         <button class="col-lg col-sm-12 btn btn-primary p-5 m-1"
                  @click="chooseOperation('register')"
          ><span class="h3">Új recept regisztrálása</span>
          </button>
 
-         <button class="col btn btn-secondary p-5 m-1"
+         <button class="col-lg col-sm-12 btn btn-secondary p-5 m-1"
                  @click="chooseOperation('edit')"
          ><span class="h3">Recept Módosítása</span>
          </button>
