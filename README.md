@@ -1,6 +1,6 @@
 # CakeStore
 
-This my degree project, where you can: 
+Hi! My name is Viktor Dohányos, and this is my degree project, where you can: 
 - see the guest design if you are not logged in yet (not much here at the moment)
 - search, and manage stock, build recipes, and create / modify ingredients if you have manager role
 - manage users, create new accounts if you have admin privilige.
