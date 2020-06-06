@@ -16,7 +16,7 @@ Project requirements:
 
 Clone the project:
 ```
-git clone git@github.com:TrebitschTheReal/cakeShop.git
+git clone https://github.com/TrebitschTheReal/cakeStore.git
 cd cakeShop
 ```
 Create your .env file, and set your database connection:
