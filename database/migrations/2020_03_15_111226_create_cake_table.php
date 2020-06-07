@@ -14,7 +14,7 @@ class CreateCakeTable extends Migration
     public function up()
     {
         Schema::create('cakes', function (Blueprint $table) {
-            $table->increments('id');
+            $table->bigIncrements('id');
             $table->string('name', 60);
             $table->mediumText('desc')->nullable();
             $table->double('ingredients_price_sum')->nullable();

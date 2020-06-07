@@ -14,7 +14,7 @@ class CreateRequiredIngredientsTable extends Migration
     public function up()
     {
         Schema::create('required_ingredients', function (Blueprint $table) {
-           $table->increments('id');
+           $table->bigIncrements('id');
            $table->bigInteger('cake_id');
            $table->bigInteger('ingredient_id')->unsigned();
            $table->mediumInteger('ingredient_quantity')->nullable();
