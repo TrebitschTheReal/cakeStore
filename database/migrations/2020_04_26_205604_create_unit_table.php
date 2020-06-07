@@ -14,6 +14,7 @@ class CreateUnitTable extends Migration
     public function up()
     {
        Schema::create('units', function (Blueprint $table) {
+           $table->engine = 'MyISAM';
           $table->bigIncrements('id');
           $table->mediumInteger('unit_category');
           $table->string('category_name');

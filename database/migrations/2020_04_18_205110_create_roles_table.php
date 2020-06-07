@@ -14,6 +14,7 @@ class CreateRolesTable extends Migration
    public function up()
    {
       Schema::create('roles', function (Blueprint $table) {
+          $table->engine = 'MyISAM';
          $table->bigIncrements('id');
          $table->string('name'); // edit posts
          $table->string('slug'); //edit-posts

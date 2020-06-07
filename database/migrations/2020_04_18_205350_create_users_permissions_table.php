@@ -14,6 +14,7 @@ class CreateUsersPermissionsTable extends Migration
    public function up()
    {
       Schema::create('users_permissions', function (Blueprint $table) {
+          $table->engine = 'MyISAM';
          $table->unsignedInteger('user_id');
          $table->unsignedInteger('permission_id');
 

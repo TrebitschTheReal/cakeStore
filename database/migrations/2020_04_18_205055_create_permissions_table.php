@@ -14,6 +14,7 @@ class CreatePermissionsTable extends Migration
    public function up()
    {
       Schema::create('permissions', function (Blueprint $table) {
+          $table->engine = 'MyISAM';
          $table->bigIncrements('id');
          $table->string('name'); // edit posts
          $table->string('slug'); //edit-posts
