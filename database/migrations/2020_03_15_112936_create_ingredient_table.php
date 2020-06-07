@@ -14,6 +14,7 @@ class CreateIngredientTable extends Migration
     public function up()
     {
         Schema::create('ingredients', function (Blueprint $table) {
+            $table->engine = 'MyISAM';
             $table->bigIncrements('id');
             $table->string('name', 60);
             $table->mediumText('desc')->nullable();
