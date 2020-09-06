@@ -109,24 +109,24 @@ class UsersTableSeeder extends Seeder
 
         $manager = new User();
         $manager->name = 'Admin';
-        $manager->email = 'a@a';
-        $manager->password = bcrypt('a');
+        $manager->email = 'admin@cakestore.hu';
+        $manager->password = bcrypt('secret');
         $manager->save();
         $manager->roles()->attach($dev_role);
         $manager->permissions()->attach($dev_perm);
 
         $manager = new User();
         $manager->name = 'Manager';
-        $manager->email = 'b@b';
-        $manager->password = bcrypt('b');
+        $manager->email = 'manager@cakestore.hu';
+        $manager->password = bcrypt('secret');
         $manager->save();
         $manager->roles()->attach($manager_role);
         $manager->permissions()->attach($manager_perm);
 
         $manager = new User();
         $manager->name = 'Reg user';
-        $manager->email = 'c@c';
-        $manager->password = bcrypt('c');
+        $manager->email = 'reg@cakestore.hu';
+        $manager->password = bcrypt('secret');
         $manager->save();
         $manager->roles()->attach($reg_role);
         $manager->permissions()->attach($reg_perm);
