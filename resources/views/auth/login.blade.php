@@ -65,6 +65,15 @@
                             </div>
                         </div>
                     </form>
+                   <div class="row justify-content-center text-center">
+                      <div class="col">
+                         <div class="mt-5 alert alert-info">
+                            <span class="font-weight-bold">Default admin fiók:</span><br>
+                            <span class="font-weight-bold">Email: </span> admin-mail@email.com <br>
+                            <span class="font-weight-bold">Pass: </span> secret <br>
+                         </div>
+                      </div>
+                   </div>
                 </div>
             </div>
         </div>

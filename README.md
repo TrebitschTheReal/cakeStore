@@ -70,10 +70,29 @@ php artisan route:clear &&
 php artisan config:clear &&
 php artisan view:clear 
 ```
-#Jscrambler
+## Jscrambler
 It breaks the Vue code, however it's included to the project. If you want to build with it, add `&& jscrambler` 
 to the production line's end in package.json, so the script will look like this:
 
-``
+```
  "production": "cross-env NODE_ENV=production node_modules/webpack/bin/webpack.js --no-progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js && jscrambler"
-``
+```
+
+## CronJobs
+
+```
+You can find scheduled cron-jobs here, under function 'schedule' :
+/app/console/Kernel.php
+
+By default a fresh migration (with seed) running at every hour.
+
+Important!
+You have to start cron to see it on work:
+
+sudo service cron start
+
+you must add this line to your crontab to call scheduled tasks:
+
+crontab -e
+* * * * * cd /path/to/your/project && php artisan schedule:run >> /dev/null 2>&1
+```

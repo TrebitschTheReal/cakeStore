@@ -65,7 +65,10 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-       $reg_role = Role::where('slug', 'reg')->first();
+       // Because of presentation, we register an admin instead
+       //$reg_role = Role::where('slug', 'reg')->first();
+
+       $reg_role = Role::where('slug', 'admin')->first();
 
        $user = new User();
        $user->name = $data['name'];

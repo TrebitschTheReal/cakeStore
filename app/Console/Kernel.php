@@ -25,6 +25,10 @@ class Kernel extends ConsoleKernel
     protected function schedule(Schedule $schedule)
     {
         // $schedule->command('inspire')->hourly();
+         $schedule
+            ->command('reset-database')
+            ->description('Runing fresh migration with seed')
+            ->hourly();
     }
 
     /**
