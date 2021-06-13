@@ -69,7 +69,7 @@
                       <div class="col">
                          <div class="mt-5 alert alert-info">
                             <span class="font-weight-bold">Default admin fiók:</span><br>
-                            <span class="font-weight-bold">Email: </span> admin-mail@email.com <br>
+                            <span class="font-weight-bold">Email: </span> admin@email.com <br>
                             <span class="font-weight-bold">Pass: </span> secret <br>
                          </div>
                       </div>
