@@ -5,6 +5,8 @@ Hi! My name is Viktor Dohányos, and this is my degree project, where you can:
 - search, and manage stock, build recipes, and create / modify ingredients if you have manager role
 - manage users, create new accounts if you have admin privilige.
 
+##### If you're interested, please check the app's demo: https://cakestore.club
+
 ## Project setup for devs
 
 Project requirements:
